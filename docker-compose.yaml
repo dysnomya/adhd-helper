@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: adhd_helper
+    environment:
+      MYSQL_DATABASE: adhd_db
+      MYSQL_USER: adhd-user
+      MYSQL_PASSWORD: adhd-user
+      MYSQL_ROOT_PASSWORD: adhd-user
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    networks:
+      - spring-network
+
+volumes:
+  mysql_data:
+
+networks:
+  spring-network:
+    driver: bridge
