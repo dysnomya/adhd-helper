@@ -10,3 +10,10 @@ spring:
       - classpath:db/migration/schema
       - classpath:db/migration/data
       - classpath:db/migration/function
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 357064822659-21afnq9ghfj0li9cmcdnb1iqannp0e9b.apps.googleusercontent.com
+            client-secret: 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
