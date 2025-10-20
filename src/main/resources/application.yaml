@@ -17,3 +17,9 @@ spring:
           google:
             client-id: 357064822659-21afnq9ghfj0li9cmcdnb1iqannp0e9b.apps.googleusercontent.com
             client-secret: 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
+
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://www.googleapis.com/oauth2/v4/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
