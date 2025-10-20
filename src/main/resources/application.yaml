@@ -12,6 +12,9 @@ spring:
       - classpath:db/migration/function
   security:
     oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.com
       client:
         registration:
           google:
