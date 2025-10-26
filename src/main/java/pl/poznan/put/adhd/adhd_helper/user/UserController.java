@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @GetMapping
-    public Object getUserCredentials() {
-        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        String username = jwt.getClaimAsString("name");
-        String userEmail = jwt.getClaimAsString("email");
-        return username + " " + userEmail;
+    public String getUserCredentials() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof Jwt jwt) {
+            String username = jwt.getClaimAsString("name");
+            String userEmail = jwt.getClaimAsString("email");
+            return username + " " + userEmail;
+        } else {
+            return "User is not authenticated with JWT";
+        }
     }
 }
