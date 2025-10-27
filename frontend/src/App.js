@@ -24,7 +24,7 @@ function App() {
               localStorage.getItem("token") ? (
                 <User />
               ) : (
-                <Navigate to="/" user={user} setUser={setUser} />
+                <Navigate to="/" />
               )
             }
           />

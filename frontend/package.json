@@ -4,6 +4,8 @@
   "private": true,
   "proxy": "http://localhost:8080",
   "dependencies": {
+    "@azure/identity": "^4.13.0",
+    "@azure/keyvault-secrets": "^4.10.0",
     "@react-oauth/google": "^0.12.2",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",

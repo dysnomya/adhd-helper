@@ -13,13 +13,13 @@ function Login({ user, setUser }) {
   };
 
   const handleError = () => {
-    console.log("Login Failed");
+    console.log("Login failed");
   };
 
   useEffect(() => {
     if (!user) return;
     navigate("/user");
-  }, [user]);
+  }, [user, navigate]);
 
   return <GoogleLogin onSuccess={handleSuccess} onError={handleError} />;
 }

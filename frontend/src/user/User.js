@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function User() {
-  const [user, setUser] = useState(null); // initialize with null or empty object
+  const [user, setUser] = useState(null);
 
   const fetchUser = async () => {
     try {
@@ -10,7 +10,7 @@ function User() {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       console.log(res.data);
-      setUser(res.data); // update state correctly
+      setUser(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -18,12 +18,21 @@ function User() {
 
   useEffect(() => {
     fetchUser();
-  }, []); // empty dependency array → runs once on mount
+  }, []);
 
   return (
     <div>
       <h1>User</h1>
-      {user}
+      {user === null ? (
+          <p>Loading...</p>
+      ) : typeof user === "string" ? (
+          <p>{user}</p>
+      ) : (
+          <div>
+            <p>Name: {user.name}</p>
+            <p>Email: {user.email}</p>
+          </div>
+      )}
     </div>
   );
 }
