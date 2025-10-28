@@ -22,7 +22,7 @@ function User() {
 
   return (
     <div>
-      <h1>User</h1>
+      <h1>This is a test page that fetches user info</h1>
       {user === null ? (
           <p>Loading...</p>
       ) : typeof user === "string" ? (

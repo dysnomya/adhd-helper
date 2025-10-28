@@ -6,31 +6,35 @@ import {
   Routes,
 } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Login from "./login/Login";
-import User from "./user/User";
+import User from "./pages/User";
+
+import Login from "./pages/Login";
+import LoginLayout from "./layouts/LoginLayout";
+import MainLayout from "./layouts/MainLayout";
+import ProtectedRoute from "./wrappers/ProtectedRoute";
+import Dashboard from "./pages/Dashboard";
+import Todo from "./pages/Todo";
+import Calendar from "./pages/Calendar";
 
 function App() {
-  const [user, setUser] = useState(null);
-
   return (
-    <Router>
-      <nav />
-      <div className="container mt-3">
+    <div className="">
+      <Router>
         <Routes>
-          <Route path="/" element={<Login user={user} setUser={setUser} />} />
-          <Route
-            path="/user"
-            element={
-              localStorage.getItem("token") ? (
-                <User />
-              ) : (
-                <Navigate to="/" />
-              )
-            }
-          />
+          <Route element={<LoginLayout />}>
+            <Route path="/" element={<Login />} />
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route element={<MainLayout />}>
+              <Route path="/dashboard" element={<Dashboard/>} />
+              <Route path="/todo" element={<Todo/>} />
+              <Route path="/calendar" element={<Calendar/>} />
+              <Route path="/user" element={<User/>} />
+            </Route>
+          </Route>
         </Routes>
-      </div>
-    </Router>
+      </Router>
+    </div>
   );
 }
 export default App;
