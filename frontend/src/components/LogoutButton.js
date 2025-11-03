@@ -6,7 +6,7 @@ export default function LogoutButton() {
     return (
         <Button
             onClick={() => {
-                localStorage.clear();
+                localStorage.removeItem('token');
                 navigate("/");
             }}
              className="mt-auto"
