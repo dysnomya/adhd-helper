@@ -1,8 +1,6 @@
-import { Link } from "react-router-dom";
 import SidebarItem from "./SidebarItem";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LogoutButton from "./LogoutButton";
-import {Col} from "react-bootstrap";
 
 
 export default function Sidebar() {

@@ -1,8 +1,7 @@
 import { GoogleLogin } from "@react-oauth/google";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function LoginButton({ user, setUser }) {
+function LoginButton() {
   const navigate = useNavigate();
   const handleSuccess = async (credentialResponse) => {
     const token = credentialResponse.credential; // Google ID token
