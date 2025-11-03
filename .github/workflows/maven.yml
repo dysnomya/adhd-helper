@@ -45,8 +45,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Use Node 18
-        uses: actions/setup-node@v4
+      - name: Use Node 20
+        uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: npm
