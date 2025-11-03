@@ -1,17 +1,18 @@
 import {GoogleLogin} from "@react-oauth/google";
 import {useNavigate} from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 
 export default function LogoutButton() {
     const navigate = useNavigate();
     return (
-        <button
+        <Button
             onClick={() => {
                 localStorage.clear();
                 navigate("/");
             }}
-            className="mt-auto bg-red-600 hover:bg-red-700 py-2 rounded"
+             className="mt-auto"
         >
             Logout
-        </button>
+        </Button>
     );
 }

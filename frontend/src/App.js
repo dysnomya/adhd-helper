@@ -5,9 +5,7 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
 import User from "./pages/User";
-
 import Login from "./pages/Login";
 import LoginLayout from "./layouts/LoginLayout";
 import MainLayout from "./layouts/MainLayout";

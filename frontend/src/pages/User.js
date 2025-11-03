@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+// It's very messy here but this page is just to demonstrate how to make requests to backend
 function User() {
   const [user, setUser] = useState(null);
 
@@ -22,7 +23,7 @@ function User() {
 
   return (
     <div>
-      <h1>This is a test page that fetches user info</h1>
+      <h1 className='display-4'>This is a test page that fetches user info</h1>
       {user === null ? (
           <p>Loading...</p>
       ) : typeof user === "string" ? (

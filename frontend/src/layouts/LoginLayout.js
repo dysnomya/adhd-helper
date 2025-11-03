@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function LoginLayout() {
     return (
-        <div className="flex h-screen items-center">
+        <div className="d-flex align-items-start">
             <Outlet />
         </div>
     );
