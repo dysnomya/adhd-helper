@@ -23,6 +23,8 @@ jobs:
         env:
           MYSQL_DATABASE: adhd_db
           MYSQL_ROOT_PASSWORD: adhd-user
+          MYSQL_USER: adhd-user
+          MYSQL_PASSWORD: adhd-user
         
     steps:
     - uses: actions/checkout@v5
