@@ -5,6 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {GoogleOAuthProvider} from "@react-oauth/google";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <GoogleOAuthProvider clientId="357064822659-21afnq9ghfj0li9cmcdnb1iqannp0e9b.apps.googleusercontent.com">

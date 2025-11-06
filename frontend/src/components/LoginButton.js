@@ -1,27 +1,20 @@
 import { GoogleLogin } from "@react-oauth/google";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login({ user, setUser }) {
+function LoginButton() {
   const navigate = useNavigate();
   const handleSuccess = async (credentialResponse) => {
     const token = credentialResponse.credential; // Google ID token
     localStorage.setItem("token", token);
     console.log(token);
-
-    navigate("/user");
+    navigate("/dashboard");
   };
 
   const handleError = () => {
     console.log("Login failed");
   };
 
-  useEffect(() => {
-    if (!user) return;
-    navigate("/user");
-  }, [user, navigate]);
-
   return <GoogleLogin onSuccess={handleSuccess} onError={handleError} />;
 }
 
-export default Login;
+export default LoginButton;
