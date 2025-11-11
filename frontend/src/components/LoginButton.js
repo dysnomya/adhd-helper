@@ -1,4 +1,3 @@
-import "../styles/login.scss";
 import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 
