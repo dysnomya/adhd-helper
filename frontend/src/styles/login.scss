@@ -1,4 +1,4 @@
-@use "src/styles/_variables.scss" as *;
+@use "_variables.scss" as *;
 
 .login-container {
   height: 100vh;
@@ -39,7 +39,6 @@ $logo-width: calc($logo-max-width / $card-max-width * $card-width);
   background-image: url("../assets/green-border.svg");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain;
   background-size: calc(100% - $card-margin) calc(100% - $card-margin);
 
   box-shadow: 0 0 30px rgb(0, 0, 0);
