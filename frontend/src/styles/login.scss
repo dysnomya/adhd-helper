@@ -1,0 +1,111 @@
+@use "_variables.scss" as *;
+
+.login-container {
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: radial-gradient(circle at bottom, #354223, $color-bg-dark 50%);
+}
+
+$card-max-width: 568px;
+$card-max-height: 658px;
+$card-width: min($card-max-width, calc(100vw - 40px));
+$card-height: calc($card-max-height / $card-max-width * $card-width);
+$card-margin: calc(40px / $card-max-width * $card-width);
+
+$logo-max-width: 216px;
+$logo-width: calc($logo-max-width / $card-max-width * $card-width);
+
+.login-card {
+  flex-shrink: 0;
+
+  position: relative;
+  background: $color-card-bg-dark;
+  width: $card-width;
+  height: $card-height;
+  padding: $card-margin;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6%;
+
+  background-image: url("../assets/green-border.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: calc(100% - $card-margin) calc(100% - $card-margin);
+
+  box-shadow: 0 0 30px rgb(0, 0, 0);
+}
+
+.login-logo {
+  position: absolute;
+  bottom: calc($card-height - $logo-width / 2);
+  z-index: 3;
+  width: $logo-width;
+  height: $logo-width;
+}
+
+.login-card::before {
+  content: "";
+  position: absolute;
+  bottom: calc($card-height - ($logo-width - $card-margin) / 2);
+  width: calc($logo-width - $card-margin);
+  height: calc($logo-width - $card-margin);
+  background-color: $color-bg-dark;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.login-card::after {
+  content: "";
+  position: absolute;
+  bottom: calc($card-height - 1px / 2);
+  width: 1px;
+  height: 1px;
+  border-radius: 50%;
+  box-shadow: 0 0 calc($logo-width / 4) calc($logo-width / 4)
+    $color-accent-green;
+  z-index: 2;
+
+  animation: fadeInOut 2s infinite ease-in-out;
+}
+
+.login-card h1 {
+  margin-bottom: 56px;
+  color: $color-accent-green;
+  text-align: center;
+}
+
+.login-button {
+  border: 4px solid $color-accent-green;
+  border-radius: 40px;
+
+  animation: glowPulse 2s infinite ease-in-out;
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 $color-accent-green;
+  }
+  50% {
+    box-shadow: 0 0 16px 0 $color-accent-green;
+  }
+}
