@@ -12,6 +12,7 @@ import lombok.*;
 @Builder
 public class User {
     @Id
+    @Column(unique = true, nullable = false)
     private String id;
 
     @Column(nullable = false)
