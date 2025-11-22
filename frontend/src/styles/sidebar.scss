@@ -27,14 +27,14 @@ $sidebar-icon-size: 40px;
   left: 0;
   width: 100%;
   height: $mobile-topbar-height;
-  background: var(--color-bg);
+  background-color: var(--color-sidebar-bg);
   color: var(--color-text);
   z-index: 101;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 8px;
-  box-shadow: 0 2px 6px var(--color-card-bg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 
   @media (min-width: 768px) {
     display: none;
@@ -76,11 +76,11 @@ $sidebar-icon-size: 40px;
   width: 100%;
   max-height: 0;
   overflow: hidden;
-  background: var(--color-bg);
+  background-color: var(--color-sidebar-bg);
   color: var(--color-text);
   z-index: 100;
   transition: max-height 0.3s ease;
-  box-shadow: 0 4px 10px var(--color-card-bg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
   padding: 0;
 
   @media (min-width: 768px) {
