@@ -1,9 +1,23 @@
-import {Link} from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import "../styles/sidebar.scss";
 
-export default function SidebarItem(props) {
-    return(
-      <li className='nav-item'>
-          <Link to={props.pageUrl} className="nav-link">{props.pageLabel}</Link>
-      </li>
-    );
+export default function SidebarItem({
+  pageUrl,
+  pageLabel,
+  Icon,
+  onClick,
+  className,
+}) {
+  return (
+    <NavLink
+      to={pageUrl}
+      className={({ isActive }) =>
+        `nav-item ${className || ""} ${isActive ? "active" : ""}`
+      }
+      onClick={onClick}
+    >
+      {Icon && <Icon className="sidebar-icon" />}
+      <div className="sidebar-text">{pageLabel}</div>
+    </NavLink>
+  );
 }

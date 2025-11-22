@@ -1,6 +1,6 @@
 import "../styles/login.scss";
 import LoginButton from "../components/LoginButton";
-import { ReactComponent as Logo } from "../assets/green-logo.svg";
+import { ReactComponent as Logo } from "../assets/logo.svg";
 
 export default function Login() {
   return (

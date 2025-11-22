@@ -1,0 +1,203 @@
+$mobile-topbar-height: 60px;
+
+$base-height: 720px;
+$base-width: 1280px;
+
+$sidebar-collapsed-width: 130px;
+$sidebar-open-width: 356px;
+$sidebar-element-size: 88px;
+$sidebar-icon-size: 40px;
+
+/* ------------------------- */
+/* GLOBAL MAIN CONTENT OFFSET */
+/* ------------------------- */
+@media (min-width: 768px) {
+  main {
+    margin-left: calc($sidebar-collapsed-width / 2);
+    // why /2 you ask? i wonder why myself XD
+  }
+}
+
+/* ------------------------- */
+/* MOBILE TOP BAR */
+/* ------------------------- */
+.mobile-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $mobile-topbar-height;
+  background: var(--color-bg);
+  color: var(--color-text);
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  box-shadow: 0 2px 6px var(--color-card-bg);
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+.mobile-topbar-left-side {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mobile-topbar-logo {
+  width: 44px;
+  height: 44px;
+}
+
+.mobile-topbar-left-side h2 {
+  font-size: 32px;
+  margin: 0;
+  font-weight: 700;
+}
+
+.mobile-menu-btn {
+  color: var(--color-text);
+  background: none;
+  border: none;
+  font-size: 28px;
+  padding: 5px;
+}
+
+/* ------------------------- */
+/* MOBILE DROPDOWN SIDEBAR */
+/* ------------------------- */
+.mobile-dropdown {
+  position: fixed;
+  top: $mobile-topbar-height;
+  left: 0;
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  background: var(--color-bg);
+  color: var(--color-text);
+  z-index: 100;
+  transition: max-height 0.3s ease;
+  box-shadow: 0 4px 10px var(--color-card-bg);
+  padding: 0;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+.mobile-dropdown.open {
+  max-height: calc(50vh - $mobile-topbar-height);
+}
+
+/* ------------------------- */
+/* DESKTOP SIDEBAR */
+/* ------------------------- */
+.sidebar-logo {
+  height: $sidebar-element-size;
+  width: $sidebar-element-size;
+  flex-shrink: 0;
+}
+
+.desktop-sidebar {
+  background-color: var(--color-sidebar-bg);
+  color: var(--color-text);
+  width: $sidebar-collapsed-width;
+  transition: width 0.25s ease;
+}
+
+.desktop-sidebar:hover {
+  width: $sidebar-open-width;
+}
+
+.nav-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+  padding: calc(($sidebar-collapsed-width - $sidebar-element-size) / 2);
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: calc($sidebar-element-size / 2);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    @media (max-width: 767px) {
+      gap: 0;
+    }
+
+    li {
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  ul li .sidebar-text {
+    transition: flex-basis 0.25s ease, opacity 0.25s ease;
+  }
+
+  &.collapsed ul li .sidebar-text {
+    flex-basis: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &:hover ul li .sidebar-text {
+    flex-basis: auto;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.sidebar-icon {
+  width: $sidebar-icon-size;
+  height: $sidebar-icon-size;
+  flex-shrink: 0;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: calc(($sidebar-element-size - $sidebar-icon-size) / 2);
+  gap: calc($sidebar-element-size - $sidebar-icon-size);
+  text-decoration: none;
+  color: var(--color-text);
+  font-size: 20px;
+}
+
+.nav-item.active {
+  background-color: var(--color-sidebar-selection-bg);
+  border-radius: calc($sidebar-element-size - $sidebar-icon-size);
+  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* ------------------------- */
+/* TOP SIDEBAR TITLE ("ADHD Helper") */
+/* ------------------------- */
+.sidebar-title-item {
+  display: flex;
+  align-items: center;
+  gap: calc(($sidebar-element-size - $sidebar-icon-size) / 2);
+
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+/* ------------------------- */
+/* LOGOUT BUTTON */
+/* ------------------------- */
+.logout-button {
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  border: none;
+  width: $sidebar-element-size;
+}

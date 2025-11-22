@@ -1,0 +1,56 @@
+// $themes: (
+//   dark: (
+//     bg: #141414,
+//     card-bg: #282828,
+//     text: #e0e0e0,
+//     accent: #c5ff75,
+//   ),
+//   light: (
+//     bg: #fff,
+//     card-bg: #f2f2f2,
+//     text: #111,
+//     accent: #2196f3,
+//   ),
+// );
+
+// @each $theme-name, $theme-map in $themes {
+//   .#{$theme-name} {
+//     --color-bg: map-get($theme-map, bg);
+//     --color-card-bg: map-get($theme-map, card);
+//     --color-text: map-get($theme-map, text);
+//     --color-accent: map-get($theme-map, accent);
+//   }
+// }
+
+// :root {
+//   --color-bg: #141414;
+// }
+
+.dark {
+  --color-bg: #141414;
+  --color-card-bg: #282828;
+  --color-sidebar-bg: #373737;
+  --color-sidebar-selection-bg: #2c2c2c;
+
+  --color-text: #e0e0e0;
+
+  --color-accent: #c5ff75;
+  --color-on-accent: #141414;
+
+  --color-icon: #d9d9d9;
+}
+
+.light {
+  --color-bg: #ebebeb;
+  --color-card-bg: #ffffff;
+
+  --color-sidebar-bg: #ffffff;
+  --color-sidebar-selection-bg: #f0eeee;
+
+  --color-text: #141414;
+
+  --color-accent: #fe73ba;
+  --color-on-accent: #ffffff;
+
+  --color-icon: #141414;
+}
