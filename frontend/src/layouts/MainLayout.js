@@ -11,7 +11,7 @@ export default function LoginLayout() {
                     <Sidebar />
                 </Col>
                 <Col as='main' md={10} className="p-0 offset-2">
-                    <main className="p-4">
+                    <main style={{padding: "5dvh", height: "100dvh", backgroundColor: "#d4d4d4"}}>
                         <Outlet/>
                     </main>
                 </Col>

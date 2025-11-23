@@ -1,0 +1,103 @@
+@use "_variables.scss" as *;
+
+$calendar-border-radius: clamp(1rem, 3vmin, 5rem);
+$calendar-cell-border-radius: clamp(1rem, 2vmin, 5rem);
+
+.calendar {
+    border-radius: $calendar-border-radius;
+    background-color: #ed6fa4;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.25),
+        0 12px 24px rgba(0, 0, 0, 0.30);
+}
+
+.calendar-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows:
+        0.3fr 
+        repeat(6, minmax(0, 1fr));
+    gap: 0.8em;
+    padding: 1em;
+    background-color: #ebebeb;
+    border-radius: $calendar-border-radius;
+    flex: 1;
+    min-height: 0;
+    box-shadow: inset 0 10px 12px -6px rgba(0, 0, 0, 0.5);
+}
+
+.calendar-header {
+    height: 5em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    gap: 5vw;
+    color: white;
+}
+
+.calendar-days {
+    grid-column: span 7;
+    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: #636363;
+    border-radius: $calendar-border-radius;
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.15),
+        0 12px 24px rgba(0, 0, 0, 0.20);
+    font-size: 20px;
+    color:white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.calendar-cell {
+    height: 100%;
+    border-radius: $calendar-cell-border-radius;
+    cursor: pointer;
+    background-color: white;
+    box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.15),
+        0 6px 12px rgba(0, 0, 0, 0.20);
+}
+
+.calendar-cell:hover {
+    background-color: #ffe8f2;
+}
+
+.calendar-cell:active {
+    background-color: #fcb8d6;
+}
+
+.calendar-cell-number {
+    background-color: #636363;
+    color: white;
+    width: 30%;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top-left-radius: $calendar-cell-border-radius;
+    border-bottom-right-radius: $calendar-cell-border-radius;
+    box-shadow: 
+        4px 0 4px -2px rgba(0, 0, 0, 0.3),
+        0 4px 4px -2px rgba(0, 0, 0, 0.3);
+    margin-top: -2px;
+    margin-left: -2px;
+    font-size: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.calendar-cell-content {
+    padding: 10px;
+}
+
+.calendar-button {
+    background: none;
+    border: none;
+    color: white;
+}
