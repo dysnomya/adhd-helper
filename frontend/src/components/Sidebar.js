@@ -24,10 +24,9 @@ export default function Sidebar({ collapsed = false, onItemClick }) {
           <span className="sidebar-text">ADHD Helper</span>
         </li>
 
-        {items.map((item, idx) => (
-          <li>
+        {items.map((item) => (
+          <li key={item.pageUrl}>
             <SidebarItem
-              key={idx}
               pageUrl={item.pageUrl}
               pageLabel={item.pageLabel}
               Icon={item.Icon}

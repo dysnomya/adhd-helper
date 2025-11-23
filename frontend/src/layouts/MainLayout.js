@@ -27,7 +27,12 @@ export default function LoginLayout() {
             <h2>ADHD Helper</h2>
           </div>
 
-          <button className="mobile-menu-btn" onClick={() => setOpen(!open)}>
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
+            aria-expanded={open}
+          >
             ≡
           </button>
         </div>
@@ -36,7 +41,7 @@ export default function LoginLayout() {
         <div className={`mobile-dropdown ${open ? "open" : ""}`}>
           <Sidebar
             collapsed={false}
-            onItemClick={() => setOpen(!open)} // closes sidebar for all items
+            onItemClick={() => setOpen(false)} // always closes sidebar after selection
           />
         </div>
 
