@@ -106,7 +106,8 @@ $sidebar-icon-size: 40px;
   transition: width 0.25s ease;
 }
 
-.desktop-sidebar:hover {
+.desktop-sidebar:hover,
+.desktop-sidebar:focus-within {
   width: $sidebar-open-width;
 }
 
