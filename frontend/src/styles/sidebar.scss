@@ -87,7 +87,7 @@ $sidebar-icon-size: 40px;
 }
 
 .mobile-dropdown.open {
-  max-height: calc(50vh - $mobile-topbar-height);
+  max-height: calc(100vh - $mobile-topbar-height - 20px);
 }
 
 /* ------------------------- */
