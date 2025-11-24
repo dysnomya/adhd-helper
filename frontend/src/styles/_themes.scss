@@ -10,6 +10,11 @@
   --color-on-accent: #141414;
 
   --color-icon: #d9d9d9;
+
+  --content-bg: #232323;
+
+  background-color: var(--content-bg);
+  color: var(--color-text);
 }
 
 .light {
@@ -25,4 +30,9 @@
   --color-on-accent: #ffffff;
 
   --color-icon: #141414;
+
+  --content-bg: #d9d9d9;
+
+  background-color: var(--content-bg);
+  color: var(--color-text);
 }

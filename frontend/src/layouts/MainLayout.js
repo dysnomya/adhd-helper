@@ -46,7 +46,7 @@ export default function LoginLayout() {
         </div>
 
         {/* MAIN CONTENT */}
-        <Col as="main" className="p-0">
+        <Col as="main" className="content p-0">
           <main className="p-4 mt-md-0 mt-5">
             <Outlet />
           </main>

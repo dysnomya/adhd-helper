@@ -158,6 +158,7 @@ $sidebar-icon-size: 40px;
   width: $sidebar-icon-size;
   height: $sidebar-icon-size;
   flex-shrink: 0;
+  color: var(--color-icon);
 }
 
 .nav-item {
@@ -174,6 +175,10 @@ $sidebar-icon-size: 40px;
   background-color: var(--color-sidebar-selection-bg);
   border-radius: calc($sidebar-element-size - $sidebar-icon-size);
   box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.nav-item.active .sidebar-icon {
+  color: var(--color-accent);
 }
 
 /* ------------------------- */
@@ -197,4 +202,8 @@ $sidebar-icon-size: 40px;
   color: var(--color-on-accent);
   border: none;
   width: $sidebar-element-size;
+}
+
+.content {
+  height: 100vh;
 }

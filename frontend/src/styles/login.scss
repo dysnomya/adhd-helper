@@ -43,7 +43,7 @@ $logo-width: calc($logo-max-width / $card-max-width * $card-width);
   background-position: center;
   background-size: calc(100% - $card-margin) calc(100% - $card-margin);
 
-  box-shadow: 2px 4px 4px rgb(0, 0, 0, 25%);
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .login-logo {
