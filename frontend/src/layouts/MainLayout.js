@@ -32,6 +32,7 @@ export default function LoginLayout() {
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
             aria-expanded={open}
+            type="button"
           >
             ≡
           </button>
