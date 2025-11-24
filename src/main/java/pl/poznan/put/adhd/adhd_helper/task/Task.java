@@ -8,9 +8,11 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import pl.poznan.put.adhd.adhd_helper.category.Category;
-import pl.poznan.put.adhd.adhd_helper.user.User;
+import pl.poznan.put.adhd.adhd_helper.priority.Priority;
+import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "tasks")
@@ -28,7 +30,10 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @CreatedBy
-    private User createdBy;
+    private AdhdUser createdBy;
+
+    @Column(nullable = false)
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -38,17 +43,17 @@ public class Task {
     @JoinColumn(name = "parent_id")
     private Task parent;
 
-    @Column(nullable = false)
-    private String name;
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Task> subtasks;
 
     @Column(nullable = false)
-    private Date day;
+    private LocalDate day;
 
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
     @Column(name = "time_needed")
-    private Integer timeNeeded;
+    private Integer timeNeeded; // in minutes
 
     @Column(name = "exp_amount")
     private Integer expAmount;

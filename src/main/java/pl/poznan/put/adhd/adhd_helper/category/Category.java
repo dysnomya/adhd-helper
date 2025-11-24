@@ -2,7 +2,7 @@ package pl.poznan.put.adhd.adhd_helper.category;
 
 import jakarta.persistence.*;
 import lombok.*;
-import pl.poznan.put.adhd.adhd_helper.user.User;
+import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
 
 @Entity
 @Table(name = "categories")
@@ -18,7 +18,7 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private AdhdUser adhdUser;
 
     @Column(nullable = false)
     private String name;

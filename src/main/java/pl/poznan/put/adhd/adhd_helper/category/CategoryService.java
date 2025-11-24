@@ -1,8 +1,10 @@
 package pl.poznan.put.adhd.adhd_helper.category;
 
 import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
-import pl.poznan.put.adhd.adhd_helper.user.UserService;
+
+import pl.poznan.put.adhd.adhd_helper.common.UserSecurityService;
 
 import java.util.List;
 
@@ -11,11 +13,12 @@ import java.util.List;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-    private final UserService userService;
+    private final CategoryMapper categoryMapper;
+    private final UserSecurityService userSecurityService;
 
-    public List<Category> getAllCategories() {
-        String currentUserId = userService.getCurrentUserId();
-        return categoryRepository.findByUserId(currentUserId);
+    public List<CategoryDto> getAllCategories() {
+        List<Category> allCategories =
+                categoryRepository.findAllByAdhdUser(userSecurityService.getUser());
+        return categoryMapper.toDto(allCategories);
     }
-
 }

@@ -1,43 +1,20 @@
 package pl.poznan.put.adhd.adhd_helper.task;
 
-
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Collection;
 
 @RestController
-@RequestMapping("/api/tasks")
-@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping(value = "/api/tasks", produces = "application/json")
 @AllArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
 
-    // GET /api/tasks
-    // Pobierz wszystkie zadania GŁÓWNE zalogowanego użytkownika
     @GetMapping
-    public List<TaskWithStatus> getAllParentTasks() {
-        return taskService.getAllParentTasksWithSubtaskStatus();
+    public Collection<TaskResponse> getAllTasks() {
+        return taskService.getAllTasks();
     }
-
-
-    // GET /api/tasks/{parentId}/subtasks
-    @GetMapping("/{parentId}/subtasks")
-    public ResponseEntity<List<TaskWithStatus>> getSubtasks(@PathVariable Long parentId) {
-
-        if (parentId == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        List<TaskWithStatus> subtasks = taskService.getSubtasksForParent(parentId);
-
-        if (subtasks.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(subtasks);
-    }
-
 }

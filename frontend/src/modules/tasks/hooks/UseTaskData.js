@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { fetchAllTasks, fetchAllCategories } from "../api/TaskApi";
+import {useEffect, useState} from "react";
+import {fetchAllCategories, fetchAllTasks} from "../api/TaskApi";
 
 export const useTaskData = () => {
 

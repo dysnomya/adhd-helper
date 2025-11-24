@@ -1,6 +1,7 @@
 package pl.poznan.put.adhd.adhd_helper.user;
 
 import jakarta.persistence.*;
+
 import lombok.*;
 
 @Entity
@@ -10,10 +11,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class AdhdUser {
     @Id
-    @Column(unique = true, nullable = false)
-    private String id;
+    @Column(name = "id", unique = true, nullable = false)
+    private String googleId;
 
     @Column(nullable = false)
     private String name;

@@ -6,13 +6,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
-import pl.poznan.put.adhd.adhd_helper.user.User;
+import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
 
 @Service
 @RequiredArgsConstructor
 public class UserSecurityService {
-    public User getUser() {
-        return User.builder().id(getSub()).name(getName()).email(getEmail()).build();
+    public AdhdUser getUser() {
+        return AdhdUser.builder().googleId(getSub()).name(getName()).email(getEmail()).build();
     }
 
     public String getSub() {
