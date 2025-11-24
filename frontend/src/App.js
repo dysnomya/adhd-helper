@@ -14,7 +14,7 @@ function App() {
   const [theme, setTheme] = useState("dark");
 
   return (
-    <div className={theme}>
+    <div className={theme} style={{ minHeight: '100vh' }}>
       <button
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         style={{ position: "fixed", bottom: 10, right: 10, zIndex: 200 }}
