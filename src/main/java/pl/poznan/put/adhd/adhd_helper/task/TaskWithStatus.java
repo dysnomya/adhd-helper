@@ -25,7 +25,7 @@ public class TaskWithStatus {
 
     public TaskWithStatus(Task task, boolean hasSubtasks) {
         this.id = task.getId();
-        this.userId = task.getUser().getId();
+        //        this.userId = task.getUser().getId();
         this.categoryId = task.getCategory() != null ? task.getCategory().getId() : null;
         this.parentId = task.getParent() != null ? task.getParent().getId() : null;
 
@@ -38,5 +38,4 @@ public class TaskWithStatus {
 
         this.hasSubtasks = hasSubtasks;
     }
-
 }

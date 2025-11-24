@@ -1,20 +1,32 @@
 package pl.poznan.put.adhd.adhd_helper.user;
 
 import jakarta.transaction.Transactional;
+
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import pl.poznan.put.adhd.adhd_helper.common.UserSecurityService;
+
 import java.util.Optional;
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserSecurityService userSecurityService;
+
+    @Transactional
+    public void createUser() {
+        userRepository.save(userSecurityService.getUser());
+    }
 
     @Transactional
     public User getCurrentUser() {
@@ -54,25 +66,23 @@ public class UserService {
         if (existingUser.isPresent()) {
             return existingUser.get();
         } else {
-            User newUser = User.builder()
-                    .id(finalId)
-                    .email(finalEmail)
-                    .name(finalName)
-                    .build();
+            User newUser = User.builder().id(finalId).email(finalEmail).name(finalName).build();
 
             try {
                 return userRepository.save(newUser);
             } catch (Exception e) {
-                return userRepository.findById(finalId)
-                        .orElseThrow(() -> new RuntimeException("Krytyczny błąd: Nie można stworzyć ani odczytać użytkownika.", e));
+                return userRepository
+                        .findById(finalId)
+                        .orElseThrow(
+                                () ->
+                                        new RuntimeException(
+                                                "Krytyczny błąd: Nie można stworzyć ani odczytać użytkownika.",
+                                                e));
             }
         }
-
     }
 
     public String getCurrentUserId() {
         return getCurrentUser().getId();
     }
-
 }
-

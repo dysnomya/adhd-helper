@@ -1,7 +1,12 @@
 package pl.poznan.put.adhd.adhd_helper.task;
 
 import jakarta.persistence.*;
+
 import lombok.*;
+
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import pl.poznan.put.adhd.adhd_helper.category.Category;
 import pl.poznan.put.adhd.adhd_helper.user.User;
 
@@ -14,6 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +27,8 @@ public class Task {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    @CreatedBy
+    private User createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
