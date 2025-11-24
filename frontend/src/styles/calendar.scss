@@ -1,5 +1,3 @@
-@use "_variables.scss" as *;
-
 $calendar-border-radius: clamp(1rem, 3vmin, 5rem);
 $calendar-cell-border-radius: clamp(1rem, 2vmin, 5rem);
 
@@ -10,9 +8,7 @@ $calendar-cell-border-radius: clamp(1rem, 2vmin, 5rem);
     height: 100%;
     display: flex;
     flex-direction: column;
-    box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.25),
-        0 12px 24px rgba(0, 0, 0, 0.30);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 .calendar-container {
@@ -47,9 +43,7 @@ $calendar-cell-border-radius: clamp(1rem, 2vmin, 5rem);
     grid-template-columns: repeat(7, 1fr);
     background-color: #636363;
     border-radius: $calendar-border-radius;
-    box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.15),
-        0 12px 24px rgba(0, 0, 0, 0.20);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
     font-size: 20px;
     color:white;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
