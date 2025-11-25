@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../styles/calendar.scss";
 import CalendarCell from "../components/CalendarCell";
+import capitalizeFirstLetter from "../functions/TextFunctions.js";
+import { ReactComponent as Arrow } from "../assets/arrow-right.svg";
 
 export default function Calendar() {
     const days = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Ndz"];
@@ -39,17 +41,14 @@ export default function Calendar() {
     return (
         <div className="calendar">
             <div className="calendar-header">
-                <h2 style={{ margin: "auto" }}>
-                    <button className="calendar-button" onClick={goToPreviousMonth}>&lt;</button>
-                    {currentDate.toLocaleString("default", { month: "long" })} {year}
-                    <button className="calendar-button" onClick={goToNextMonth}>&gt;</button>
-                </h2>
-
+                <Arrow className="arrow-icon arrow-icon-left" onClick={goToPreviousMonth} />
+                <h2>{capitalizeFirstLetter(currentDate.toLocaleString("default", { month: "long" }))} {year}</h2>
+                <Arrow className="arrow-icon arrow-icon-right" onClick={goToNextMonth} />
             </div>
             <div className="calendar-container">
                 <div className="calendar-days">
                     {days.map((d, index) => (
-                        <div key={index} style={{ fontWeight: "bold", textAlign: "center" }}>{d}</div>
+                        <div key={index}>{d}</div>
                     ))}
                 </div>
 
