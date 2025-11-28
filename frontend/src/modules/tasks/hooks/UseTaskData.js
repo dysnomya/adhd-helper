@@ -8,7 +8,7 @@ export const useTaskData = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
+    // const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
 
     useEffect(() => {
 
@@ -16,7 +16,7 @@ export const useTaskData = () => {
 
             if (!localStorage.getItem("token")) {
                 setIsLoading(false);
-                setIsAuthenticated(false);
+                // setIsAuthenticated(false);
                 return;
             }
 
@@ -30,21 +30,27 @@ export const useTaskData = () => {
                 ]);
 
 
-                const processedTasks = tasksData.map(dto => ({
-                    ...dto,
+                const processedTasks = tasksData.map(task => ({
+                    ...task,
+                    categoryId: task.category ? task.category.id : null,
+                    subtasks: task.subtasks || [],
+                    hasSubtasks: task.subtasks && task.subtasks.length > 0
                 }));
 
                 setTasks(processedTasks);
                 setCategories(categoriesData);
-                setIsAuthenticated(true);
+                // setIsAuthenticated(true);
+
+                
 
             } catch (e) {
 
                 if (e.message === '401 Unauthorized') {
                     localStorage.removeItem("token");
-                    setIsAuthenticated(false);
+                    // setIsAuthenticated(false);
                 } else {
                     setError(e);
+                    console.error("Critical error fetching data:", e);
                 }
 
             } finally {
@@ -61,8 +67,7 @@ export const useTaskData = () => {
         tasks,
         categories,
         isLoading,
-        error,
-        isAuthenticated
+        error
     };
 
 };

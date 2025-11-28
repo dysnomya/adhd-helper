@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTaskData } from "../modules/tasks/hooks/UseTaskData";
 import TodoSidebar from "../modules/tasks/components/TodoSidebar";
 import TaskListContainer from "../modules/tasks/components/layout/TaskListContainer";
@@ -9,40 +9,49 @@ import { getTaskDateName, parseEuropeanDate } from "../modules/tasks/TasksHelper
 
 const Todo = () => {
 
+    // Loading tasks data from database
     const {
         tasks,
         categories,
         isLoading,
-        error,
-        isAuthenticated
+        error
     } = useTaskData();
 
+    // Debugging - Do usunięcia później
+    useEffect(() => {
+        if (tasks.length > 0) {
+            console.log("Zadania:", tasks);
+            
+            console.log("Kategorie:", categories)
+        }
+    }, [tasks, categories]);
+    // --------
 
     const [activeFilter, setActiveFilter] = useState([]);
 
+    // Filtering tasks by chosen categories
     const filteredTasks = useMemo(() => {
+        // No chosen categories --> tasks without category
         if (activeFilter.length === 0) {
             return tasks.filter(task =>
                 task.categoryId === null
             )
         }
 
+        // "Checked" categories --> tasks that are in categories set in activeFilter
         return tasks.filter(task =>
             activeFilter.includes(task.categoryId)
         )
 
     }, [tasks, activeFilter]);
 
-
+    // Categorizing tasks by their dates
     const prepareDatedTasks = (filteredTasks) => {
 
         const dated = filteredTasks.reduce((acc, task) => {
 
-            // Nazwanie sekcji
             const dateName = getTaskDateName(task.day);
 
-            // Jeśli nazwa sekcji (klucz) nie istnieje jeszcze w akumulatorze acc
-            // tworzymy i ustawiamy go i wartośc ustawiamy na pusta tablicę
             if (!acc[dateName]) {
                 acc[dateName] = [];
             }
@@ -50,7 +59,7 @@ const Todo = () => {
             acc[dateName].push(task);
 
             return acc;
-        }, {}); // początkowy stan acc to pusty obiekt {}
+        }, {});
 
 
         const order = ["Dzisiaj", "Jutro"];
