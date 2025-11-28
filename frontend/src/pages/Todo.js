@@ -31,17 +31,19 @@ const Todo = () => {
 
     // Filtering tasks by chosen categories
     const filteredTasks = useMemo(() => {
-        // No chosen categories --> tasks without category
+        // No chosen categories --> all tasks
         if (activeFilter.length === 0) {
-            return tasks.filter(task =>
-                task.categoryId === null
-            )
+            return tasks;
         }
 
         // "Checked" categories --> tasks that are in categories set in activeFilter
-        return tasks.filter(task =>
-            activeFilter.includes(task.categoryId)
-        )
+        return tasks.filter(task => {
+            if (task.categoryId === null) {
+                return activeFilter.includes('NULL_CATEGORY');
+            }
+        
+            return activeFilter.includes(task.categoryId)
+        });
 
     }, [tasks, activeFilter]);
 

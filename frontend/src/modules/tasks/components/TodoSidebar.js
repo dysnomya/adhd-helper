@@ -3,6 +3,14 @@ import Category from './ui/Category';
 
 const TodoSidebar = ({ categories, setActiveFilter, activeFilter }) => {
 
+    const noCategoryId = "NULL_CATEGORY";
+
+    const noCategoryOption = {
+        id: noCategoryId,
+        name: "Bez kategorii",
+        color: "#dfdfdf"
+    }
+
     const handleCategoryClick = (categoryId) => {
 
         setActiveFilter(prevFilters => {
@@ -27,6 +35,12 @@ const TodoSidebar = ({ categories, setActiveFilter, activeFilter }) => {
                     isActive={activeFilter.includes(category.id)}
                 />
             ))}
+
+            <Category
+                category={noCategoryOption}
+                onClick={() => handleCategoryClick(noCategoryId)}
+                isActive={activeFilter.includes(noCategoryId)}
+            />
 
         </nav>
 

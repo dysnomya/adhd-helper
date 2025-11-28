@@ -11,7 +11,7 @@ const Task = ({ task }) => {
 
     // const isMainTask = task.parentId === null || task.parentId === undefined;
 
-    const categoryColor = task.category ? task.category.color : "#6bff9aff" ;
+    const categoryColor = task.category ? task.category.color : "#dfdfdf" ;
 
     const hasChildren = subtasks.length > 0;
 
