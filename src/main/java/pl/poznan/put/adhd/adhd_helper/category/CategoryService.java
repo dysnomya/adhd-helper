@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import pl.poznan.put.adhd.adhd_helper.common.UserSecurityService;
+import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
 
 import java.util.List;
 
@@ -20,5 +21,13 @@ public class CategoryService {
         List<Category> allCategories =
                 categoryRepository.findAllByAdhdUser(userSecurityService.getUser());
         return categoryMapper.toDto(allCategories);
+    }
+
+    public CategoryDto addCategory(CategoryDto categoryDto) {
+        AdhdUser currentUser = userSecurityService.getUser();
+        Category category = categoryMapper.toEntity(categoryDto);
+        category.setAdhdUser(currentUser);
+        Category savedCategory = categoryRepository.save(category);
+        return categoryMapper.toDto(savedCategory);
     }
 }

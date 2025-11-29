@@ -35,6 +35,23 @@ export const fetchAllCategories = async () => {
 
 };
 
+// POST
+export const createCategory = async (categoryData) => {
+
+    const response = await fetch(CATEGORIES_URL, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify(categoryData)
+    });
+
+    if (response.status === 401) throw new Error('401 Unauthorized');
+    if (!response.ok) throw new Error('Błąd tworzenia kategorii.');
+
+    return response.json();
+
+};
+
+
 // export const fetchSubtasks = async (parentId) => {
 //     const response = await fetch(`/api/tasks/${parentId}/subtasks`, {
 //         headers: getHeaders(),

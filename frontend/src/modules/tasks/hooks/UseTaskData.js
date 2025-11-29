@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useCallback} from "react";
 import {fetchAllCategories, fetchAllTasks} from "../api/TaskApi";
 
 export const useTaskData = () => {
@@ -63,11 +63,17 @@ export const useTaskData = () => {
     }, []);
 
 
+    const addCategoryLocal = (newCategory) => {
+        setCategories(prevCategories => [...prevCategories, newCategory]);
+    };
+
+
     return {
         tasks,
         categories,
         isLoading,
-        error
+        error,
+        addCategoryLocal
     };
 
 };

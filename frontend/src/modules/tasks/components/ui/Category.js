@@ -2,13 +2,18 @@
 const Category =({ category, onClick, isActive }) => {
 
     const activeStyle = isActive 
-        ? { border: '5px solid black', borderRadius: '5px', padding: '10px' } 
-        : { border: '2px solid transparent', padding: '10px' };
+        ? { border: '5px solid black', borderRadius: '5px'} 
+        : { border: '2px solid transparent'};
 
     const combinedStyle = {
         background: category.color,
         cursor: 'pointer',
-        margin: "5px",
+        margin: "10px",
+        marginRight: "0px",
+        marginLeft: '15px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         ...activeStyle
     };
 

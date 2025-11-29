@@ -1,7 +1,7 @@
 import React from 'react';
 import Category from './ui/Category';
 
-const TodoSidebar = ({ categories, setActiveFilter, activeFilter }) => {
+const TodoSidebar = ({ categories, setActiveFilter, activeFilter, onAddCategoryClick }) => {
 
     const noCategoryId = "NULL_CATEGORY";
 
@@ -27,6 +27,11 @@ const TodoSidebar = ({ categories, setActiveFilter, activeFilter }) => {
 
         <nav style={{width: '150px', background: 'lightblue'}}>
 
+            <p style={{
+                textAlign: 'center',
+                margin: '10px'
+            }}>Twoje kategorie</p>
+
             {categories.map(category => (
                 <Category
                     key={category.id}
@@ -41,6 +46,23 @@ const TodoSidebar = ({ categories, setActiveFilter, activeFilter }) => {
                 onClick={() => handleCategoryClick(noCategoryId)}
                 isActive={activeFilter.includes(noCategoryId)}
             />
+
+            <div 
+                onClick={onAddCategoryClick}
+                style={{
+                    padding: '15px', 
+                    background: '#4CAF50', 
+                    color: 'white', 
+                    cursor: 'pointer', 
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    margin: "10px",
+                    marginRight: "0px",
+                    marginLeft: '15px',
+                }}
+            >
+                + Dodaj
+            </div>
 
         </nav>
 

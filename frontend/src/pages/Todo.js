@@ -7,6 +7,9 @@ import TaskListContainer from "../modules/tasks/components/layout/TaskListContai
 import { useMemo } from 'react';
 import { getTaskDateName, parseEuropeanDate } from "../modules/tasks/TasksHelpers"
 
+import AddCategoryModal from "../modules/tasks/components/ui/AddCategoryModal";
+import { createCategory } from "../modules/tasks/api/TaskApi";
+
 const Todo = () => {
 
     // Loading tasks data from database
@@ -14,7 +17,8 @@ const Todo = () => {
         tasks,
         categories,
         isLoading,
-        error
+        error,
+        addCategoryLocal
     } = useTaskData();
 
     // Debugging - Do usunięcia później
@@ -28,6 +32,24 @@ const Todo = () => {
     // --------
 
     const [activeFilter, setActiveFilter] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleConfirmAddCategory = async (name, color) => {
+
+        try {
+            // API
+            const newCategoryFromBackend = await createCategory({ name, color });
+            addCategoryLocal(newCategoryFromBackend);
+
+            //TEMP
+            alert("DOdano grupę");
+
+        } catch (e) {
+            console.error(e);
+        }
+
+        setIsModalOpen(false);
+    }
 
     // Filtering tasks by chosen categories
     const filteredTasks = useMemo(() => {
@@ -104,7 +126,9 @@ const Todo = () => {
     if (isLoading) return <div>Ładowanie danych ToDo...</div>;
     if (error) return <div>Błąd ładowania danych: {error.message}</div>;
 
+    // const handleConfirmAddCategory = async (name, color) => {
 
+    // }
 
     return (
         <div style={{ display: 'flex', height: '100vh', width: '100%' }}>
@@ -113,6 +137,7 @@ const Todo = () => {
                 categories={categories}
                 setActiveFilter={setActiveFilter}
                 activeFilter={activeFilter}
+                onAddCategoryClick={() => setIsModalOpen(true)}
             />
 
             <div className="todo-main-content-area">
@@ -122,6 +147,12 @@ const Todo = () => {
                 <TaskListContainer datedTasks={datedTasks}></TaskListContainer>
 
             </div>
+
+            <AddCategoryModal 
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onConfirm={handleConfirmAddCategory}
+            />
 
         </div>
     );
