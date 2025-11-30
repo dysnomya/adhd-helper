@@ -33,7 +33,7 @@ export const parseEuropeanDate = (dateString) => {
         return new Date(NaN); 
     }
 
-    const parts = dateString.split(/[.\/]/); 
+    const parts = dateString.split(new RegExp('[./]')); 
 
     if (parts.length === 3) {
         const day = parseInt(parts[0], 10);
