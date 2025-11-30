@@ -104,6 +104,7 @@ $sidebar-icon-size: 40px;
   color: var(--color-text);
   width: $sidebar-collapsed-width;
   transition: width 0.25s ease;
+  z-index: 100;
 }
 
 .desktop-sidebar:hover,
