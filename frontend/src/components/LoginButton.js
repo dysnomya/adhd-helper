@@ -14,7 +14,15 @@ function LoginButton() {
     console.log("Login failed");
   };
 
-  return <GoogleLogin onSuccess={handleSuccess} onError={handleError} />;
+  return (
+    <GoogleLogin
+      onSuccess={handleSuccess}
+      onError={handleError}
+      text="signin_with"
+      shape="circle"
+      theme="filled_black"
+    />
+  );
 }
 
 export default LoginButton;

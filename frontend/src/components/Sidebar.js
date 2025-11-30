@@ -1,21 +1,41 @@
 import SidebarItem from "./SidebarItem";
-import "bootstrap/dist/css/bootstrap.min.css";
 import LogoutButton from "./LogoutButton";
+import { ReactComponent as IconPlaceholder } from "../assets/home-logo.svg";
+import { ReactComponent as CalendarPlaceholder } from "../assets/calendar-logo-placeholder.svg";
+import { ReactComponent as TodoPlaceholder } from "../assets/todo-logo-placeholder.svg";
 
+import { ReactComponent as Logo } from "../assets/planny-logo.svg";
 
-export default function Sidebar() {
-    return (
-        <nav className="nav flex-column bg-light p-4 vh-100 overflow-y-auto">
-            <h2 className="display-6">
-                ADHD Helper
-            </h2>
-            <ul className="nav flex-column">
-                <SidebarItem pageUrl={"/dashboard"} pageLabel={"Dashboard"}/>
-                <SidebarItem pageUrl={"/todo"} pageLabel={"Todo"}/>
-                <SidebarItem pageUrl={"/calendar"} pageLabel={"Kalendarz"}/>
-                <SidebarItem pageUrl={"/user"} pageLabel={"User"}/>
-            </ul>
-            <LogoutButton/>
-        </nav>
-    );
+import "../styles/sidebar.scss";
+
+export default function Sidebar({ collapsed = false, onItemClick }) {
+  const items = [
+    { pageUrl: "/dashboard", pageLabel: "Dashboard", Icon: IconPlaceholder },
+    { pageUrl: "/todo", pageLabel: "Todo", Icon: TodoPlaceholder },
+    { pageUrl: "/calendar", pageLabel: "Kalendarz", Icon: CalendarPlaceholder },
+    { pageUrl: "/user", pageLabel: "User", Icon: IconPlaceholder },
+  ];
+
+  return (
+    <nav className={`nav-bar ${collapsed ? "collapsed" : ""}`}>
+      <ul>
+        <li className="nav-item sidebar-title-item">
+          <Logo className="sidebar-logo" />
+          <span className="sidebar-text">ADHD Helper</span>
+        </li>
+
+        {items.map((item) => (
+          <li key={item.pageUrl}>
+            <SidebarItem
+              pageUrl={item.pageUrl}
+              pageLabel={item.pageLabel}
+              Icon={item.Icon}
+              onClick={onItemClick}
+            />
+          </li>
+        ))}
+      </ul>
+      <LogoutButton />
+    </nav>
+  );
 }
