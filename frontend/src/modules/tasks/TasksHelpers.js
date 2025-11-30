@@ -33,7 +33,7 @@ export const parseEuropeanDate = (dateString) => {
         return new Date(NaN); 
     }
 
-    const parts = dateString.split(/[\.\/]/); 
+    const parts = dateString.split(/[.\/]/); 
 
     if (parts.length === 3) {
         const day = parseInt(parts[0], 10);
@@ -45,3 +45,17 @@ export const parseEuropeanDate = (dateString) => {
     
     return new Date(NaN);
 };
+
+export const timeDisplay = (timeInMinutes) => {
+    if (timeInMinutes < 60) {
+        const timeString = timeInMinutes + " min";
+        return timeString;
+    } 
+
+    var hours = parseInt(timeInMinutes / 60);
+    var minutes = timeInMinutes - (hours * 60);
+
+    const timeString = hours + " godz " + minutes + " min";
+    return timeString;
+
+}
