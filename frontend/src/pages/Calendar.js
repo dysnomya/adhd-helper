@@ -36,7 +36,6 @@ export default function Calendar() {
     };
 
     const selectDate = (day) => {
-        // setSelectedDate(`${year}-${month + 1}-${day}`);
         setSelectedDate(new Date(year, month, day));
         console.log(`${year}-${month + 1}-${day}`);
     }
