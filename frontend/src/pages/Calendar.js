@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../styles/calendar.scss";
 import CalendarCell from "../components/CalendarCell";
 import CalendarSidePanel from "../components/CalendarSidePanel.js";
@@ -37,7 +37,6 @@ export default function Calendar() {
 
     const selectDate = (day) => {
         setSelectedDate(new Date(year, month, day));
-        console.log(`${year}-${month + 1}-${day}`);
     }
 
     return (
@@ -56,7 +55,7 @@ export default function Calendar() {
                     </div>
 
                     {cells.map((day, index) => (
-                        <CalendarCell index={index} day={day} onClick={() => { day && setOpenPanel(true); day && selectDate(day) }} />
+                        <CalendarCell key={index} day={day} onClick={() => { day && setOpenPanel(true); day && selectDate(day) }} />
                     ))}
                 </div>
             </div>
