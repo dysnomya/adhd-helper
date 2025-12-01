@@ -1,7 +1,7 @@
 .dark {
   --color-bg: #141414;
   --color-card-bg: #282828;
-  --color-sidebar-bg: #373737;
+  --color-sidebar-bg: #3f3f3f;
   --color-sidebar-selection-bg: #2c2c2c;
 
   --color-text: #e0e0e0;
@@ -13,6 +13,12 @@
 
   --content-bg: #232323;
 
+  --primary-container-bg: #373737;
+  --secondary-container-bg: #4c4c4c;
+  --secondary-container-highlight: #616161;
+
+  --color-calendar-detail: #a8a8a8;
+
   background-color: var(--content-bg);
   color: var(--color-text);
 }
@@ -21,7 +27,7 @@
   --color-bg: #ebebeb;
   --color-card-bg: #ffffff;
 
-  --color-sidebar-bg: #ffffff;
+  --color-sidebar-bg: #f1f1f1;
   --color-sidebar-selection-bg: #f0eeee;
 
   --color-text: #141414;
@@ -32,6 +38,12 @@
   --color-icon: #141414;
 
   --content-bg: #d9d9d9;
+
+  --primary-container-bg: #eaeaea;
+  --secondary-container-bg: #ffffff;
+  --secondary-container-highlight: #f3f3f3;
+
+  --color-calendar-detail: #565656;
 
   background-color: var(--content-bg);
   color: var(--color-text);
