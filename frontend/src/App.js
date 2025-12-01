@@ -32,7 +32,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/todo" element={<Todo />} />
               <Route path="/calendar" element={<Calendar />} />
-              <Route path="/user" element={<User />} />
+              <Route path="/adhdUser" element={<User />} />
             </Route>
           </Route>
         </Routes>
@@ -40,4 +40,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
