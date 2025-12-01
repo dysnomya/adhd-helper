@@ -5,13 +5,24 @@ $sidebar-open-width: 356px;
 $sidebar-element-size: 88px;
 $sidebar-icon-size: 40px;
 
+.main-content {
+    padding: 5vh;
+    height: 100dvh;
+}
+
 /* ------------------------- */
 /* GLOBAL MAIN CONTENT OFFSET */
 /* ------------------------- */
 @media (min-width: 768px) {
-  main {
-    margin-left: calc($sidebar-collapsed-width / 2);
-    // why /2 you ask? i wonder why myself XD
+  .main-content {
+    padding-left: calc(5vh + $sidebar-collapsed-width);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 3vh;
+    padding-top: calc(3vh + $mobile-topbar-height);
   }
 }
 
@@ -104,6 +115,7 @@ $sidebar-icon-size: 40px;
   color: var(--color-text);
   width: $sidebar-collapsed-width;
   transition: width 0.25s ease;
+  z-index: 100;
 }
 
 .desktop-sidebar:hover {

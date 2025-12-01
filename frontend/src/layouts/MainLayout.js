@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { Col, Container, Row } from "react-bootstrap";
-
 import { ReactComponent as Logo } from "../assets/logo.svg";
 import "../styles/sidebar.scss";
 
@@ -47,8 +46,8 @@ export default function LoginLayout() {
         </div>
 
         {/* MAIN CONTENT */}
-        <Col as="main" className="content p-0">
-          <main className="p-4 mt-md-0 mt-5">
+        <Col className="content p-0">
+          <main className="main-content">
             <Outlet />
           </main>
         </Col>
