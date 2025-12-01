@@ -38,12 +38,20 @@ $logo-width: calc($logo-max-width / $card-max-width * $card-width);
   justify-content: center;
   border-radius: 6%;
 
-  background-image: url("../assets/login-border.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: calc(100% - $card-margin) calc(100% - $card-margin);
+  // background-image: url("../assets/login-border.svg");
+  // background-repeat: no-repeat;
+  // background-position: center;
+  // background-size: calc(100% - $card-margin) calc(100% - $card-margin);
 
   box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.login-border {
+  position: absolute;
+  width: calc(100% - $card-margin);
+  height: calc(100% - $card-margin);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .login-logo {

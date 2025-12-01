@@ -118,8 +118,7 @@ $sidebar-icon-size: 40px;
   z-index: 100;
 }
 
-.desktop-sidebar:hover,
-.desktop-sidebar:focus-within {
+.desktop-sidebar:hover {
   width: $sidebar-open-width;
 }
 
