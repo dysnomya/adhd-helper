@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import User from "./pages/User";
 import Login from "./pages/Login";
@@ -11,7 +11,13 @@ import Calendar from "./pages/Calendar";
 import "./styles/_themes.scss";
 
 function App() {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "dark";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   return (
     <div className={theme} style={{ minHeight: '100vh', overflow: 'auto' }}>
