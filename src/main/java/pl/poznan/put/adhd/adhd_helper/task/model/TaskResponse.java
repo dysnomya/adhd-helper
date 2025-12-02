@@ -1,4 +1,4 @@
-package pl.poznan.put.adhd.adhd_helper.task;
+package pl.poznan.put.adhd.adhd_helper.task.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
