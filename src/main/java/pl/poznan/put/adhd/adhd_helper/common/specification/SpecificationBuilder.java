@@ -27,7 +27,7 @@ public class SpecificationBuilder<T> {
     }
 
     public SpecificationBuilder<T> or(Specification<T> specification) {
-        this.specification = this.specification.and(specification);
+        this.specification = this.specification.or(specification);
         return this;
     }
 
@@ -41,8 +41,8 @@ public class SpecificationBuilder<T> {
         return this;
     }
 
-    public <V> SpecificationBuilder<T> in(SingularAttribute<T, V> attribute, Iterable<V> values) {
-        if (values == null) {
+    public <V> SpecificationBuilder<T> in(SingularAttribute<T, V> attribute, Collection<V> values) {
+        if (values == null || values.isEmpty()) {
             return this;
         }
 

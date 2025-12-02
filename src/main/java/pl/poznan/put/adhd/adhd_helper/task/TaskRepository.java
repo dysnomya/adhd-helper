@@ -15,5 +15,6 @@ interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExec
 
     @EntityGraph(attributePaths = {"category", "subtasks"})
     @NonNull
+    @Override
     List<Task> findAll(Specification<Task> specification, @NonNull Sort sort);
 }

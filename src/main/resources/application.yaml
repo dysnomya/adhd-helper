@@ -9,7 +9,6 @@ spring:
     locations: classpath:db/migration
   jpa:
     show-sql: true
-  
   security:
     oauth2:
       resourceserver:

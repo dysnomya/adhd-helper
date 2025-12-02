@@ -187,7 +187,6 @@
                             <artifactId>hibernate-jpamodelgen</artifactId>
                             <version>7.1.11.Final</version>
                         </dependency>
-
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
