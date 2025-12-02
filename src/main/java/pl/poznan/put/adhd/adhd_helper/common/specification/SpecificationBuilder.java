@@ -88,6 +88,12 @@ public class SpecificationBuilder<T> {
         return this;
     }
 
+    public SpecificationBuilder<T> isNull(SingularAttribute<? super T, ?> attribute) {
+        Specification<T> spec = (root, query, cb) -> cb.isNull(root.get(attribute));
+        this.specification = this.specification.and(spec);
+        return this;
+    }
+
     public Specification<T> build() {
         return this.specification;
     }

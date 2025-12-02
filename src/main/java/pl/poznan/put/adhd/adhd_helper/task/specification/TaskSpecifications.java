@@ -18,6 +18,7 @@ public class TaskSpecifications {
 
         return SpecificationBuilder.<Task>empty()
                 .eq(Task_.createdBy, adhdUser)
+                .isNull(Task_.parent)
                 .eq(Task_.day, taskFilter.day())
                 .in(Task_.category, Category_.id, taskFilter.category())
                 .before(Task_.day, taskFilter.dayTo())
