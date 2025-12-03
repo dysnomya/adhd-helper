@@ -132,7 +132,6 @@
             <optional>true</optional>
         </dependency>
 
-
         <!--        tests-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -181,6 +180,12 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok-mapstruct-binding</artifactId>
                             <version>0.2.0</version>
+                        </path>
+                        <!--        jpa metamodel -->
+                        <path>
+                            <groupId>org.hibernate</groupId>
+                            <artifactId>hibernate-jpamodelgen</artifactId>
+                            <version>7.1.11.Final</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
