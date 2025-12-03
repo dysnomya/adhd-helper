@@ -43,9 +43,25 @@ export default function Calendar() {
         <div className="calendar-page">
             <div className={`calendar overlay ${openPanel ? "open" : ""}`} onClick={() => openPanel && setOpenPanel(false)}>
                 <div className="calendar-header">
-                    <Arrow className="arrow-icon arrow-icon-left" onClick={goToPreviousMonth} />
+                    <Arrow
+                        className="arrow-icon arrow-icon-left"
+                        onClick={goToPreviousMonth}
+                        tabIndex={!openPanel ? 0 : -1}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                goToPreviousMonth();
+                            }
+                        }} />
                     <h2>{capitalizeFirstLetter(currentDate.toLocaleString("default", { month: "long" }))} {year}</h2>
-                    <Arrow className="arrow-icon arrow-icon-right" onClick={goToNextMonth} />
+                    <Arrow
+                        className="arrow-icon arrow-icon-right"
+                        onClick={goToNextMonth}
+                        tabIndex={!openPanel ? 0 : -1}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                goToNextMonth();
+                            }
+                        }} />
                 </div>
                 <div className="calendar-container">
                     <div className="calendar-days">
@@ -55,7 +71,12 @@ export default function Calendar() {
                     </div>
 
                     {cells.map((day, index) => (
-                        <CalendarCell key={index} day={day} onClick={() => { day && setOpenPanel(true); day && selectDate(day) }} />
+                        <CalendarCell
+                            key={index}
+                            day={day}
+                            openPanel={openPanel}
+                            onClick={() => { day && setOpenPanel(true); day && selectDate(day) }}
+                        />
                     ))}
                 </div>
             </div>
