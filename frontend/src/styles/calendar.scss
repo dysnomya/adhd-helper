@@ -81,6 +81,10 @@ $calendar-side-panel-content-radius: clamp(1rem, 4vmin, 5rem);
     background-color: var(--color-accent);
 }
 
+.calendar-cell:focus {
+    outline: 3px solid var(--color-accent);
+}
+
 .calendar-cell-number {
     background-color: var(--color-calendar-detail);
     color: var(--color-on-accent);
@@ -113,6 +117,10 @@ $calendar-side-panel-content-radius: clamp(1rem, 4vmin, 5rem);
     cursor: pointer;
     user-select: none;
     -webkit-user-drag: none;
+}
+
+.arrow-icon:focus {
+    outline: 1px solid currentColor;
 }
 
 .arrow-icon-right {
