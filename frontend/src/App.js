@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import LoginLayout from "./layouts/LoginLayout";
 import MainLayout from "./layouts/MainLayout";
 import ProtectedRoute from "./wrappers/ProtectedRoute";
+import LoginRoute from "./wrappers/LoginRoute";
 import Dashboard from "./pages/Dashboard";
 import Todo from "./pages/Todo";
 import Calendar from "./pages/Calendar";
@@ -24,8 +25,10 @@ function App() {
 
       <Router>
         <Routes>
-          <Route element={<LoginLayout />}>
-            <Route path="/" element={<Login />} />
+          <Route element={<LoginRoute />}>
+            <Route element={<LoginLayout />}>
+              <Route path="/" element={<Login />} />
+            </Route>
           </Route>
           <Route element={<ProtectedRoute />}>
             <Route element={<MainLayout />}>
