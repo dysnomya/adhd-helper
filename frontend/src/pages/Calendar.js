@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../styles/calendar.scss";
-import CalendarCell from "../components/CalendarCell";
-import CalendarSidePanel from "../components/CalendarSidePanel.js";
+import CalendarCell from "../components/Calendar/CalendarCell";
+import CalendarSidePanel from "../components/Calendar/CalendarSidePanel.js";
 import capitalizeFirstLetter from "../functions/TextFunctions.js";
 import { ReactComponent as Arrow } from "../assets/arrow-right.svg";
 

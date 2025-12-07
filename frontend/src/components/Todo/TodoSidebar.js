@@ -1,5 +1,5 @@
 import React from 'react';
-import Category from './ui/Category';
+import Category from './Category';
 
 const TodoSidebar = ({ categories, setActiveFilter, activeFilter, onAddCategoryClick }) => {
 

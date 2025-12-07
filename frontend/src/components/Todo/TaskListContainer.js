@@ -1,7 +1,7 @@
 
 import React from "react";
 
-import Task from "../ui/Task"
+import Task from "./Task"
 
 const TaskListContainer = ({ datedTasks }) => {
 
