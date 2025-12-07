@@ -1,4 +1,4 @@
-import { ReactComponent as Arrow } from "../assets/arrow-right.svg";
+import { ReactComponent as Arrow } from "../../assets/arrow-right.svg";
 
 export default function CalendarSidePanel(props) {
     return (

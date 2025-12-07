@@ -1,14 +1,14 @@
 
 import { useState, useEffect } from "react";
-import { useTaskData } from "../modules/tasks/hooks/UseTaskData";
-import TodoSidebar from "../modules/tasks/components/TodoSidebar";
-import TaskListContainer from "../modules/tasks/components/layout/TaskListContainer";
+import { useTaskData } from "../hooks/UseTaskData";
+import TodoSidebar from "../components/Todo/TodoSidebar";
+import TaskListContainer from "../components/Todo/TaskListContainer";
 
 import { useMemo } from 'react';
-import { getTaskDateName, parseEuropeanDate } from "../modules/tasks/TasksHelpers"
+import { getTaskDateName, parseEuropeanDate } from "../functions/TasksHelpers"
 
-import AddCategoryModal from "../modules/tasks/components/ui/AddCategoryModal";
-import { createCategory } from "../modules/tasks/api/TaskApi";
+import AddCategoryModal from "../components/Todo/AddCategoryModal";
+import { createCategory } from "../api/TaskApi";
 
 const Todo = () => {
 
