@@ -1,12 +1,9 @@
-
-import { useState, useEffect } from "react";
+import "../styles/todo.scss";
+import { useState, useEffect, useMemo } from "react";
 import { useTaskData } from "../hooks/UseTaskData";
 import TodoSidebar from "../components/Todo/TodoSidebar";
 import TaskListContainer from "../components/Todo/TaskListContainer";
-
-import { useMemo } from 'react';
 import { getTaskDateName, parseEuropeanDate } from "../functions/TasksHelpers"
-
 import AddCategoryModal from "../components/Todo/AddCategoryModal";
 import { createCategory } from "../api/TaskApi";
 
@@ -131,7 +128,7 @@ const Todo = () => {
     // }
 
     return (
-        <div style={{ display: 'flex', height: '100vh', width: '100%' }}>
+        <div className="todo-main">
 
             <TodoSidebar
                 categories={categories}
@@ -141,8 +138,6 @@ const Todo = () => {
             />
 
             <div className="todo-main-content-area">
-
-                <h1 style={{margin: "20px"}}>Zadania</h1>
 
                 <TaskListContainer datedTasks={datedTasks}></TaskListContainer>
 

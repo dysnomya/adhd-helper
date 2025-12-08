@@ -25,46 +25,36 @@ const TodoSidebar = ({ categories, setActiveFilter, activeFilter, onAddCategoryC
 
     return (
 
-        <nav style={{width: '150px', background: 'lightblue'}}>
+        <div className='todo-sidebar'>
+            <nav className='todo-nav'>
 
-            <p style={{
-                textAlign: 'center',
-                margin: '10px'
-            }}>Twoje kategorie</p>
+                <p className='todo-sidebar-text-kategorie'>Kategorie</p>
 
-            {categories.map(category => (
+                {categories.map(category => (
+                    <Category
+                        key={category.id}
+                        category={category}
+                        onClick={() => handleCategoryClick(category.id)}
+                        isActive={activeFilter.includes(category.id)}
+                    />
+                ))}
+
                 <Category
-                    key={category.id}
-                    category={category}
-                    onClick={() => handleCategoryClick(category.id)}
-                    isActive={activeFilter.includes(category.id)}
+                    category={noCategoryOption}
+                    onClick={() => handleCategoryClick(noCategoryId)}
+                    isActive={activeFilter.includes(noCategoryId)}
                 />
-            ))}
 
-            <Category
-                category={noCategoryOption}
-                onClick={() => handleCategoryClick(noCategoryId)}
-                isActive={activeFilter.includes(noCategoryId)}
-            />
+                <div 
+                    className='todo-sidebar-add-button'
+                    onClick={onAddCategoryClick}
+                >
+                    <p>+</p>
+                </div>
 
-            <div 
-                onClick={onAddCategoryClick}
-                style={{
-                    padding: '15px', 
-                    background: '#4CAF50', 
-                    color: 'white', 
-                    cursor: 'pointer', 
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                    margin: "10px",
-                    marginRight: "0px",
-                    marginLeft: '15px',
-                }}
-            >
-                + Dodaj
-            </div>
-
-        </nav>
+            </nav>
+        </div>
+        
 
     );
 
