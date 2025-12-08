@@ -1,5 +1,7 @@
 $calendar-border-radius: clamp(1rem, 3vmin, 5rem);
+$calendar-inner-border-radius: clamp(1rem, 2.6vmin, 5rem);
 $calendar-cell-border-radius: clamp(1rem, 2vmin, 5rem);
+$calendar-cell-inner-border-radius: clamp(1rem, 1.7vmin, 5rem);
 $calendar-side-panel-content-radius: clamp(1rem, 4vmin, 5rem);
 
 .calendar-page {
@@ -21,12 +23,11 @@ $calendar-side-panel-content-radius: clamp(1rem, 4vmin, 5rem);
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows:
-        0.3fr 
-        repeat(6, minmax(0, 1fr));
+        0.3fr repeat(6, minmax(0, 1fr));
     gap: 0.8em;
     padding: 1em;
     background-color: var(--primary-container-bg);
-    border-radius: $calendar-border-radius;
+    border-radius: $calendar-inner-border-radius;
     flex: 1;
     min-height: 0;
     box-shadow: inset 0 4px 12px -4px rgba(0, 0, 0, 0.5);
@@ -172,12 +173,12 @@ $calendar-side-panel-content-radius: clamp(1rem, 4vmin, 5rem);
 }
 
 .overlay {
-  opacity: 1;
-  transition: opacity .3s ease;
+    opacity: 1;
+    transition: opacity .3s ease;
 }
 
 .overlay.open {
-  opacity: 0.3;
+    opacity: 0.3;
 }
 
 .overlay.open * {
@@ -201,7 +202,7 @@ $calendar-side-panel-content-radius: clamp(1rem, 4vmin, 5rem);
 
 .side-panel-content {
     background: var(--color-sidebar-bg);
-    padding: 2em;
+    padding: 3em;
     border-top-left-radius: $calendar-side-panel-content-radius;
     border-top-right-radius: $calendar-side-panel-content-radius;
     flex: 1;
@@ -216,53 +217,94 @@ $calendar-side-panel-content-radius: clamp(1rem, 4vmin, 5rem);
 
 .edit-icon {
     justify-self: end;
+    height: 16px;
+    margin-right: 10px;
+    transform-origin: center;
+    transform: scale(2);
+    cursor: pointer;
+}
+
+.edit-icon:focus {
+    outline: 1px solid currentColor;
+}
+
+.side-panel-list {
+    height: 90%;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    margin-top: 30px;
+    padding: 20px 0;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 50px, black calc(100% - 50px), transparent 100%);
+}
+
+.side-panel-list::-webkit-scrollbar {
+    display: none;
+}
+
+.side-panel-task-item {
+    margin: 20px;
+    background-color: gray; // ugly ahh hardcoded color
+    border-radius: $calendar-cell-border-radius;
+}
+
+.side-panel-task-item-header {
+    height: 30px;
+    padding-inline: 2em;
+    margin-bottom: -1px;
+}
+
+.side-panel-task-item-content {
+    background-color: var(--secondary-container-bg);
+    padding: 20px;
+    border-radius: $calendar-cell-inner-border-radius;
 }
 
 @media (max-width: 768px) {
 
-  /* NO GAPS */
-  .calendar-container {
-      gap: 0.3em;
-      padding: 0.5em;
-      grid-template-rows:
-        auto
-        repeat(6, 1fr);
-  }
+    /* NO GAPS */
+    .calendar-container {
+        gap: 0.3em;
+        padding: 0.5em;
+        grid-template-rows:
+            auto repeat(6, 1fr);
+    }
 
-  .calendar-header * {
-      font-size: 28px;
-  }
+    .calendar-header * {
+        font-size: 28px;
+    }
 
-  .calendar-cell-number {
-      width: auto;
-      height: auto;
-      padding: 0.25em 0.5em;
-      font-size: 16px;
-      border-radius: 0.5rem;
-      margin: 0;
-  }
+    .calendar-cell-number {
+        width: auto;
+        height: auto;
+        padding: 0.25em 0.5em;
+        font-size: 16px;
+        border-radius: 0.5rem;
+        margin: 0;
+    }
 
-  .calendar-cell {
-      min-height: 0;
-      border-radius: 0.5rem;
-  }
+    .calendar-cell {
+        min-height: 0;
+        border-radius: 0.5rem;
+    }
 
-  /* NO SHADOWS */
-  .calendar-cell,
-  .calendar-days {
-      box-shadow: none;
-  }
+    /* NO SHADOWS */
+    .calendar-cell,
+    .calendar-days {
+        box-shadow: none;
+    }
 
-  .calendar-days h4 {
-      font-size: 16px;
-  }
+    .calendar-days h4 {
+        font-size: 16px;
+    }
 
-  .side-panel-header h1 {
-    font-size: 40px;
-    margin-bottom: -9px;
-  }
+    .side-panel-header h1 {
+        font-size: 40px;
+        margin-bottom: -9px;
+    }
 
-  .arrow-icon {
-    width: 20px;
-}
+    .arrow-icon {
+        width: 20px;
+    }
 }

@@ -1,4 +1,6 @@
 import { ReactComponent as Arrow } from "../../assets/arrow-right.svg";
+import { ReactComponent as EditButton } from "../../assets/edit-button.svg"
+import CalendarSidePanelItem from "./CalendarSidePanelItem";
 
 export default function CalendarSidePanel(props) {
     return (
@@ -20,7 +22,24 @@ export default function CalendarSidePanel(props) {
                             }
                         }} />
                     <h2>Twoje zadania</h2>
-                    <button className="edit-icon">Placeholder</button>
+                    <EditButton 
+                        className="edit-icon"
+                        onClick=""
+                        tabIndex={0}
+                    />
+                </div>
+                <div className="side-panel-list">
+                    {props.tasks?.map(task => {
+                        const color = task.category?.color || "#ccc"; // ugly ahh
+
+                        return (
+                            <CalendarSidePanelItem
+                                key={task.id}
+                                task={task}
+                                color={color}
+                            />
+                        );
+                    })}
                 </div>
             </div>
         </div>

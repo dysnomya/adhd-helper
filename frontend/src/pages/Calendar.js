@@ -39,6 +39,46 @@ export default function Calendar() {
         setSelectedDate(new Date(year, month, day));
     }
 
+    const [categories, setCategories] = useState([]);
+    const [tasks, setTasks] = useState([]);
+
+    const getHeaders = () => {
+        const token = localStorage.getItem("token");
+
+        return {
+            'Content-Type': 'application/json',
+            Authorization: token ? `Bearer ${token}` : '',
+        };
+    };
+
+    const loadTaskData = (day) => {
+        const filters = {
+            "day": new Intl.DateTimeFormat('en-CA').format(new Date(year, month, day))
+        };
+
+        async function loadData() {
+            // Build query parameters from filters object
+            const params = new URLSearchParams(filters);
+
+            // Fetch categories
+            const catRes = await fetch("/api/categories", {
+                headers: getHeaders()
+            });
+            const categoriesData = await catRes.json();
+
+            // Fetch tasks with filters
+            const taskRes = await fetch(`/api/tasks?${params}`, {
+                headers: getHeaders()
+            });
+            const tasksData = await taskRes.json();
+
+            setCategories(categoriesData);
+            setTasks(tasksData);
+        }
+
+        loadData();
+    }
+
     return (
         <div className="calendar-page">
             <div className={`calendar overlay ${openPanel ? "open" : ""}`} onClick={() => openPanel && setOpenPanel(false)}>
@@ -75,7 +115,7 @@ export default function Calendar() {
                             key={index}
                             day={day}
                             openPanel={openPanel}
-                            onClick={() => { day && setOpenPanel(true); day && selectDate(day) }}
+                            onClick={() => { day && setOpenPanel(true); day && selectDate(day); loadTaskData(day) }}
                         />
                     ))}
                 </div>
@@ -84,7 +124,10 @@ export default function Calendar() {
                 day: "numeric",
                 month: "long",
                 year: "numeric"
-            })} />
+            })}
+                tasks={tasks}
+                categories={categories}
+            />
         </div>
     );
 }
