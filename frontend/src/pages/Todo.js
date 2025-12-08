@@ -30,6 +30,7 @@ const Todo = () => {
 
     const [activeFilter, setActiveFilter] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const handleConfirmAddCategory = async (name, color) => {
 
@@ -129,13 +130,33 @@ const Todo = () => {
 
     return (
         <div className="todo-main">
+            <div className="mobile-header">
+                <button 
+                    className="menu-toggle-btn" 
+                    onClick={() => setIsSidebarOpen(true)}
+                >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                </button>
+            </div>
 
-            <TodoSidebar
-                categories={categories}
-                setActiveFilter={setActiveFilter}
-                activeFilter={activeFilter}
-                onAddCategoryClick={() => setIsModalOpen(true)}
-            />
+            <div className={`todo-sidebar-wrapper ${isSidebarOpen ? 'open' : ''}`}>
+                
+                <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>
+                
+                <div className="todo-sidebar-main">
+                    <TodoSidebar
+                        categories={categories}
+                        setActiveFilter={setActiveFilter}
+                        activeFilter={activeFilter}
+                        onAddCategoryClick={() => setIsModalOpen(true)}
+                    />
+
+                </div>
+            </div>
+
+            
 
             <div className="todo-main-content-area">
 
