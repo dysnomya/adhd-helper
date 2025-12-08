@@ -139,7 +139,10 @@ const Todo = () => {
 
             <div className="todo-main-content-area">
 
-                <TaskListContainer datedTasks={datedTasks}></TaskListContainer>
+                <div className="todo-tasks-list">
+                    <TaskListContainer datedTasks={datedTasks}></TaskListContainer>
+                </div>
+                
 
             </div>
 
