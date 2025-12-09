@@ -214,7 +214,13 @@ $sidebar-icon-size: 40px;
   background-color: var(--color-accent);
   color: var(--color-on-accent);
   border: none;
+  border-radius: 30px;
   width: $sidebar-element-size;
+
+  &:hover{
+    background-color: var(--color-accent-hover);
+    color: var(--color-on-accent);
+  }
 }
 
 .content {
