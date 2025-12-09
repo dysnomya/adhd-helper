@@ -21,7 +21,7 @@ $sidebar-icon-size: 40px;
 
 @media (max-width: 768px) {
   .main-content {
-    padding: 3vh;
+    padding: 0vh;
     padding-top: calc(3vh + $mobile-topbar-height);
   }
 }

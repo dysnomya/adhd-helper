@@ -1,6 +1,8 @@
 
 import React, { useState } from "react";
 import { timeDisplay } from "../../functions/TasksHelpers";
+import { ReactComponent as Clock} from "../../assets/clock_icon.svg";
+
 // import { fetchSubtasks } from "../../api/TaskApi"
 
 const Task = ({ task, isSubtask = false }) => {
@@ -10,7 +12,7 @@ const Task = ({ task, isSubtask = false }) => {
     const subtasks = task.subtasks || [];
     const hasChildren = subtasks.length > 0;
 
-    const categoryColor = task.category ? task.category.color : "#dfdfdf" ;
+    const categoryColor = task.category ? task.category.color : "#828282ff" ;
     const categoryName = task.category ? task.category.name : 'Ogólne';
 
     const handleToggleSubtask = async () => {
@@ -60,7 +62,7 @@ const Task = ({ task, isSubtask = false }) => {
                     <div className="task-right">
                         {task.timeNeeded && (
                             <span className="task-time">
-                                <span className="clock-icon">🕒</span> {timeDisplay(task.timeNeeded)}
+                                <span className="clock-icon"><Clock className="clock_icon"></Clock></span> {timeDisplay(task.timeNeeded)}
                             </span>
                         )}
                         

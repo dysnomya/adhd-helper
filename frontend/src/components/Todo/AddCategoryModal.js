@@ -44,13 +44,22 @@ const AddCategoryModal = ({ isOpen, onClose, onConfirm }) => {
 
                 <div className='add-category-input-group'>
                     <label>Kolor</label>
-                    <input 
+                    <div style={{display:'flex', flexDirection: 'row', justifyContent:'center', padding:'5px'}}>
+                        <div style={{height: '40px', width: '40px', cursor: 'pointer', borderRadius:'50px', backgroundColor:color}}>
+                        <input 
                         type="color" 
                         value={color}
                         onChange={(e) => setColor(e.target.value)}
-                        style={{height: '40px', width: '60px', border: 'none', cursor: 'pointer', marginRight: '10px'}}
-                    />
-                    <span>{color}</span>
+                        style={{height: '50px', width: '50px', cursor: 'pointer', borderRadius:'20px', border:'none', padding:'0px', opacity:'0'}}
+                        />
+                        </div>
+                        <div style={{paddingLeft:'10px', display:'flex', flexDirection: 'column', justifyContent:'center'}}>
+                        <span>{color}</span>
+                    </div>
+                    </div>
+                    
+                    
+                    
                 </div>
 
                 <div className="add-category-input-group">

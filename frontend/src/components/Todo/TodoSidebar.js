@@ -8,7 +8,7 @@ const TodoSidebar = ({ categories, setActiveFilter, activeFilter, onAddCategoryC
     const noCategoryOption = {
         id: noCategoryId,
         name: "Bez kategorii",
-        color: "#dfdfdf"
+        color: "#828282ff"
     }
 
     const handleCategoryClick = (categoryId) => {

@@ -6,6 +6,9 @@ import TaskListContainer from "../components/Todo/TaskListContainer";
 import { getTaskDateName, parseEuropeanDate } from "../functions/TasksHelpers"
 import AddCategoryModal from "../components/Todo/AddCategoryModal";
 import { createCategory } from "../api/TaskApi";
+import { ReactComponent as Dynks} from "../assets/dynks.svg";
+import { ReactComponent as Filter} from "../assets/Filter_icon.svg";
+
 
 const Todo = () => {
 
@@ -131,13 +134,11 @@ const Todo = () => {
     return (
         <div className="todo-main">
             <div className="mobile-header">
+                <Dynks></Dynks>
                 <button 
                     className="menu-toggle-btn" 
-                    onClick={() => setIsSidebarOpen(true)}
-                >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                    </svg>
+                    onClick={() => setIsSidebarOpen(true)}>
+                    <Filter></Filter>
                 </button>
             </div>
 

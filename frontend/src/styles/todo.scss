@@ -96,18 +96,21 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     .mobile-header {
         position: absolute;
         top: 20px;
-        left: 5px;
-        z-index: 900;
+        left: 0px;
+        z-index: 90;
         
         width: auto; 
         background: transparent;
         box-shadow: none;
         padding: 0;
-        display: flex;
+        display:block;
+        color:var(--color-sidebar-bg);
     }
 
     .menu-toggle-btn {
-        background-color: var(--color-card-bg);
+        position: absolute;
+        top: 16px;
+        background-color: transparent;
         color: var(--color-text);
         
         width: 50px;
@@ -121,9 +124,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
         
         border: none;
         cursor: pointer;
-        
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
-        
+                
         transition: transform 0.2s ease;
         
         &:active {
@@ -137,6 +138,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
         left: 0;
         width: 100%;
         height: 100%;
+        max-width: none;
         z-index: 1000; 
         pointer-events: none;
         
@@ -208,13 +210,14 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     color: var(--color-text);
     font-size: 25px;
     margin-top: 15px;
+    letter-spacing: -1px;
 }
 
 .todo-sidebar-category-item {
-    background-color: #D9D9D9;
-    color: #FFFFFF;
+    background-color: var(--color-category-unfocus);
+    color: var(--color-card-bg);
 
-    border-radius: 50px 5px 50px 5px;
+    border-radius: 50px 0px;
 
     height: 20px;
     margin: 15px 30px;
@@ -234,31 +237,33 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     p {
         margin: 0;
         pointer-events: none;
-        text-shadow: 1px 1px 5px #666666;
+        text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
     }
 
     &:hover {
-        background-color: #d1d1d1;
+        background-color: var(--color-category-hover);
     }
 
     &.active {
+        p{text-shadow: 1px 1px 5px rgba(0,0,0,0.0);}
+
         background-color: var(--cat-color);
-        color: white; 
+        color: var(--color-card-bg); 
         transform: scale(1.05); 
-        box-shadow: 0 4px 10px -5px black;
+        box-shadow: 0 0px 20px -5px var(--cat-color);
     }
 
 }
 
 
 .todo-sidebar-add-button {
-    background-color: #D9D9D9;
-    color: #FFFFFF;
+    background-color: var(--color-category-unfocus);
+    color: var(--color-card-bg);
 
-    border-radius: 50px 5px 50px 5px;
+    border-radius: 50px 0px;
 
     height: 20px;
-    margin: 15px 60px;
+    margin: 15px 30px;
     padding: 15px 0;
     display: flex;
     justify-content: center;
@@ -270,7 +275,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     user-select: none;
 
     transform: scale(1.05); 
-    box-shadow: 0 4px 10px -5px black;
+    box-shadow: $shadow;
 
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     border: 2px solid transparent;
@@ -278,11 +283,11 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     p {
         margin: 0;
         pointer-events: none;
-        text-shadow: 1px 1px 5px #757575;
+        text-shadow: 1px 1px 10px rgba(0,0,0,0.3);
     }
 
     &:hover {
-        background-color: #d1d1d1;
+        background-color: var(--color-category-hover);
     }
 }
 
@@ -319,6 +324,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     z-index: 1; 
 
     h2 {
+        letter-spacing: -0.5px;
         padding: 5px 30px;
         margin: 0;
         font-size: 1.4rem;
@@ -332,8 +338,6 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     padding: 16px 14px; 
 
     border-radius: 30px;
-
-    box-shadow: 0 10px 20px -5px $shadow-color, inset 0 2px 5px rgba(255,255,255,0.5); 
 
     display: flex;
     flex-direction: column;
@@ -369,11 +373,12 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
 }
 
 .task-category-header {
-    color: white;
+    letter-spacing: -0.5px;
+    color: var(--secondary-container-bg);
     font-weight: 600;
     font-size: 24px;
     padding: 0px 15px; 
-    margin-top: -5px;
+    margin-top: -6px;
     text-transform: capitalize;
     
 }
@@ -488,12 +493,14 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     width: 90%;
     max-width: 350px;
     padding: 25px;
+    padding-bottom: 15px;
     border-radius: 25px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     font-family: 'Lexend', sans-serif; 
     animation: slideUp 0.3s ease-out;
 
     h3 {
+        font-size:20px;
         text-align: center;
         margin-top: 0;
         margin-bottom: 20px;
@@ -509,7 +516,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
         display: block;
         margin-bottom: 8px;
         font-weight: 600;
-        color: var(--color-text);
+        color: var(--color-text-placeholder);
         font-size: 0.9rem;
     }
 
@@ -521,10 +528,10 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
         border-radius: 12px;
         font-size: 1rem;
         outline: none;
-        color: #333;
+        color: var(--color-text);
 
         &::placeholder {
-            color: #888;
+            color: var(--color-text-placeholder);
         }
         
         &:focus {
@@ -534,13 +541,13 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
 }
 
 .add-category-preview-badge {
-    color: white;
+    color: var(--color-card-bg);
     font-weight: bold;
     text-align: center;
     padding: 12px;
     font-size: 1.1rem;
     
-    border-radius: 50px 5px 50px 5px; 
+    border-radius: 50px 00px; 
     
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
@@ -558,7 +565,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
         flex: 1;
         padding: 12px;
         border-radius: 30px;
-        font-weight: 600;
+        font-weight: 500;
         cursor: pointer;
         border: none;
         font-size: 0.95rem;
@@ -567,6 +574,9 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
         justify-content: center;
         gap: 8px;
         transition: transform 0.1s;
+        height: 40px;
+        margin:10px;
+        box-shadow: $shadow; 
 
         &:active {
             transform: scale(0.95);
@@ -574,26 +584,31 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     }
 
     .add-category-btn-cancel {
-        background-color: white;
-        color: #777;
-        border: 1px solid #ddd;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        background-color: var(--color-card-bg);
+        color: var(--color-text-placeholder);
+        border: 2px solid var(--color-text-placeholder);
+        
+        
 
         &:hover {
-            background-color: #f9f9f9;
+            background-color: var(--primary-container-bg);
         }
     }
 
     .add-category-btn-confirm {
         background-color: var(--color-accent);
-        color: white;
-        text-shadow: 1px 2px 0px rgba(0, 0, 0, 0.5);
-        box-shadow: 0 4px 10px rgba(255, 107, 181, 0.3); 
+        color: var(--color-text-white);
+        text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
 
         &:hover {
             filter: brightness(1.05);
         }
     }
+}
+
+.clock-icon{
+    position: relative;
+    top: -1px;
 }
 
 @keyframes slideUp {
