@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+import { timeDisplay } from "../../functions/TasksHelpers";
 // import { fetchSubtasks } from "../../api/TaskApi"
 
 const Task = ({ task, isSubtask = false }) => {
@@ -59,7 +60,7 @@ const Task = ({ task, isSubtask = false }) => {
                     <div className="task-right">
                         {task.timeNeeded && (
                             <span className="task-time">
-                                <span className="clock-icon">🕒</span> {task.timeNeeded}
+                                <span className="clock-icon">🕒</span> {timeDisplay(task.timeNeeded)}
                             </span>
                         )}
                         
