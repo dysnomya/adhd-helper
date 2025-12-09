@@ -15,7 +15,7 @@ const AddCategoryModal = ({ isOpen, onClose, onConfirm }) => {
             return;
         }
 
-        onConfirm(name, color);
+        onConfirm(name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(), color);
         setName('');
         setColor('#f8aa4b');
         onClose();
@@ -59,7 +59,7 @@ const AddCategoryModal = ({ isOpen, onClose, onConfirm }) => {
                         className="add-category-preview-badge"
                         style={{ backgroundColor: color }}
                     >
-                        {name || "Nazwa"}
+                        {name.charAt(0).toUpperCase() + name.slice(1).toLowerCase() || "Nazwa"}
                     </div>
                 </div>
 

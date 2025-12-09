@@ -33,7 +33,7 @@ const Task = ({ task, isSubtask = false }) => {
                         {categoryName}
                     </div>
                 )}
-
+                </div>
                 <div className="task-content-box">
 
                     <div className="task-left">
@@ -68,7 +68,7 @@ const Task = ({ task, isSubtask = false }) => {
                     </div>
 
                 </div>
-            </div>
+            
 
             {hasChildren && isExpanded && (
                 <div className="subtasks-container">
