@@ -16,7 +16,9 @@ export default function CalendarCell(props) {
                 {props.day}
             </div>
             <div className="calendar-cell-content">
-
+                {props.day && props.taskCounts?.map(count => 
+                    <div className={count > 0 ? "calendar-cell-task-count" : ""}>{count > 0 && count}</div>
+                )}
             </div>
         </div>
     );

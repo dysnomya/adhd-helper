@@ -24,7 +24,6 @@ export default function CalendarSidePanel(props) {
                     <h2>Twoje zadania</h2>
                     <EditButton 
                         className="edit-icon"
-                        onClick=""
                         tabIndex={0}
                     />
                 </div>

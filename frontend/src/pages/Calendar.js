@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../styles/calendar.scss";
 import CalendarCell from "../components/Calendar/CalendarCell";
 import CalendarSidePanel from "../components/Calendar/CalendarSidePanel.js";
 import capitalizeFirstLetter from "../functions/TextFunctions.js";
 import { ReactComponent as Arrow } from "../assets/arrow-right.svg";
+import { fetchTaskDataForTimePeriod } from "../api/TaskApi.js";
 
 export default function Calendar() {
     const days = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Ndz"];
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [openPanel, setOpenPanel] = useState(false);
+
+    const [tasks, setTasks] = useState([]);
+    const [tasksForDay, setTasksForDay] = useState([]);
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -27,6 +31,15 @@ export default function Calendar() {
         }
     }
 
+    useEffect(() => {
+        const loadTaskData = async () => {
+            const data = await fetchTaskDataForTimePeriod(new Date(year, month, 1), new Date(year, month + 1, 0));
+            setTasks(data);
+        };
+
+        loadTaskData();
+    }, []);
+
     const goToPreviousMonth = () => {
         setCurrentDate(new Date(year, month - 1, 1));
     };
@@ -39,44 +52,25 @@ export default function Calendar() {
         setSelectedDate(new Date(year, month, day));
     }
 
-    const [categories, setCategories] = useState([]);
-    const [tasks, setTasks] = useState([]);
+    const setTaskDataForDay = (day) => {
+        setTasksForDay(tasks.filter(t => 
+            t.day === new Intl.DateTimeFormat('en-CA').format(new Date(year, month, day))
+        ));
+    }
 
-    const getHeaders = () => {
-        const token = localStorage.getItem("token");
-
-        return {
-            'Content-Type': 'application/json',
-            Authorization: token ? `Bearer ${token}` : '',
-        };
-    };
-
-    const loadTaskData = (day) => {
-        const filters = {
-            "day": new Intl.DateTimeFormat('en-CA').format(new Date(year, month, day))
-        };
-
-        async function loadData() {
-            // Build query parameters from filters object
-            const params = new URLSearchParams(filters);
-
-            // Fetch categories
-            const catRes = await fetch("/api/categories", {
-                headers: getHeaders()
-            });
-            const categoriesData = await catRes.json();
-
-            // Fetch tasks with filters
-            const taskRes = await fetch(`/api/tasks?${params}`, {
-                headers: getHeaders()
-            });
-            const tasksData = await taskRes.json();
-
-            setCategories(categoriesData);
-            setTasks(tasksData);
-        }
-
-        loadData();
+    const getTaskNumberByPriority = (day) => {
+        const tasksForDay = tasks.filter(t => 
+            t.day === new Intl.DateTimeFormat('en-CA').format(new Date(year, month, day))
+        );
+        const tasksLowCount = tasksForDay.filter(t => t.priority === "LOW").length;
+        const tasksMediumCount = tasksForDay.filter(t => t.priority === "MEDIUM").length;
+        const tasksHighCount = tasksForDay.filter(t => t.priority === "HIGH").length;
+        console.log(tasksLowCount);
+        return [
+            tasksLowCount,
+            tasksMediumCount,
+            tasksHighCount
+        ];
     }
 
     return (
@@ -115,7 +109,8 @@ export default function Calendar() {
                             key={index}
                             day={day}
                             openPanel={openPanel}
-                            onClick={() => { day && setOpenPanel(true); day && selectDate(day); loadTaskData(day) }}
+                            taskCounts={getTaskNumberByPriority(day)}
+                            onClick={() => { day && setOpenPanel(true); day && selectDate(day); setTaskDataForDay(day) }}
                         />
                     ))}
                 </div>
@@ -125,8 +120,7 @@ export default function Calendar() {
                 month: "long",
                 year: "numeric"
             })}
-                tasks={tasks}
-                categories={categories}
+                tasks={tasksForDay}
             />
         </div>
     );

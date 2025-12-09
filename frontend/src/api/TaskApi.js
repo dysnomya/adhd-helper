@@ -64,3 +64,43 @@ export const createCategory = async (categoryData) => {
 //     }
 //     return response.json();
 // };
+
+export const loadTaskDataForDate = async (date) => {
+
+    const filters = {
+        "day": new Intl.DateTimeFormat('en-CA').format(date)
+    };
+
+    const params = new URLSearchParams(filters);
+
+    const catRes = await fetch(CATEGORIES_URL, {
+        headers: getHeaders()
+    });
+    const categoriesData = await catRes.json();
+
+    const taskRes = await fetch(`${TASKS_URL}?${params}`, {
+        headers: getHeaders()
+    });
+    const tasksData = await taskRes.json();
+
+    return new {
+        categoriesData,
+        tasksData
+    }
+};
+
+export const fetchTaskDataForTimePeriod = async (dayFrom, dayTo) => {
+
+    const filters = {
+        "dayFrom": new Intl.DateTimeFormat('en-CA').format(dayFrom),
+        "dayTo": new Intl.DateTimeFormat('en-CA').format(dayTo)
+    };
+
+    const params = new URLSearchParams(filters);
+
+    const taskRes = await fetch(`${TASKS_URL}?${params}`, {
+        headers: getHeaders()
+    });
+
+    return await taskRes.json();
+};
