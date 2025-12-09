@@ -216,8 +216,13 @@ $sidebar-icon-size: 40px;
   border: none;
   border-radius: 30px;
   width: $sidebar-element-size;
+  padding: 10px 20px;
+  min-width: 80px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 
-  &:hover{
+  &:hover, &:focus, &:active, &:disabled{
     background-color: var(--color-accent-hover);
     color: var(--color-on-accent);
   }
