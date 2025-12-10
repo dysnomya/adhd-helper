@@ -12,14 +12,22 @@ import { ReactComponent as Filter} from "../assets/Filter_icon.svg";
 
 const Todo = () => {
 
+    const [activeFilter, setActiveFilter] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const [selectedDateFilter, setSelectedDateFilter] = useState('');
+    const [showAllTasks, setShowAllTasks] = useState(true);
+
     // Loading tasks data from database
     const {
         tasks,
         categories,
         isLoading,
         error,
-        addCategoryLocal
-    } = useTaskData();
+        addCategoryLocal,
+        toggleTaskLocal
+    } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
 
     // Debugging - Do usunięcia później
     useEffect(() => {
@@ -31,9 +39,6 @@ const Todo = () => {
     }, [tasks, categories]);
     // --------
 
-    const [activeFilter, setActiveFilter] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const handleConfirmAddCategory = async (name, color) => {
 
@@ -52,57 +57,40 @@ const Todo = () => {
         setIsModalOpen(false);
     }
 
-    // Filtering tasks by chosen categories
-    const filteredTasks = useMemo(() => {
-        // No chosen categories --> all tasks
-        if (activeFilter.length === 0) {
-            return tasks;
-        }
+    const prepareDatedTasks = (tasksToGroup) => {
 
-        // "Checked" categories --> tasks that are in categories set in activeFilter
-        return tasks.filter(task => {
-            if (task.categoryId === null) {
-                return activeFilter.includes('NULL_CATEGORY');
-            }
-        
-            return activeFilter.includes(task.categoryId)
-        });
-
-    }, [tasks, activeFilter]);
-
-    // Categorizing tasks by their dates
-    const prepareDatedTasks = (filteredTasks) => {
-
-        const dated = filteredTasks.reduce((acc, task) => {
-
+        const dated = tasksToGroup.reduce((acc, task) => {
             const dateName = getTaskDateName(task.day);
-
             if (!acc[dateName]) {
                 acc[dateName] = [];
             }
-
             acc[dateName].push(task);
-
             return acc;
         }, {});
 
 
-        const order = ["Dzisiaj", "Jutro"];
+        const allDateKeys = Object.keys(dated);
 
-        const remainingDates = Object.keys(dated)
-        .filter(name => !order.includes(name) && name !== "Bez daty")
-        .sort((a, b) => {
-            const dateA = parseEuropeanDate(a);
-            const dateB = parseEuropeanDate(b);
+        const getTimestamp = (dateName) => {
+            if (dateName === "Bez daty") return Infinity;
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
 
-            return dateA.getTime() - dateB.getTime();
+            if (dateName === "Dzisiaj") return today.getTime();
+            if (dateName === "Jutro") return today.getTime() + (24 * 60 * 60 * 1000);
+
+            const parsed = parseEuropeanDate(dateName);
+            return parsed.getTime();
+        };
+
+        const sortedKeys = allDateKeys.sort((a, b) => {
+            return getTimestamp(a) - getTimestamp(b);
         });
-
-        order.push(...remainingDates, "Bez daty");
 
         const finalDatedList = [];
 
-        order.forEach(dateName => {
+        sortedKeys.forEach(dateName => {
             if (dated[dateName]) {
                 finalDatedList.push({
                     title: dateName,
@@ -113,23 +101,15 @@ const Todo = () => {
             }
         });
 
-
         return finalDatedList;
-
     }
 
-
     const datedTasks = useMemo(() => {
-        return prepareDatedTasks(filteredTasks);
-    }, [filteredTasks]);
+        return prepareDatedTasks(tasks);
+    }, [tasks]);
 
 
-    if (isLoading) return <div>Ładowanie danych ToDo...</div>;
     if (error) return <div>Błąd ładowania danych: {error.message}</div>;
-
-    // const handleConfirmAddCategory = async (name, color) => {
-
-    // }
 
     return (
         <div className="todo-main">
@@ -149,9 +129,17 @@ const Todo = () => {
                 <div className="todo-sidebar-main">
                     <TodoSidebar
                         categories={categories}
+
                         setActiveFilter={setActiveFilter}
                         activeFilter={activeFilter}
+
                         onAddCategoryClick={() => setIsModalOpen(true)}
+
+                        selectedDate={selectedDateFilter}
+                        onDateChange={setSelectedDateFilter}
+
+                        showAllTasks={showAllTasks}
+                        onToggleShowAll={setShowAllTasks}
                     />
 
                 </div>
@@ -161,8 +149,17 @@ const Todo = () => {
 
             <div className="todo-main-content-area">
 
+                {isLoading && (
+                    <div className="loading-overlay">
+                        <div className="spinner"></div>
+                    </div>
+                )}
+
                 <div className="todo-tasks-list">
-                    <TaskListContainer datedTasks={datedTasks}></TaskListContainer>
+                    <TaskListContainer 
+                        datedTasks={datedTasks} 
+                        onTaskStatusChange={toggleTaskLocal}
+                    ></TaskListContainer>
                 </div>
                 
 
