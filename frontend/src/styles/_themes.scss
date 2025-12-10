@@ -19,6 +19,10 @@
 
   --color-calendar-detail: #a8a8a8;
 
+  --color-priority-low: #83d453;
+  --color-priority-medium: #f0b537;
+  --color-priority-high: #fa8383;
+
   background-color: var(--content-bg);
   color: var(--color-text);
 }
@@ -44,6 +48,10 @@
   --secondary-container-highlight: #f3f3f3;
 
   --color-calendar-detail: #565656;
+
+  --color-priority-low: #83d453;
+  --color-priority-medium: #f0b537;
+  --color-priority-high: #fa8383;
 
   background-color: var(--content-bg);
   color: var(--color-text);

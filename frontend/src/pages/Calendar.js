@@ -65,7 +65,6 @@ export default function Calendar() {
         const tasksLowCount = tasksForDay.filter(t => t.priority === "LOW").length;
         const tasksMediumCount = tasksForDay.filter(t => t.priority === "MEDIUM").length;
         const tasksHighCount = tasksForDay.filter(t => t.priority === "HIGH").length;
-        console.log(tasksLowCount);
         return [
             tasksLowCount,
             tasksMediumCount,

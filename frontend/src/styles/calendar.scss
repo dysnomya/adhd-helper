@@ -137,14 +137,28 @@ $calendar-side-panel-content-radius: clamp(1rem, 4vmin, 5rem);
 .calendar-cell-task-count {
     margin-bottom: auto;
     font-weight: bold;
-    color:indianred;
-    border: 2px solid indianred;
+    border: 3px solid;
     border-radius: 50%;
     height: 30px;
     width: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.priority-low {
+    color: var(--color-priority-low);
+    border-color: var(--color-priority-low);
+}
+
+.priority-medium {
+    color: var(--color-priority-medium);
+    border-color: var(--color-priority-medium);
+}
+
+.priority-high {
+    color: var(--color-priority-high);
+    border-color: var(--color-priority-high);
 }
 
 .calendar-button {
@@ -276,7 +290,7 @@ $calendar-side-panel-content-radius: clamp(1rem, 4vmin, 5rem);
     padding: 20px 0;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    mask-image: linear-gradient(to bottom, transparent 0%, black 50px, black calc(100% - 50px), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 40px, black calc(100% - 40px), transparent 100%);
 }
 
 .side-panel-list::-webkit-scrollbar {
