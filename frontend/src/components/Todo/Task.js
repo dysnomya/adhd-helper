@@ -3,12 +3,10 @@ import React, { useState } from "react";
 import { timeDisplay } from "../../functions/TasksHelpers";
 import { ReactComponent as Clock} from "../../assets/clock_icon.svg";
 
-// import { fetchSubtasks } from "../../api/TaskApi"
-
 const Task = ({ task, isSubtask = false }) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
-    // const [subtasks, setSubtasks] = useState(task.subtasks || []);
+
     const subtasks = task.subtasks || [];
     const hasChildren = subtasks.length > 0;
 
@@ -17,7 +15,6 @@ const Task = ({ task, isSubtask = false }) => {
 
     const handleToggleSubtask = async () => {
         if(!hasChildren) return;
-        // const newState = !isExpanded;
         setIsExpanded(!isExpanded);
     };
 
@@ -36,6 +33,7 @@ const Task = ({ task, isSubtask = false }) => {
                     </div>
                 )}
                 </div>
+
                 <div className="task-content-box">
 
                     <div className="task-left">
@@ -65,10 +63,8 @@ const Task = ({ task, isSubtask = false }) => {
                                 <span className="clock-icon"><Clock className="clock_icon"></Clock></span> {timeDisplay(task.timeNeeded)}
                             </span>
                         )}
-                        
-                        
+                                            
                     </div>
-
                 </div>
             
 
@@ -83,11 +79,8 @@ const Task = ({ task, isSubtask = false }) => {
                     ))}
                 </div>
             )}
-
         </div>
-
     );
-
 };
 
 export default Task;

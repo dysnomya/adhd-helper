@@ -21,16 +21,6 @@ const Todo = () => {
         addCategoryLocal
     } = useTaskData();
 
-    // Debugging - Do usunięcia później
-    useEffect(() => {
-        if (tasks.length > 0) {
-            console.log("Zadania:", tasks);
-            
-            console.log("Kategorie:", categories)
-        }
-    }, [tasks, categories]);
-    // --------
-
     const [activeFilter, setActiveFilter] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -43,7 +33,7 @@ const Todo = () => {
             addCategoryLocal(newCategoryFromBackend);
 
             //TEMP
-            alert("DOdano grupę");
+            alert("Dodano grupę");
 
         } catch (e) {
             console.error(e);
@@ -113,9 +103,7 @@ const Todo = () => {
             }
         });
 
-
         return finalDatedList;
-
     }
 
 
@@ -127,9 +115,6 @@ const Todo = () => {
     if (isLoading) return <div>Ładowanie danych ToDo...</div>;
     if (error) return <div>Błąd ładowania danych: {error.message}</div>;
 
-    // const handleConfirmAddCategory = async (name, color) => {
-
-    // }
 
     return (
         <div className="todo-main">
@@ -157,15 +142,11 @@ const Todo = () => {
                 </div>
             </div>
 
-            
-
             <div className="todo-main-content-area">
 
                 <div className="todo-tasks-list">
                     <TaskListContainer datedTasks={datedTasks}></TaskListContainer>
                 </div>
-                
-
             </div>
 
             <AddCategoryModal 
@@ -176,7 +157,6 @@ const Todo = () => {
 
         </div>
     );
-
 };
 
 export default Todo;

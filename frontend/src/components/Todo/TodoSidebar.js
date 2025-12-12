@@ -54,10 +54,6 @@ const TodoSidebar = ({ categories, setActiveFilter, activeFilter, onAddCategoryC
 
             </nav>
         </div>
-        
-
     );
-
 }
-
 export default TodoSidebar;
