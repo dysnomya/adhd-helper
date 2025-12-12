@@ -1,5 +1,5 @@
 import "../styles/todo.scss";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useTaskData } from "../hooks/UseTaskData";
 import TodoSidebar from "../components/Todo/TodoSidebar";
 import TaskListContainer from "../components/Todo/TaskListContainer";
