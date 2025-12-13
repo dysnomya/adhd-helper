@@ -9,8 +9,14 @@ $calendar-side-panel-content-radius: clamp(1rem, 4vmin, 5rem);
 .calendar-page {
     width: 100%;
     height: 100%;
-    padding: 5vh;
     font-family: $app-font;
+    padding: 5vh;
+}
+
+@media (max-width: 768px) {
+    .calendar-page {
+        padding: 3vh;
+    }
 }
 
 .calendar {
