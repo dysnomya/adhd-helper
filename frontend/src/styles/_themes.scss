@@ -8,7 +8,8 @@
   --color-text-placeholder: #909090;
   --color-text-white: #141414;
 
-  --color-accent: #c5ff75;
+  --color-accent: #aeff3d;
+  --color-accent-transparent: #aeff3d00;
   --color-on-accent: #141414;
 
   --color-icon: #d9d9d9;
@@ -23,6 +24,11 @@
   --color-category-hover:#6a6a6a;
 
   --color-calendar-detail: #a8a8a8;
+
+  --split-hue: 130deg;
+  --split-contrast: 1.4;
+  --split-brightness: 1.1;
+
 
   background-color: var(--content-bg);
   color: var(--color-text);
@@ -40,6 +46,7 @@
   --color-text-white: #ffffff;
 
   --color-accent: #fe73ba;
+  --color-accent-transparent: #fe73bb00;
   --color-on-accent: #ffffff;
 
   --color-icon: #141414;
@@ -54,6 +61,11 @@
   --color-category-hover:#d1d1d1;
 
   --color-calendar-detail: #565656;
+
+  --split-hue: 0deg;
+  --split-contrast: 1.0;
+  --split-brightness: 1.0;
+
 
   background-color: var(--content-bg);
   color: var(--color-text);

@@ -9,6 +9,7 @@ import LoginRoute from "./wrappers/LoginRoute";
 import Dashboard from "./pages/Dashboard";
 import Todo from "./pages/Todo";
 import Calendar from "./pages/Calendar";
+import Split from "./pages/Split";
 import "./styles/_themes.scss";
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
               <Route path="/todo" element={<Todo />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/adhdUser" element={<User />} />
+              <Route path="/split" element={<Split />} />
             </Route>
           </Route>
         </Routes>
