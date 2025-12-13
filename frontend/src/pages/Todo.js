@@ -1,14 +1,14 @@
-
-import { useState, useEffect } from "react";
+import "../styles/todo.scss";
+import { useState, useMemo } from "react";
 import { useTaskData } from "../hooks/UseTaskData";
 import TodoSidebar from "../components/Todo/TodoSidebar";
 import TaskListContainer from "../components/Todo/TaskListContainer";
-
-import { useMemo } from 'react';
 import { getTaskDateName, parseEuropeanDate } from "../functions/TasksHelpers"
-
 import AddCategoryModal from "../components/Todo/AddCategoryModal";
 import { createCategory } from "../api/TaskApi";
+import { ReactComponent as Dynks} from "../assets/dynks.svg";
+import { ReactComponent as Filter} from "../assets/Filter_icon.svg";
+
 
 const Todo = () => {
 
@@ -21,18 +21,9 @@ const Todo = () => {
         addCategoryLocal
     } = useTaskData();
 
-    // Debugging - Do usunięcia później
-    useEffect(() => {
-        if (tasks.length > 0) {
-            console.log("Zadania:", tasks);
-            
-            console.log("Kategorie:", categories)
-        }
-    }, [tasks, categories]);
-    // --------
-
     const [activeFilter, setActiveFilter] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const handleConfirmAddCategory = async (name, color) => {
 
@@ -42,7 +33,7 @@ const Todo = () => {
             addCategoryLocal(newCategoryFromBackend);
 
             //TEMP
-            alert("DOdano grupę");
+            alert("Dodano grupę");
 
         } catch (e) {
             console.error(e);
@@ -112,9 +103,7 @@ const Todo = () => {
             }
         });
 
-
         return finalDatedList;
-
     }
 
 
@@ -126,26 +115,38 @@ const Todo = () => {
     if (isLoading) return <div>Ładowanie danych ToDo...</div>;
     if (error) return <div>Błąd ładowania danych: {error.message}</div>;
 
-    // const handleConfirmAddCategory = async (name, color) => {
-
-    // }
 
     return (
-        <div style={{ display: 'flex', height: '100vh', width: '100%' }}>
+        <div className="todo-main">
+            <div className="mobile-header">
+                <Dynks></Dynks>
+                <button 
+                    className="menu-toggle-btn" 
+                    onClick={() => setIsSidebarOpen(true)}>
+                    <Filter></Filter>
+                </button>
+            </div>
 
-            <TodoSidebar
-                categories={categories}
-                setActiveFilter={setActiveFilter}
-                activeFilter={activeFilter}
-                onAddCategoryClick={() => setIsModalOpen(true)}
-            />
+            <div className={`todo-sidebar-wrapper ${isSidebarOpen ? 'open' : ''}`}>
+                
+                <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>
+                
+                <div className="todo-sidebar-main">
+                    <TodoSidebar
+                        categories={categories}
+                        setActiveFilter={setActiveFilter}
+                        activeFilter={activeFilter}
+                        onAddCategoryClick={() => setIsModalOpen(true)}
+                    />
+
+                </div>
+            </div>
 
             <div className="todo-main-content-area">
 
-                <h1 style={{margin: "20px"}}>Zadania</h1>
-
-                <TaskListContainer datedTasks={datedTasks}></TaskListContainer>
-
+                <div className="todo-tasks-list">
+                    <TaskListContainer datedTasks={datedTasks}></TaskListContainer>
+                </div>
             </div>
 
             <AddCategoryModal 
@@ -156,7 +157,6 @@ const Todo = () => {
 
         </div>
     );
-
 };
 
 export default Todo;

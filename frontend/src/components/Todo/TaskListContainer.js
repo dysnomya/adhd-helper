@@ -1,33 +1,30 @@
 
 import React from "react";
-
 import Task from "./Task"
 
 const TaskListContainer = ({ datedTasks }) => {
 
     return (
-        <div style={{margin: "20px"}}>
+        <div className="todo-task-list-container">
 
             {datedTasks.map(date => (
-                <div key={date.title}>
+                <div key={date.title} className="todo-tasks-date-section">
 
-                    <h2 style={{marginTop: '20px', borderBottom: '1px solid #ccc'}}>
-                        {date.title}
-                    </h2>
+                    <div className="todo-tasks-date-header">
+                        <h2>{date.title}</h2>
+                    </div>
 
-                    {date.tasks.map(task => (
-                        <Task
-                            key={task.id}
-                            task={task}
-                        ></Task>
-                    ))}
-
+                    <div className="todo-tasks-tasks-wrapper">
+                        {date.tasks.map(task => (
+                            <Task
+                                key={task.id}
+                                task={task}
+                            ></Task>
+                        ))}
+                    </div>  
                 </div>
             ))}
-
         </div>
     );
-
 };
-
 export default TaskListContainer;
