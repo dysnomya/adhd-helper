@@ -1,5 +1,5 @@
 import "../styles/todo.scss";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useTaskData } from "../hooks/UseTaskData";
 import TodoSidebar from "../components/Todo/TodoSidebar";
 import TaskListContainer from "../components/Todo/TaskListContainer";
@@ -8,9 +8,12 @@ import AddCategoryModal from "../components/Todo/AddCategoryModal";
 import { createCategory } from "../api/TaskApi";
 import { ReactComponent as Dynks} from "../assets/dynks.svg";
 import { ReactComponent as Filter} from "../assets/Filter_icon.svg";
+import { useLocation } from "react-router-dom";
+import { ReactComponent as SadPimpus } from "../assets/pimpus_sad.svg";
 
-
+//  todo?date=2025-12-06
 const Todo = () => {
+    const location = useLocation();     // hook do pobrania adresu URL
 
     const [activeFilter, setActiveFilter] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,6 +21,18 @@ const Todo = () => {
 
     const [selectedDateFilter, setSelectedDateFilter] = useState('');
     const [showAllTasks, setShowAllTasks] = useState(true);
+
+    const [areCategoriesInitialized, setAreCategoriesInitialized] = useState(false);
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const dateParam = searchParams.get('date');
+
+        if (dateParam) {
+            setSelectedDateFilter(dateParam);
+            setShowAllTasks(false);
+        }
+    }, [location]);
 
     // Loading tasks data from database
     const {
@@ -29,16 +44,18 @@ const Todo = () => {
         toggleTaskLocal
     } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
 
-    // Debugging - Do usunięcia później
-    useEffect(() => {
-        if (tasks.length > 0) {
-            console.log("Zadania:", tasks);
-            
-            console.log("Kategorie:", categories)
-        }
-    }, [tasks, categories]);
-    // --------
 
+    useEffect(() => {     
+        if (categories.length > 0 && !areCategoriesInitialized) {
+
+            const allCategoryIds = categories.map(cat => cat.id);
+            allCategoryIds.push("NULL_CATEGORY");
+
+            setActiveFilter(allCategoryIds);
+            setAreCategoriesInitialized(true);
+        }
+        
+    }, [categories, areCategoriesInitialized]);
 
     const handleConfirmAddCategory = async (name, color) => {
 
@@ -48,7 +65,7 @@ const Todo = () => {
             addCategoryLocal(newCategoryFromBackend);
 
             //TEMP
-            alert("DOdano grupę");
+            alert("Dodano grupę");
 
         } catch (e) {
             console.error(e);
@@ -109,10 +126,39 @@ const Todo = () => {
     }, [tasks]);
 
 
-    if (error) return <div>Błąd ładowania danych: {error.message}</div>;
+    const isFirstLoad = isLoading && tasks.length === 0 && categories.length === 0;
+
+
+    // Debugging - Do usunięcia później
+    useEffect(() => {
+        if (tasks.length > 0) {
+            console.log("Zadania:", tasks);
+            
+            console.log("Kategorie:", categories)
+        }
+    }, [tasks, categories]);
+    // --------
+
+
+    if (error) return (
+        <div className="server-data-error-main">
+            <div className="server-data-error">
+                <SadPimpus className="sad-pimpus"></SadPimpus>
+                <p className="blad-serwera">Błąd połączenia z serwerem</p>
+                <p>Coś poszło nie tak. Sprawdź połączenie z internetem.</p>
+            </div>
+        </div>
+    );
 
     return (
         <div className="todo-main">
+
+            {isLoading && (
+                <div className={`loading-overlay ${isFirstLoad ? 'initial-load' : ''}`}>
+                    <div className="spinner"></div>
+                </div>
+            )}
+
             <div className="mobile-header">
                 <Dynks></Dynks>
                 <button 
@@ -149,13 +195,15 @@ const Todo = () => {
 
             <div className="todo-main-content-area">
 
-                {isLoading && (
-                    <div className="loading-overlay">
-                        <div className="spinner"></div>
-                    </div>
-                )}
-
                 <div className="todo-tasks-list">
+
+                    {tasks.length === 0 && categories.length === 0 && (
+                        <div className="no-data-yet">
+                            <p>Nie stworzyłeś jeszcze tasków, zrób je dla Pimpusia!</p>
+                        </div>
+                    )}
+
+
                     <TaskListContainer 
                         datedTasks={datedTasks} 
                         onTaskStatusChange={toggleTaskLocal}

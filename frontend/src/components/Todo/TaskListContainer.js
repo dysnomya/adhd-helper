@@ -12,9 +12,6 @@ const TaskListContainer = ({ datedTasks }) => {
 
                     <div className="todo-tasks-date-header">
                         <h2>{date.title}</h2>
-                        
-                        
-
                     </div>
 
                     <div className="todo-tasks-tasks-wrapper">
@@ -25,12 +22,9 @@ const TaskListContainer = ({ datedTasks }) => {
                             ></Task>
                         ))}
                     </div>
-
-                    
                 </div>
             ))}
         </div>
     );
 };
-
 export default TaskListContainer;

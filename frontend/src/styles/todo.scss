@@ -1,17 +1,8 @@
 @import 'https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap';
 
-// $header-pink: #ff6bb5;
-// $header-gradient: linear-gradient(90deg, #ff8ec3 0%, #ff6bb5 100%);
-// $container-grey: #e6e6e6;
 $shadow-color: rgba(0, 0, 0, 0.15);
 $bg-overlay: rgba(0, 0, 0, 0.4);
 $shadow: 2px 2px 4px rgba(0,0,0,0.25);
-
-
-* {
-    box-sizing: border-box;
-    overflow: hidden;
-}
 
 .mobile-header, .sidebar-overlay, .mobile-back-btn {
     display: none;
@@ -23,8 +14,8 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     width: 100%;
     margin: 0;
     padding: 0;
-    display: flex;
     overflow: hidden;
+    position: relative;
 }
 
 .todo-main-content-area {
@@ -54,7 +45,6 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     &::-webkit-scrollbar-thumb {
         background-color: var(--color-accent);
         border-radius: 4px;
-        // border: 2px solid #f4f4f4;
     }
     &::-webkit-scrollbar-thumb:hover {
         cursor: grab;
@@ -85,6 +75,21 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     height: 100%;
     width: 100%;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.todo-nav > div:first-child {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.todo-nav > div:last-child {
+    flex-shrink: 0;
+    padding-top: 20px;
+    padding-bottom: 10px;
 }
 
 @media (max-width: 768px) {
@@ -181,7 +186,6 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
 
         display: flex;       
         flex-direction: column;
-        // padding-top: 20px;
         padding-top: 0px;
         margin-top: 10px;
         
@@ -204,6 +208,10 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     .todo-tasks-list {
         padding: 10px; 
     }
+
+    .server-data-error {
+        text-align: center;
+    }
 }
 
 
@@ -211,7 +219,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
 .todo-sidebar-text-titles {
     color: var(--color-text);
     font-size: 25px;
-    margin-top: 15px;
+    padding-top: 15px;
     letter-spacing: -1px;
 }
 
@@ -232,57 +240,6 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     text-align: center;
     font-family: inherit;
 }
-
-.sidebar-date-switch-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.9em;
-    color: #555;
-}
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 40px;
-    height: 22px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 34px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-}
-
-input:checked + .slider {
-    background-color: var(--color-accent);
-}
-
-input:checked + .slider:before {
-    transform: translateX(18px);
-}
-
 
 .todo-sidebar-category-item {
     background-color: var(--color-category-unfocus);
@@ -381,7 +338,6 @@ input:checked + .slider:before {
 
 .todo-tasks-date-header {
     background: var(--color-accent);
-    // padding: 10px 20px;
 
     border-radius: 30px;
     height:100px;
@@ -440,7 +396,7 @@ input:checked + .slider:before {
     position: relative;
     z-index: 1; 
     margin-bottom: -40px;
-    height: 60px;
+    height: 67px;
 }
 
 .task-category-header {
@@ -518,14 +474,15 @@ input:checked + .slider:before {
 }
 
 .subtasks-container {
-    margin-top: 5px;
+    margin-bottom: 15px;
     margin-left: 20px;
     padding-left: 15px;
+    padding-right: 10px;
     border-left: 3px solid #e0e0e0;
 }
 
 .is-subtask {
-    margin-bottom: 5px;
+    margin-bottom: 0px;
 
     .task-card {
         background-color: transparent; 
@@ -677,6 +634,37 @@ input:checked + .slider:before {
     }
 }
 
+.add-category-color-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 5px;
+}
+
+.add-category-color-input {
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    border-radius: 50px;
+
+    input {
+        height: 50px;
+        width: 50px;
+        cursor: pointer;
+        border-radius: 20px;
+        border: none;
+        padding: 0px;
+        opacity: 0;
+    }
+}
+
+.add-category-color-name {
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .clock-icon{
     position: relative;
     top: -1px;
@@ -717,10 +705,16 @@ input:checked + .slider:before {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 2000;
 
   opacity: 0; 
   animation: fadeIn 0.3s ease-in 0.3s forwards;
+
+  &.initial-load {
+      background-color: var(--content-bg); 
+      animation: none; 
+      opacity: 1;
+  }
 }
 
 @keyframes fadeIn {
@@ -736,7 +730,7 @@ input:checked + .slider:before {
   width: 50px;
   height: 50px;
   border: 5px solid #f3f3f3;
-  border-top: 5px solid #3498db;
+  border-top: 5px solid var(--color-accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -744,4 +738,152 @@ input:checked + .slider:before {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+
+.custom-checkbox {
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.custom-checkbox.checked {
+    background-color: var(--cat-color); 
+}
+
+.custom-checkbox .dot {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+
+// błąd pobrania danych z serwera
+.server-data-error-main {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Lexend", sans-serif;
+}
+
+.server-data-error {
+    background-color: var(--color-card-bg);
+    height: 50%;
+    width: 50%;
+    border-radius: 30px;
+    box-shadow: $shadow; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.sad-pimpus {
+    filter: hue-rotate(var(--split-hue)) contrast(var(--split-contrast)) brightness(var(--split-brightness));
+}
+
+.blad-serwera {
+    font-weight: 500;
+    font-size: 25px;
+    margin-bottom: 0px;
+}
+
+.no-data-yet {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.clear-filters {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.btn-clear-filters {
+    background-color: var(--secondary-container-bg);
+    color: var(--color-text-placeholder);
+    border: 2px solid var(--color-text-placeholder);
+    
+    flex: 1;
+    padding: 12px;
+    border-radius: 30px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.1s;
+    height: 40px;
+    margin: 10px 30px 10px 30px;
+    box-shadow: $shadow; 
+
+    &:active {
+        transform: scale(0.95);
+    }
+
+    &:hover {
+        background-color: var(--primary-container-bg);
+    }
+}
+
+
+// priorytet
+
+.priority {
+    color: var(--color-card-bg);
+
+    border-radius: 50px 0px;
+
+    height: 20px;
+    margin: 15px 30px;
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    
+    user-select: none;
+
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 2px solid transparent;
+
+    p {
+        margin: 0;
+        pointer-events: none;
+        text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+    }
+
+    &.active {
+        p{text-shadow: 1px 1px 5px rgba(0,0,0,0.0);}
+
+        background-color: var(--cat-color);
+        color: var(--color-card-bg); 
+        transform: scale(1.05); 
+        box-shadow: 0 0px 20px -5px var(--cat-color);
+    }
+
+}
+
+.high {
+    background-color: #D22727;
+}
+
+.medium {
+    background-color: #E9BD2B;
+}
+
+.low {
+    background-color: #A5DD3C;
 }

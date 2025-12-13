@@ -1,30 +1,65 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { timeDisplay } from "../../functions/TasksHelpers";
 import { ReactComponent as Clock} from "../../assets/clock_icon.svg";
 
-// import { fetchSubtasks } from "../../api/TaskApi"
+import { ReactComponent as EditIcon } from "../../assets/edit_task.svg";
+import { ReactComponent as DeleteIcon } from "../../assets/delete_task.svg";
+import { ReactComponent as SplitIcon } from "../../assets/split_task.svg";
 
-const Task = ({ task, isSubtask = false }) => {
+const Task = ({ task, isSubtask = false, onStatusChange }) => {
 
-    const [isExpanded, setIsExpanded] = useState(false);
-    // const [subtasks, setSubtasks] = useState(task.subtasks || []);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);    // edit menu
+    const [isCompleted, setIsCompleted] = useState(task.completed);   // checkbox
+    const [isExpanded, setIsExpanded] = useState(false);    // subtasks
+
     const subtasks = task.subtasks || [];
     const hasChildren = subtasks.length > 0;
+    const debounceTimer = useRef(null);
 
     const categoryColor = task.category ? task.category.color : "#828282ff" ;
     const categoryName = task.category ? task.category.name : 'Ogólne';
 
+
+    useEffect(() => {
+        setIsCompleted(task.completed);
+    }, [task.completed]);
+
+    const handleCheckedTask = () => {
+        const newStatus = !isCompleted;
+        
+        setIsCompleted(newStatus);
+
+        if (onStatusChange) {
+            onStatusChange(task.id, newStatus);
+        }
+
+        if (debounceTimer.current) {
+            clearTimeout(debounceTimer.current);
+        }
+
+        debounceTimer.current = setTimeout(async () => {
+            try {
+            
+                // API CALL
+
+                console.log(`${task.id}: ${newStatus}`);
+            } catch (e) {
+                console.error("Błąd zapisu checkboxa", e);
+                setIsCompleted(!newStatus);
+            }
+        }, 500); 
+    };
+
     const handleToggleSubtask = async () => {
         if(!hasChildren) return;
-        // const newState = !isExpanded;
         setIsExpanded(!isExpanded);
     };
 
     return (
 
         <div 
-            className={`task-container ${isSubtask ? 'is-subtask' : ''}`}
+            className={`task-container ${isSubtask ? 'is-subtask' : ''} ${isMenuOpen ? 'menu-open' : ''}`}
             style={{ '--cat-color': categoryColor }}
         >
 
@@ -39,8 +74,11 @@ const Task = ({ task, isSubtask = false }) => {
                 <div className="task-content-box">
 
                     <div className="task-left">
-                        <div className={`custom-checkbox ${task.completed ? 'checked' : ''}`}>
-                            {task.completed && <div className="dot"></div>}
+                        <div 
+                            className={`custom-checkbox ${task.completed ? 'checked' : ''}`}
+                            onClick={handleCheckedTask}
+                        >
+                            {isCompleted && <div className="dot"></div>}
                         </div>
 
                         {hasChildren && (
@@ -65,20 +103,21 @@ const Task = ({ task, isSubtask = false }) => {
                                 <span className="clock-icon"><Clock className="clock_icon"></Clock></span> {timeDisplay(task.timeNeeded)}
                             </span>
                         )}
-                        
-                        
+                       
                     </div>
-
                 </div>
             
 
             {hasChildren && isExpanded && (
                 <div className="subtasks-container">
-                    {subtasks.map(subtask => (
+                    {[...subtasks]
+                    .sort((a, b) => a.id - b.id)
+                    .map(subtask => (
                         <Task 
                             key={subtask.id} 
                             task={{ ...subtask, parentId: task.id }} 
                             isSubtask={true}
+                            onStatusChange={onStatusChange}
                         />
                     ))}
                 </div>

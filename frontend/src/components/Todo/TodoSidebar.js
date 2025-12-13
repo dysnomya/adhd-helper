@@ -41,71 +41,78 @@ const TodoSidebar = ({
         }
     };
 
-    const handleToggle = (e) => {
-        const isChecked = e.target.value;
-        onToggleShowAll(isChecked);
-        if (isChecked) {
-            onDateChange('');
-        }
+    const handleClearFilters = () => {
+        onToggleShowAll(true);
+        onDateChange('');
+
+        const allCategoryIds = categories.map(cat => cat.id);
+        allCategoryIds.push("NULL_CATEGORY");
+        setActiveFilter(allCategoryIds);
     }
+
 
     return (
 
         <div className='todo-sidebar'>
             <nav className='todo-nav'>
 
-                <p className='todo-sidebar-text-titles'>Data</p>
+                <div>
+                    <p className='todo-sidebar-text-titles'>Data</p>
 
-                <div className='sidebar-date-picker-container'>
+                    <div className='sidebar-date-picker-container'>
 
-                    <input 
-                        type="date" 
-                        className="date-input"
-                        value={selectedDate}
-                        onChange={handleDateInput}
-                    />
+                        <input 
+                            type="date" 
+                            className="date-input"
+                            value={selectedDate}
+                            onChange={handleDateInput}
+                        />
 
-                    <div className="sidebar-date-switch-container">
-                        <label className="switch">
-                            <input 
-                                type="checkbox" 
-                                checked={showAllTasks}
-                                onChange={handleToggle}
-                            />
-                            <span className="slider"></span>
-                        </label>
-                        <span>Wszystkie zadania</span>
                     </div>
 
-                </div>
+                    <p className='todo-sidebar-text-titles'>Kategorie</p>
 
-                <p className='todo-sidebar-text-titles'>Kategorie</p>
+                    {categories.map(category => (
+                        <Category
+                            key={category.id}
+                            category={category}
+                            onClick={() => handleCategoryClick(category.id)}
+                            isActive={activeFilter.includes(category.id)}
+                        />
+                    ))}
 
-                {categories.map(category => (
                     <Category
-                        key={category.id}
-                        category={category}
-                        onClick={() => handleCategoryClick(category.id)}
-                        isActive={activeFilter.includes(category.id)}
+                        category={noCategoryOption}
+                        onClick={() => handleCategoryClick(noCategoryId)}
+                        isActive={activeFilter.includes(noCategoryId)}
                     />
-                ))}
 
-                <Category
-                    category={noCategoryOption}
-                    onClick={() => handleCategoryClick(noCategoryId)}
-                    isActive={activeFilter.includes(noCategoryId)}
-                />
-
-                <div 
-                    className='todo-sidebar-add-button'
-                    onClick={onAddCategoryClick}
-                >
-                    <p>+</p>
+                    <div 
+                        className='todo-sidebar-add-button'
+                        onClick={onAddCategoryClick}
+                    >
+                        <p>+</p>
+                    </div>
                 </div>
 
 
-                <div className='todo-sidebar-priorytet'>
-                    <p className='todo-sidebar-text-titles'>Priorytet</p>
+                <div>
+                    <div className='todo-sidebar-priorytet'>
+                        <p className='todo-sidebar-text-titles'>Priorytet</p>
+
+                        <div className='priority high'>Wysoki</div>
+                        <div className='priority medium'>Średni</div>
+                        <div className='priority low'>Niski</div>
+                    </div>
+
+
+                    <div className='clear-filters'>
+                        <button 
+                            className="btn-clear-filters" 
+                            onClick={handleClearFilters}>
+                                Wyczyść filtry
+                        </button>
+                    </div>
                 </div>
 
             </nav>
@@ -113,7 +120,5 @@ const TodoSidebar = ({
         
 
     );
-
 }
-
 export default TodoSidebar;

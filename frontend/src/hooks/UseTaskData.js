@@ -8,13 +8,11 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
 
     const loadData = useCallback(async () => {
 
         if (!localStorage.getItem("token")) {
             setIsLoading(false);
-            // setIsAuthenticated(false);
             return;
         }
 
@@ -46,12 +44,10 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
 
             setTasks(processedTasks);
             setCategories(categoriesData);
-            // setIsAuthenticated(true);
 
         } catch (e) {
             if (e.message === '401 Unauthorized') {
                 localStorage.removeItem("token");
-                // setIsAuthenticated(false);
             } else {
                 console.error("Błąd pobierania danych:", e);
                 setError(e);
