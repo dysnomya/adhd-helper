@@ -38,7 +38,7 @@ export default function Calendar() {
         };
 
         loadTaskData();
-    }, []);
+    });
 
     const goToPreviousMonth = () => {
         setCurrentDate(new Date(year, month - 1, 1));
