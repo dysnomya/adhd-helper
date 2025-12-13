@@ -3,10 +3,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { timeDisplay } from "../../functions/TasksHelpers";
 import { ReactComponent as Clock} from "../../assets/clock_icon.svg";
 
-import { ReactComponent as EditIcon } from "../../assets/edit_task.svg";
-import { ReactComponent as DeleteIcon } from "../../assets/delete_task.svg";
-import { ReactComponent as SplitIcon } from "../../assets/split_task.svg";
-
 const Task = ({ task, isSubtask = false, onStatusChange }) => {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);    // edit menu
