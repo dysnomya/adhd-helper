@@ -5,7 +5,6 @@ import { ReactComponent as Clock} from "../../assets/clock_icon.svg";
 
 const Task = ({ task, isSubtask = false, onStatusChange }) => {
 
-    const [isMenuOpen, setIsMenuOpen] = useState(false);    // edit menu
     const [isCompleted, setIsCompleted] = useState(task.completed);   // checkbox
     const [isExpanded, setIsExpanded] = useState(false);    // subtasks
 
@@ -55,7 +54,7 @@ const Task = ({ task, isSubtask = false, onStatusChange }) => {
     return (
 
         <div 
-            className={`task-container ${isSubtask ? 'is-subtask' : ''} ${isMenuOpen ? 'menu-open' : ''}`}
+            className={`task-container ${isSubtask ? 'is-subtask' : ''}`}
             style={{ '--cat-color': categoryColor }}
         >
 
