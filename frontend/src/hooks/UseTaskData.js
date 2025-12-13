@@ -8,7 +8,6 @@ export const useTaskData = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
 
     useEffect(() => {
 
@@ -16,7 +15,6 @@ export const useTaskData = () => {
 
             if (!localStorage.getItem("token")) {
                 setIsLoading(false);
-                // setIsAuthenticated(false);
                 return;
             }
 
@@ -39,7 +37,6 @@ export const useTaskData = () => {
 
                 setTasks(processedTasks);
                 setCategories(categoriesData);
-                // setIsAuthenticated(true);
 
                 
 
@@ -47,7 +44,6 @@ export const useTaskData = () => {
 
                 if (e.message === '401 Unauthorized') {
                     localStorage.removeItem("token");
-                    // setIsAuthenticated(false);
                 } else {
                     setError(e);
                     console.error("Critical error fetching data:", e);

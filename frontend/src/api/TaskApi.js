@@ -50,17 +50,3 @@ export const createCategory = async (categoryData) => {
     return response.json();
 
 };
-
-
-// export const fetchSubtasks = async (parentId) => {
-//     const response = await fetch(`/api/tasks/${parentId}/subtasks`, {
-//         headers: getHeaders(),
-//     });
-//     if (response.status === 204) {
-//         return [];
-//     }
-//     if (!response.ok) {
-//         throw new Error('Błąd pobierania podzadań');
-//     }
-//     return response.json();
-// };

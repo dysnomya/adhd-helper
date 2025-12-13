@@ -1,80 +1,86 @@
 
 import React, { useState } from "react";
-// import { fetchSubtasks } from "../../api/TaskApi"
+import { timeDisplay } from "../../functions/TasksHelpers";
+import { ReactComponent as Clock} from "../../assets/clock_icon.svg";
 
-const Task = ({ task }) => {
+const Task = ({ task, isSubtask = false }) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
-    // const [subtasks, setSubtasks] = useState(task.subtasks || []);
+
     const subtasks = task.subtasks || [];
-    // const [isLoadingSubtasks, setIsLoadingSubtasks] = useState(false);
-
-    // const isMainTask = task.parentId === null || task.parentId === undefined;
-
-    const categoryColor = task.category ? task.category.color : "#dfdfdf" ;
-
     const hasChildren = subtasks.length > 0;
 
+    const categoryColor = task.category ? task.category.color : "#828282ff" ;
+    const categoryName = task.category ? task.category.name : 'Ogólne';
 
     const handleToggleSubtask = async () => {
         if(!hasChildren) return;
-        // const newState = !isExpanded;
         setIsExpanded(!isExpanded);
     };
 
     return (
 
-        <div style={{display: "flex", flexDirection: "column", background: categoryColor, padding: "10px", margin: "7px"}}>
+        <div 
+            className={`task-container ${isSubtask ? 'is-subtask' : ''}`}
+            style={{ '--cat-color': categoryColor }}
+        >
 
-            <div style={{ display: "flex"}}>
+            <div className="task-card">
 
-                <input type="checkbox" defaultChecked={task.completed}></input>
-
-   
-                {hasChildren ? (
-                    <span 
-                        onClick={handleToggleSubtask} 
-                        style={{ cursor: 'pointer', marginRight: '10px', fontWeight: 'bold' }}
-                    >
-                        {isExpanded ? '▼' : '►'}
-                    </span>
-                ) : (
-                    <span style={{ marginRight: '25px' }}></span>
-                )}
-                    
-
-                <b><p>{task.name}</p></b>
-                <p style={{marginLeft: "15px"}}>kat: {task.category ? task.category.name : "brak kategorii"}</p>
-                <p style={{marginLeft: "15px"}}>status: {task.completed ? "ukończone" : "trwa"}</p>
-                <p style={{marginLeft: "15px"}}>{task.priority}</p>
-                <p style={{marginLeft: "15px"}}>czas: {task.timeNeeded}</p>
-                <p style={{marginLeft: "15px"}}>data: {task.day}</p>
-                {/* <p style={{marginLeft: "15px"}}>user: {task.userId}</p>
-                <p style={{marginLeft: "15px"}}>rodzic: {task.parentId}</p> */}
-
-            </div>
-
-            <div>
-
-
-                {isExpanded && (
-                    <div style={{ marginLeft: "30px", borderLeft: '3px solid #ccc', paddingLeft: '10px' }}>
-                        
-                        {subtasks.map(subtask => (
-                            <Task 
-                                key={subtask.id} 
-                                task={{ ...subtask, parentId: task.id }} 
-                            />
-                        ))}
-                        
+                {!isSubtask && (
+                    <div className="task-category-header">
+                        {categoryName}
                     </div>
                 )}
+                </div>
 
-            </div>
+                <div className="task-content-box">
 
+                    <div className="task-left">
+                        <div className={`custom-checkbox ${task.completed ? 'checked' : ''}`}>
+                            {task.completed && <div className="dot"></div>}
+                        </div>
+
+                        {hasChildren && (
+                            <div 
+                                className={`expand-arrow ${isExpanded ? 'expanded' : ''}`}
+                                onClick={handleToggleSubtask}
+                            >
+                                ›
+                            </div>
+                        )}
+
+                        <div className="task-info">
+                            <p className={`task-name ${task.completed ? 'completed-text' : ''}`}>
+                                {task.name}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="task-right">
+                        {task.timeNeeded && (
+                            <span className="task-time">
+                                <span className="clock-icon"><Clock className="clock_icon"></Clock></span> {timeDisplay(task.timeNeeded)}
+                            </span>
+                        )}
+                                            
+                    </div>
+                </div>
+            
+
+            {hasChildren && isExpanded && (
+                <div className="subtasks-container">
+                    {subtasks.map(subtask => (
+                        <Task 
+                            key={subtask.id} 
+                            task={{ ...subtask, parentId: task.id }} 
+                            isSubtask={true}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
-
 };
 
 export default Task;
