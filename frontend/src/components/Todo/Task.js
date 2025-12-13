@@ -126,7 +126,6 @@ const Task = ({ task, isSubtask = false, onStatusChange }) => {
         </div>
 
     );
-
 };
 
 export default Task;
