@@ -6,11 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import pl.poznan.put.adhd.adhd_helper.common.UserSecurityService;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskResponse;
 import pl.poznan.put.adhd.adhd_helper.task.specification.TaskFilter;
 import pl.poznan.put.adhd.adhd_helper.task.specification.TaskSpecifications;
 import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
+import pl.poznan.put.adhd.adhd_helper.user.AdhdUserService;
 
 import java.util.Collection;
 
@@ -20,11 +20,12 @@ import java.util.Collection;
 public class TaskService {
 
     private final TaskRepository taskRepository;
-    private final UserSecurityService userSecurityService;
     private final TaskMapper taskMapper;
+    private final AdhdUserService adhdUserService;
 
     public Collection<TaskResponse> getAllTasks(TaskFilter taskFilter, Sort sort) {
-        AdhdUser currentAdhdUser = userSecurityService.getUser();
+
+        AdhdUser currentAdhdUser = adhdUserService.getCurrentUser();
         Collection<Task> parentTasks =
                 taskRepository.findAll(
                         TaskSpecifications.getTaskSpecification(taskFilter, currentAdhdUser), sort);
