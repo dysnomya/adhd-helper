@@ -1,12 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import Button from "react-bootstrap/Button";
 
 import "../styles/sidebar.scss";
 
 export default function LogoutButton() {
   const navigate = useNavigate();
   return (
-    <Button
+    <button
       onClick={() => {
         localStorage.removeItem("token");
         navigate("/");
@@ -14,6 +13,6 @@ export default function LogoutButton() {
       className="logout-button"
     >
       Logout
-    </Button>
+    </button>
   );
 }
