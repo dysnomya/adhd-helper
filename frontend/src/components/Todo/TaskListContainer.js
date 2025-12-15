@@ -21,7 +21,7 @@ const TaskListContainer = ({ datedTasks }) => {
                                 task={task}
                             ></Task>
                         ))}
-                    </div>  
+                    </div>
                 </div>
             ))}
         </div>
