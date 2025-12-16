@@ -1,7 +1,7 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useCallback} from "react";
 import {fetchAllCategories, fetchAllTasks} from "../api/TaskApi";
 
-export const useTaskData = () => {
+export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
 
     const [tasks, setTasks] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -9,58 +9,77 @@ export const useTaskData = () => {
     const [error, setError] = useState(null);
 
 
+    const loadData = useCallback(async () => {
+
+        if (!localStorage.getItem("token")) {
+            setIsLoading(false);
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            const apiFilters = {};
+
+            if (!showAllTasks && selectedDate) {
+                apiFilters.day = selectedDate;
+            }
+
+            if (activeFilter && activeFilter.length > 0) {
+                apiFilters.categories = activeFilter;
+            }
+
+            const [tasksData, categoriesData] = await Promise.all([
+                fetchAllTasks(apiFilters),
+                fetchAllCategories()
+            ]);
+
+
+            const processedTasks = tasksData.map(task => ({
+                ...task,
+                categoryId: task.category ? task.category.id : null,
+                subtasks: task.subtasks || [],
+                hasSubtasks: task.subtasks && task.subtasks.length > 0
+            }));
+
+            setTasks(processedTasks);
+            setCategories(categoriesData);
+
+        } catch (e) {
+            if (e.message === '401 Unauthorized') {
+                localStorage.removeItem("token");
+            } else {
+                console.error("Błąd pobierania danych:", e);
+                setError(e);
+            }
+
+        } finally {
+            setIsLoading(false);
+        }
+
+    }, [activeFilter, selectedDate, showAllTasks]);
+
     useEffect(() => {
-
-        const loadInitialData = async () => {
-
-            if (!localStorage.getItem("token")) {
-                setIsLoading(false);
-                return;
-            }
-
-            setIsLoading(true);
-
-            try {
-
-                const [tasksData, categoriesData] = await Promise.all([
-                    fetchAllTasks(),
-                    fetchAllCategories()
-                ]);
-
-
-                const processedTasks = tasksData.map(task => ({
-                    ...task,
-                    categoryId: task.category ? task.category.id : null,
-                    subtasks: task.subtasks || [],
-                    hasSubtasks: task.subtasks && task.subtasks.length > 0
-                }));
-
-                setTasks(processedTasks);
-                setCategories(categoriesData);
-
-                
-
-            } catch (e) {
-
-                if (e.message === '401 Unauthorized') {
-                    localStorage.removeItem("token");
-                } else {
-                    setError(e);
-                    console.error("Critical error fetching data:", e);
-                }
-
-            } finally {
-                setIsLoading(false);
-            }
-
-        };
-        loadInitialData();
-
-    }, []);
+        loadData();
+    }, [loadData]);
 
 
     const addCategoryLocal = (newCategory) => {
         setCategories(prevCategories => [...prevCategories, newCategory]);
+    };
+
+    const toggleTaskLocal = (taskId, isCompleted) => {
+        setTasks(prevTasks => prevTasks.map(task => {
+            if (task.id === taskId) {
+                const updatedSubtasks = task.subtasks ? task.subtasks.map(sub => ({
+                    ...sub,
+                    completed: isCompleted
+                })) : [];
+
+                return { ...task, completed: isCompleted, subtasks: updatedSubtasks };
+            }
+            return task;
+        }));
     };
 
 
@@ -69,7 +88,8 @@ export const useTaskData = () => {
         categories,
         isLoading,
         error,
-        addCategoryLocal
+        addCategoryLocal,
+        toggleTaskLocal
     };
 
 };
