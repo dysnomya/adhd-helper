@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../styles/calendar.scss";
 import CalendarCell from "../components/Calendar/CalendarCell";
 import CalendarSidePanel from "../components/Calendar/CalendarSidePanel.js";
 import capitalizeFirstLetter from "../functions/TextFunctions.js";
 import { ReactComponent as Arrow } from "../assets/arrow-right.svg";
+import { fetchTaskDataForTimePeriod } from "../api/TaskApi.js";
 
 export default function Calendar() {
     const days = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Ndz"];
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [openPanel, setOpenPanel] = useState(false);
+
+    const [tasks, setTasks] = useState([]);
+    const [tasksForDay, setTasksForDay] = useState([]);
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -27,6 +31,15 @@ export default function Calendar() {
         }
     }
 
+    useEffect(() => {
+        const loadTaskData = async () => {
+            const data = await fetchTaskDataForTimePeriod(new Date(year, month, 1), new Date(year, month + 1, 0));
+            setTasks(data);
+        };
+
+        loadTaskData();
+    }, [year, month]);
+
     const goToPreviousMonth = () => {
         setCurrentDate(new Date(year, month - 1, 1));
     };
@@ -37,6 +50,26 @@ export default function Calendar() {
 
     const selectDate = (day) => {
         setSelectedDate(new Date(year, month, day));
+    }
+
+    const setTaskDataForDay = (day) => {
+        setTasksForDay(tasks.filter(t => 
+            t.day === new Intl.DateTimeFormat('en-CA').format(new Date(year, month, day))
+        ));
+    }
+
+    const getTaskNumberByPriority = (day) => {
+        const tasksForDay = tasks.filter(t => 
+            t.day === new Intl.DateTimeFormat('en-CA').format(new Date(year, month, day))
+        );
+        const tasksLowCount = tasksForDay.filter(t => t.priority === "LOW").length;
+        const tasksMediumCount = tasksForDay.filter(t => t.priority === "MEDIUM").length;
+        const tasksHighCount = tasksForDay.filter(t => t.priority === "HIGH").length;
+        return [
+            tasksLowCount,
+            tasksMediumCount,
+            tasksHighCount
+        ];
     }
 
     return (
@@ -75,7 +108,8 @@ export default function Calendar() {
                             key={index}
                             day={day}
                             openPanel={openPanel}
-                            onClick={() => { day && setOpenPanel(true); day && selectDate(day) }}
+                            taskCounts={getTaskNumberByPriority(day)}
+                            onClick={() => { day && setOpenPanel(true); day && selectDate(day); setTaskDataForDay(day) }}
                         />
                     ))}
                 </div>
@@ -84,7 +118,9 @@ export default function Calendar() {
                 day: "numeric",
                 month: "long",
                 year: "numeric"
-            })} />
+            })}
+                tasks={tasksForDay}
+            />
         </div>
     );
 }

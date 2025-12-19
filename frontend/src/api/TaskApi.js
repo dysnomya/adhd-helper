@@ -69,3 +69,19 @@ export const createCategory = async (categoryData) => {
     return response.json();
 
 };
+
+export const fetchTaskDataForTimePeriod = async (dayFrom, dayTo) => {
+
+    const filters = {
+        "dayFrom": new Intl.DateTimeFormat('en-CA').format(dayFrom),
+        "dayTo": new Intl.DateTimeFormat('en-CA').format(dayTo)
+    };
+
+    const params = new URLSearchParams(filters);
+
+    const taskRes = await fetch(`${TASKS_URL}?${params}`, {
+        headers: getHeaders()
+    });
+
+    return await taskRes.json();
+};
