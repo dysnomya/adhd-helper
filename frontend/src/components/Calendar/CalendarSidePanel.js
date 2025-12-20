@@ -1,17 +1,19 @@
 import { ReactComponent as Arrow } from "../../assets/arrow-right.svg";
 import { ReactComponent as EditButton } from "../../assets/edit-button.svg";
+import { ReactComponent as Pimpus } from "../../assets/pimpus.svg";
 import Task from "../Todo/Task";
 
 export default function CalendarSidePanel(props) {
     return (
         <div
-            className={`side-panel ${props.openPanel ? "open" : ""}`}
+            className={`calendar-side-panel ${props.openPanel ? "open" : ""}`}
             tabIndex={props.openPanel ? 0 : -1}>
-            <div className="side-panel-header">
+            <div className="calendar-side-panel-header">
                 <h1>{props.date}</h1>
+                <Pimpus class="pimpus calendar-pimpus"/>
             </div>
-            <div className="side-panel-content">
-                <div className="side-panel-content-header">
+            <div className="calendar-side-panel-content">
+                <div className="calendar-side-panel-content-header">
                     <Arrow
                         className="arrow-icon arrow-icon-left"
                         onClick={props.onClick}
@@ -28,7 +30,7 @@ export default function CalendarSidePanel(props) {
                     />
                 </div>
                 {props.tasks.length > 0 ?
-                    <div className="side-panel-list">
+                    <div className="calendar-side-panel-list">
                         {props.tasks.map(task => {
                             return (
                                 <Task key={task.id} task={task} />
