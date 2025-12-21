@@ -1,7 +1,8 @@
-
+import img from "../assets/pimpus_anim.webp";
 export default function Dashboard() {
     return (
         <div className=''>
+            <img src={img} width="500px"></img>
             <h1 className='display-4'>This is a dashboard</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vitae pretium magna. Morbi egestas
                 in lectus dapibus convallis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
