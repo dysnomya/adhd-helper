@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { timeDisplay } from "../../functions/TasksHelpers";
 import { ReactComponent as Clock} from "../../assets/clock_icon.svg";
 
+import { ReactComponent as CheckIcon } from "../../assets/check_icon.svg";
+
 const Task = ({ task, isSubtask = false, onStatusChange }) => {
 
     const [isCompleted, setIsCompleted] = useState(task.completed);   // checkbox
@@ -73,7 +75,7 @@ const Task = ({ task, isSubtask = false, onStatusChange }) => {
                             className={`custom-checkbox ${task.completed ? 'checked' : ''}`}
                             onClick={handleCheckedTask}
                         >
-                            {isCompleted && <div className="dot"></div>}
+                            {isCompleted && <CheckIcon className="dot"></CheckIcon>}
                         </div>
 
                         {hasChildren && (

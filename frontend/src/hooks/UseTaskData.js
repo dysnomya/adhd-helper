@@ -78,6 +78,27 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
 
                 return { ...task, completed: isCompleted, subtasks: updatedSubtasks };
             }
+
+            if (task.subtasks && task.subtasks.length > 0) {
+                
+                const subtaskIndex = task.subtasks.findIndex(sub => sub.id === taskId);
+
+                if (subtaskIndex !== -1) {
+                    
+                    const newSubtasks = [...task.subtasks];
+                    
+                    newSubtasks[subtaskIndex] = {
+                        ...newSubtasks[subtaskIndex],
+                        completed: isCompleted
+                    };
+
+                    return {
+                        ...task,
+                        subtasks: newSubtasks
+                    };
+                }
+            }
+
             return task;
         }));
     };

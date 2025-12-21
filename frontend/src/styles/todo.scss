@@ -474,6 +474,34 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     justify-content: center;
     cursor: pointer;
     flex-shrink: 0; 
+
+    transition: all 0.2s ease;
+
+    &.checked {
+        background-color: var(--cat-color);
+        border-color: var(--cat-color);
+    }
+    
+    .dot {
+
+        width: 100%;  
+        height: 100%;
+
+        animation: scaleIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+        path {
+            stroke: white;
+            stroke-width: 4px;
+            stroke-linejoin: round;
+        }
+
+    }
+
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
 }
 
 .task-name {
@@ -535,6 +563,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
         width: 20px;
         height: 20px;
         border-width: 2px;
+
     }
 }
 
@@ -777,20 +806,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
 }
 
 
-.custom-checkbox {
-    transition: background-color 0.2s, border-color 0.2s;
-}
 
-.custom-checkbox.checked {
-    background-color: var(--cat-color); 
-}
-
-.custom-checkbox .dot {
-    width: 8px;
-    height: 8px;
-    background-color: white;
-    border-radius: 50%;
-}
 
 
 // błąd pobrania danych z serwera
