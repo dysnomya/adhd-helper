@@ -10,6 +10,7 @@ import { ReactComponent as Dynks} from "../assets/dynks.svg";
 import { ReactComponent as Filter} from "../assets/Filter_icon.svg";
 import { useLocation } from "react-router-dom";
 import { ReactComponent as SadPimpus } from "../assets/pimpus_sad.svg";
+import DailyProgress from "../components/Todo/DailyProgress";
 
 //  todo?date=2025-12-06
 const Todo = () => {
@@ -194,6 +195,13 @@ const Todo = () => {
             
 
             <div className="todo-main-content-area">
+
+                <div className="todo-daily-wrapper">
+                    <DailyProgress tasks={tasks} />
+                    <div className="todo-progress-pimpus-wrapper">
+                        <SadPimpus className="todo-progress-pimpus" /> 
+                    </div>
+                </div>
 
                 <div className="todo-tasks-list">
 
