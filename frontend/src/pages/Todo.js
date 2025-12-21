@@ -16,12 +16,22 @@ import DailyProgress from "../components/Todo/DailyProgress";
 const Todo = () => {
     const location = useLocation();     // hook do pobrania adresu URL
 
+    const initialFilters = useMemo(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const dateParam = searchParams.get('date');
+        
+        return {
+            date: dateParam || '',
+            showAll: !dateParam
+        };
+    }, [location.search]);
+
     const [activeFilter, setActiveFilter] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    const [selectedDateFilter, setSelectedDateFilter] = useState('');
-    const [showAllTasks, setShowAllTasks] = useState(true);
+    const [selectedDateFilter, setSelectedDateFilter] = useState(initialFilters.date);
+    const [showAllTasks, setShowAllTasks] = useState(initialFilters.showAll);
 
     const [areCategoriesInitialized, setAreCategoriesInitialized] = useState(false);
 
@@ -29,11 +39,13 @@ const Todo = () => {
         const searchParams = new URLSearchParams(location.search);
         const dateParam = searchParams.get('date');
 
-        if (dateParam) {
+        if (dateParam && dateParam !== selectedDateFilter) {
             setSelectedDateFilter(dateParam);
             setShowAllTasks(false);
+        } else if (!dateParam && !showAllTasks && initialFilters.showAll) {
+            setShowAllTasks(true);
         }
-    }, [location]);
+    }, [location.search]);
 
     // Loading tasks data from database
     const {
