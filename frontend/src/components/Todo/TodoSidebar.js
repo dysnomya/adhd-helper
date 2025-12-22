@@ -1,6 +1,8 @@
 import React from 'react';
 import Category from './Category';
 
+import { ReactComponent as EditCategoryIcon } from "../../assets/edit-category.svg";
+
 const TodoSidebar = ({ 
     categories, 
     setActiveFilter, 
@@ -9,7 +11,8 @@ const TodoSidebar = ({
     selectedDate,
     onDateChange,
     showAllTasks,
-    onToggleShowAll
+    onToggleShowAll,
+    onEditCategoryClick
 
 }) => {
 
@@ -70,7 +73,15 @@ const TodoSidebar = ({
 
                     </div>
 
-                    <p className='todo-sidebar-text-titles'>Kategorie</p>
+                    <div className='categories-header-container'>
+                        <p className='todo-sidebar-text-titles'>Kategorie</p>
+                        <EditCategoryIcon 
+                            className='edit-category-button'
+                            onClick={onEditCategoryClick}
+                        />
+                    </div>
+
+
 
                     <div className='todo-sidebar-categories-list'>
 

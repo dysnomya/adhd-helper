@@ -14,6 +14,10 @@ import DailyProgress from "../components/Todo/DailyProgress";
 
 import pimpus from "../assets/pimpus_happy_anim.webp";
 
+import EditCategoryModal from "../components/Todo/EditCategoryModal";
+
+// import { updateCategory, deleteCategory } from "../api/TaskApi";
+
 //  todo?date=2025-12-06
 const Todo = () => {
     const location = useLocation();     // hook do pobrania adresu URL
@@ -37,6 +41,8 @@ const Todo = () => {
 
     const [areCategoriesInitialized, setAreCategoriesInitialized] = useState(false);
 
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const dateParam = searchParams.get('date');
@@ -56,7 +62,9 @@ const Todo = () => {
         isLoading,
         error,
         addCategoryLocal,
-        toggleTaskLocal
+        toggleTaskLocal,
+        updateCategoryLocal,
+        deleteCategoryLocal
     } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
 
 
@@ -144,6 +152,27 @@ const Todo = () => {
     const isFirstLoad = isLoading && tasks.length === 0 && categories.length === 0;
 
 
+    const handleUpdateCategory = async (id, data) => {
+        try {
+            // await updateCategory(id, data);
+            updateCategoryLocal(id, data);
+        } catch (e) {
+            console.error("Błąd edycji kategorii", e);
+            alert("Nie udało się edytować kategorii");
+        }
+    };
+
+    const handleDeleteCategory = async (id) => {
+        try {
+            // await deleteCategory(id);   
+            deleteCategoryLocal(id);
+        } catch (e) {
+            console.error("Błąd usuwania kategorii", e);
+            alert("Nie udało się usunąć kategorii");
+        }
+    };
+
+
     // Debugging - Do usunięcia później
     useEffect(() => {
         if (tasks.length > 0) {
@@ -201,6 +230,8 @@ const Todo = () => {
 
                         showAllTasks={showAllTasks}
                         onToggleShowAll={setShowAllTasks}
+
+                        onEditCategoryClick={() => setIsEditModalOpen(true)}
                     />
 
                 </div>
@@ -249,6 +280,14 @@ const Todo = () => {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onConfirm={handleConfirmAddCategory}
+            />
+
+            <EditCategoryModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                categories={categories}
+                onUpdate={handleUpdateCategory}
+                onDelete={handleDeleteCategory}
             />
 
         </div>

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import pl.poznan.put.adhd.adhd_helper.task.model.TaskRequest;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskResponse;
 import pl.poznan.put.adhd.adhd_helper.task.specification.TaskFilter;
 import pl.poznan.put.adhd.adhd_helper.task.specification.TaskSpecifications;
@@ -31,5 +32,12 @@ public class TaskService {
                         TaskSpecifications.getTaskSpecification(taskFilter, currentAdhdUser), sort);
 
         return taskMapper.toResponse(parentTasks);
+    }
+
+    public TaskResponse insertTask(TaskRequest taskRequest) {
+        Task toSave = taskMapper.toEntity(taskRequest);
+        toSave.setCompleted(false);
+        Task task = taskRepository.save(toSave);
+        return taskMapper.toResponse(task);
     }
 }
