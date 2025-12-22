@@ -1,6 +1,6 @@
 import { ReactComponent as Arrow } from "../../assets/arrow-right.svg";
 import { ReactComponent as EditButton } from "../../assets/edit-button.svg";
-import { ReactComponent as Pimpus } from "../../assets/pimpus.svg";
+import pimpus from "../../assets/pimpus_happy_anim.webp";
 import Task from "../Todo/Task";
 
 export default function CalendarSidePanel(props) {
@@ -10,7 +10,7 @@ export default function CalendarSidePanel(props) {
             tabIndex={props.openPanel ? 0 : -1}>
             <div className="calendar-side-panel-header">
                 <h1>{props.date}</h1>
-                <Pimpus class="pimpus calendar-pimpus"/>
+                <img src={pimpus} className="pimpus calendar-pimpus"/>
             </div>
             <div className="calendar-side-panel-content">
                 <div className="calendar-side-panel-content-header">

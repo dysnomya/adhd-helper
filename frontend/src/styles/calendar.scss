@@ -19,6 +19,7 @@ $calendar-side-panel-content-radius: clamp(1rem, 4vmin, 5rem);
     }
 }
 
+// To powinno być jakoś globalnie żeby nie powtarzać wszędzie idk
 .pimpus {
     filter: hue-rotate(var(--split-hue)) contrast(var(--split-contrast)) brightness(var(--split-brightness));
 }
@@ -255,24 +256,42 @@ $calendar-side-panel-content-radius: clamp(1rem, 4vmin, 5rem);
 
 .calendar-side-panel-header {
     height: 300px;
-    display: grid;
-    align-content: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
     padding-inline: 1em;
     z-index: 1;
     background: linear-gradient(var(--color-accent), var(--color-accent-gradient));
 }
 
-.calendar-pimpus {
-    justify-self: center;
-    transform: scale(1.8);
-    margin-top: 6em;
+.calendar-side-panel-header h1 {
+    color: var(--primary-container-bg);
+    z-index: 2;
+    font-size: 50px;
 }
 
-.calendar-side-panel-header h1 {
-    color: var(--color-on-accent);
-    margin-bottom: -12px;
-    font-size: 50px;
-    z-index: 2;
+.calendar-pimpus {
+    transform: scale(0.8);
+    align-self: center;
+    max-width: 100%;
+    position: absolute;
+    bottom: -250px;
+}
+
+@media (max-width: 768px) {
+    .calendar-side-panel-header {
+        margin-top: 60px;
+    }
+
+
+
+    .calendar-pimpus {
+        bottom: -220px;
+        max-height: 600px;
+        max-width: none;
+    }
 }
 
 .calendar-side-panel-content {
@@ -283,6 +302,12 @@ $calendar-side-panel-content-radius: clamp(1rem, 4vmin, 5rem);
     flex: 1;
     min-height: 0;
     z-index: 5;
+}
+
+@media (max-width: 768px) {
+    .calendar-side-panel-content {
+        padding: 1.5em;
+    }
 }
 
 .calendar-side-panel-content-header {
