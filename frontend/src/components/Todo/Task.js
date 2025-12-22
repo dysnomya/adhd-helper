@@ -88,6 +88,7 @@ const Task = ({ task, isSubtask = false, onStatusChange }) => {
                         <div className="task-info">
                             <p className={`task-name ${task.completed ? 'completed-text' : ''}`}>
                                 {task.name}
+                                {task.priority}
                             </p>
                         </div>
                     </div>

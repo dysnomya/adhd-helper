@@ -30,6 +30,8 @@ const Todo = () => {
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+    const [selectedPriority, setSelectedPriority] = useState(null);
+
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const dateParam = searchParams.get('date');
@@ -51,7 +53,6 @@ const Todo = () => {
         updateCategoryLocal,
         deleteCategoryLocal
     } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
-
 
     useEffect(() => {     
         if (categories.length > 0 && !areCategoriesInitialized) {
@@ -81,6 +82,14 @@ const Todo = () => {
 
         setIsModalOpen(false);
     }
+
+    const tasksFilteredByPriority = useMemo(() => {
+        if (!selectedPriority) return tasks;
+
+        return tasks.filter(task => {
+            return task.priority === selectedPriority;
+        })
+    }, [tasks, selectedPriority]);
 
     const prepareDatedTasks = (tasksToGroup) => {
 
@@ -130,8 +139,8 @@ const Todo = () => {
     }
 
     const datedTasks = useMemo(() => {
-        return prepareDatedTasks(tasks);
-    }, [tasks]);
+        return prepareDatedTasks(tasksFilteredByPriority);
+    }, [tasksFilteredByPriority]);
 
 
     const isFirstLoad = isLoading && tasks.length === 0 && categories.length === 0;
@@ -217,6 +226,9 @@ const Todo = () => {
                         onToggleShowAll={setShowAllTasks}
 
                         onEditCategoryClick={() => setIsEditModalOpen(true)}
+
+                        selectedPriority={selectedPriority}
+                        onPriorityChange={setSelectedPriority}
                     />
 
                 </div>
