@@ -419,6 +419,9 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     transition: transform 0.2s ease;
     border-radius: 20px; 
 
+    display: flex;
+    flex-direction: column;
+
     &:hover {
     transform: translateY(-2px);
     }
@@ -547,16 +550,16 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
 
 .is-subtask {
     margin-bottom: 0px;
+    margin-top: 7px;
 
     .task-card {
-        background-color: transparent; 
         box-shadow: none;
         padding: 0;
+    }
 
-        .task-content-box {
-            border: 1px solid #eee;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
+    .task-content-box {
+        border: 1px solid #eee;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
 
     .custom-checkbox {
@@ -1057,4 +1060,79 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
 @keyframes popIn {
     0% { transform: scale(0); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }
+}
+
+
+// Options
+
+.task-expand-options {
+
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &.options-expanded {
+        transform: scaleX(-1);
+    }
+}
+
+.task-row-wrapper {
+    position: relative; 
+    overflow: hidden;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.task-options-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    
+    width: 60px;
+    background-color: var(--color-calendar-detail);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    
+    padding: 6px;
+    padding-left: 25px;
+
+    z-index: 1;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+
+    .option-btn {
+        color: white;
+        cursor: pointer;
+        transition: transform 0.2s;
+        padding: 1px;
+        filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.5));
+        
+        &.delete { color: #ff5555; }
+        &:hover { transform: scale(1.2); }
+    }
+}
+
+.task-swipe-content {
+    position: relative;
+    z-index: 2;
+    background-color: transparent;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    
+    &.panel-open {
+        margin-right: 36px;
+    }
+}
+
+.task-card, .task-content-box {
+   position: relative;
+}
+
+.subtask-header {
+    color: var(--secondary-container-bg);
+    padding: 0px 15px; 
+    margin-top: -6px;
+
 }
