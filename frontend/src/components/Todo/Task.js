@@ -10,7 +10,7 @@ import { ReactComponent as EditIcon } from "../../assets/edit-button.svg";
 import { ReactComponent as SplitIcon } from "../../assets/split-button.svg";
 import { ReactComponent as DeleteIcon } from "../../assets/delete-button.svg";
 
-const Task = ({ task, isSubtask = false, onStatusChange }) => {
+const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false }) => {
 
     const [isCompleted, setIsCompleted] = useState(task.completed);   // checkbox
     const [isExpanded, setIsExpanded] = useState(false);    // subtasks
@@ -85,7 +85,7 @@ const Task = ({ task, isSubtask = false, onStatusChange }) => {
 
             <div className="task-row-wrapper">
 
-                <div className="task-options-panel">
+                <div className={`task-options-panel ${inCalendar ? 'in-calendar' : ''}`}>
                     <EditIcon 
                         className="option-btn edit" 
                         onClick={handleOptionClickEdit}
@@ -153,7 +153,7 @@ const Task = ({ task, isSubtask = false, onStatusChange }) => {
                             )}
 
                             <TriangleArrowIcon 
-                                className={`task-expand-options ${isExpandedOptions ? 'options-expanded' : ''}`} 
+                                className={`task-expand-options ${isExpandedOptions ? 'options-expanded' : ''} ${inCalendar ? 'in-calendar' : ''}`} 
                                 onClick={handleExpandOptions}
                             />
                         
