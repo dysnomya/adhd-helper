@@ -10,7 +10,7 @@ export default function CalendarSidePanel(props) {
             tabIndex={props.openPanel ? 0 : -1}>
             <div className="calendar-side-panel-header">
                 <h1>{props.date}</h1>
-                <img src={pimpus} className="pimpus calendar-pimpus"/>
+                <img src={pimpus} alt="Pimpuś" className="pimpus calendar-pimpus"/>
             </div>
             <div className="calendar-side-panel-content">
                 <div className="calendar-side-panel-content-header">
