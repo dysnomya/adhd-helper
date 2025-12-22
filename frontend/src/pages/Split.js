@@ -22,8 +22,8 @@ const Split = () => {
 
 
     // Inicjalizacja Gemini (Klucz API najlepiej trzymać w .env)
-    // const genAI = new GoogleGenerativeAI("AIzaSyA1UoiLF7bVwrKgw1sgx-fo_E7KDmbakgA");
-    const genAI = new GoogleGenerativeAI("AIzaSyASUp9UVlusUXn-_wL_K9Fk_NkST9UZbSg");
+    // const genAI = new GoogleGenerativeAI("");
+    const genAI = new GoogleGenerativeAI("");
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const SplitTaskButtonClicked = async () => {
