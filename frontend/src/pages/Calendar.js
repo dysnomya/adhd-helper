@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "../styles/calendar.scss";
 import CalendarCell from "../components/Calendar/CalendarCell";
 import CalendarSidePanel from "../components/Calendar/CalendarSidePanel.js";
-import capitalizeFirstLetter from "../functions/TextFunctions.js";
+import { capitalizeFirstLetter } from "../functions/TextFunctions.js";
 import { ReactComponent as Arrow } from "../assets/arrow-right.svg";
 import { fetchTaskDataForTimePeriod } from "../api/TaskApi.js";
 
@@ -114,11 +114,7 @@ export default function Calendar() {
                     ))}
                 </div>
             </div>
-            <CalendarSidePanel openPanel={openPanel} onClick={() => setOpenPanel(false)} date={selectedDate?.toLocaleString("default", {
-                day: "numeric",
-                month: "long",
-                year: "numeric"
-            })}
+            <CalendarSidePanel openPanel={openPanel} onClick={() => setOpenPanel(false)} date={selectedDate}
                 tasks={tasksForDay}
             />
         </div>

@@ -2,8 +2,16 @@ import { ReactComponent as Arrow } from "../../assets/arrow-right.svg";
 import { ReactComponent as EditButton } from "../../assets/edit-button.svg";
 import pimpus from "../../assets/pimpus_happy_anim.webp";
 import Task from "../Todo/Task";
+import { useNavigate } from "react-router-dom";
+import { getDateString } from "../../functions/TextFunctions";
+
 
 export default function CalendarSidePanel(props) {
+    const navigate = useNavigate();
+    const redirectTodo = () => {
+        navigate("/todo?date=" + getDateString(props.date));
+    }
+
     return (
         <div
             className={`calendar-side-panel ${props.openPanel ? "open" : ""}`}
@@ -16,7 +24,9 @@ export default function CalendarSidePanel(props) {
                 <div className="calendar-side-panel-content-header">
                     <Arrow
                         className="arrow-icon arrow-icon-left"
-                        onClick={props.onClick}
+                        onClick={() => {
+                            props.onClick();
+                        }}
                         tabIndex={0}
                         onKeyDown={(e) => {
                             if (e.key === "Enter" || e.key === " ") {
@@ -27,6 +37,14 @@ export default function CalendarSidePanel(props) {
                     <EditButton
                         className="edit-icon"
                         tabIndex={0}
+                        onClick={() => {
+                            redirectTodo();
+                        }}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                redirectTodo();
+                            }
+                        }}
                     />
                 </div>
                 {props.tasks.length > 0 ?
@@ -39,7 +57,7 @@ export default function CalendarSidePanel(props) {
                     </div>
                     :
                     <div className="calendar-no-data-text">
-                        <p>Nie dodano jeszcze żadnych zadań do&nbsp;tego dnia. Kliknij na&nbsp;ikonę <EditButton/> w&nbsp;prawym górnym rogu lub przejdź do&nbsp;zakładki ToDo, aby dodać nowe zadania.</p>
+                        <p>Nie dodano jeszcze żadnych zadań do&nbsp;tego dnia. Kliknij na&nbsp;ikonę <EditButton /> w&nbsp;prawym górnym rogu lub przejdź do&nbsp;zakładki ToDo, aby dodać nowe zadania.</p>
                     </div>
                 }
 
