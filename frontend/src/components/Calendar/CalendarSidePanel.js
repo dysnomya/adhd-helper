@@ -17,7 +17,11 @@ export default function CalendarSidePanel(props) {
             className={`calendar-side-panel ${props.openPanel ? "open" : ""}`}
             tabIndex={props.openPanel ? 0 : -1}>
             <div className="calendar-side-panel-header">
-                <h1>{props.date}</h1>
+                <h1>{props.date?.toLocaleString("default", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                })}</h1>
                 <img src={pimpus} alt="Pimpuś" className="pimpus calendar-pimpus"/>
             </div>
             <div className="calendar-side-panel-content">
