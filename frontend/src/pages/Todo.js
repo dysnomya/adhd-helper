@@ -12,6 +12,8 @@ import { useLocation } from "react-router-dom";
 import { ReactComponent as SadPimpus } from "../assets/pimpus_sad.svg";
 import DailyProgress from "../components/Todo/DailyProgress";
 
+import pimpus from "../assets/pimpus_happy_anim.webp";
+
 //  todo?date=2025-12-06
 const Todo = () => {
     const location = useLocation();     // hook do pobrania adresu URL
@@ -39,13 +41,13 @@ const Todo = () => {
         const searchParams = new URLSearchParams(location.search);
         const dateParam = searchParams.get('date');
 
-        if (dateParam && dateParam !== selectedDateFilter) {
-            setSelectedDateFilter(dateParam);
+        if (dateParam) {
+            setSelectedDateFilter(prev => (prev !== dateParam ? dateParam : prev));
             setShowAllTasks(false);
-        } else if (!dateParam && !showAllTasks && initialFilters.showAll) {
-            setShowAllTasks(true);
+        } else if (initialFilters.showAll) {
+            setShowAllTasks(prev => (!prev ? true : prev));
         }
-    }, [location.search]);
+    }, [location.search, initialFilters]);
 
     // Loading tasks data from database
     const {
@@ -209,9 +211,19 @@ const Todo = () => {
             <div className="todo-main-content-area">
 
                 <div className="todo-daily-wrapper">
-                    <DailyProgress tasks={tasks} />
+                    <DailyProgress 
+                    />
+                    <div className="add-task-btn-container">
+                        <button className="add-task-btn">
+                        + Nowe zadanie
+                    </button>
+                    </div>
                     <div className="todo-progress-pimpus-wrapper">
-                        <SadPimpus className="todo-progress-pimpus" /> 
+                        <img 
+                            src={pimpus} 
+                            alt="Happy Pimpus" 
+                            className="todo-progress-pimpus"
+                        />
                     </div>
                 </div>
 

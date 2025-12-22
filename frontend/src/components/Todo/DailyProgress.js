@@ -1,33 +1,20 @@
 import React from "react";
 
 
+const DailyProgress = () => {
 
-const DailyProgress = ({ tasks }) => {
+    const completedTasks = 2;
+    const totalTasks = 3;
 
-    const getTodayString = () => {
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    };
-
-    const today = getTodayString();
-
-    const todayTasks = tasks.filter(task => task.day === today);
-    const totalTodayTasks = todayTasks.length;
-
-    const completedTodayTasks = todayTasks.filter(task => task.completed).length;
-
-    const percentage = totalTodayTasks === 0 ? 0 : Math.round((completedTodayTasks / totalTodayTasks) * 100);
+    const percentage = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
 
     return (
         <div className="todo-daily-progress-container">
             
                 
-            {totalTodayTasks === 0 ? (
+            {totalTasks === 0 ? (
                 <div className="todo-progress-no-tasks-message">
-                    <p>Brak zadań zaplanowanych na dzisiaj! </p>
+                    <p>Brak zaplanowanych zadań! </p>
                 </div>
             ) : (
                 <>
