@@ -8,6 +8,7 @@ import { ReactComponent as Clock} from "../../assets/clock_icon.svg";
 const SplitTask = ({ task, isSubtask = false }) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isActionsShown, setIsActionsShown] = useState(false);
     // const [subtasks, setSubtasks] = useState(task.subtasks || []);
     const subtasks = task.subtasks || [];
     const hasChildren = subtasks.length > 0;
@@ -17,14 +18,14 @@ const SplitTask = ({ task, isSubtask = false }) => {
 
     const handleToggleSubtask = async () => {
         if(!hasChildren) return;
-        // const newState = !isExpanded;
+        const newState = !isExpanded;
         setIsExpanded(!isExpanded);
     };
 
     return (
 
         <div 
-            className={`split-task-container ${isSubtask ? 'is-subtask' : ''}`}
+            className={`split-task-container  ${isActionsShown ? 'actions-shown' : ''} ${isSubtask ? 'is-subtask' : ''}`}
             style={{ '--cat-color': categoryColor }}
         >
             <div className="split-task-card">
@@ -62,6 +63,7 @@ const SplitTask = ({ task, isSubtask = false }) => {
                         {task.timeNeeded && (
                             <span className="split-task-time">
                                 <span className="clock-icon"><Clock className="clock_icon"></Clock></span> {timeDisplay(task.timeNeeded)}
+                                <button onClick={() => setIsActionsShown(!isActionsShown)}>rozw</button>
                             </span>
                         )}
                         

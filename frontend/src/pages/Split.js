@@ -57,11 +57,11 @@ const Split = () => {
                 - "name": krótka nazwa kroku
                 - "day": użyj dzisiejszej daty (${new Date().toISOString().split('T')[0]})
                 - "priority": wybierz jedną z wartości: 'VERY_LOW', 'LOW', 'MEDIUM', 'HIGH', 'VERY_HIGH'
-                - "time": wyestymuj czas wykonywania zadania w minutach
+                - "timeNeeded": wyestymuj czas wykonywania zadania w minutach
                 
                 Format wyjściowy:
                 [
-                {"id": ..., "name": "...", "day": "...", "priority": "...", "time": ...},
+                {"id": ..., "name": "...", "day": "...", "priority": "...", "timeNeeded": ...},
                 ...
                 ]
             `;
