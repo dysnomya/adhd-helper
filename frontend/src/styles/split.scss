@@ -9,7 +9,7 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     display:flex;
     flex-direction: column;
     justify-content: stretch;
-    height: 100%;
+    height: 100vh;
     width: 100%;
 }
 
@@ -99,7 +99,8 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
 
 .split-body{
     background-color: var(--color-card-bg);
-    height: 100%;
+    flex: 1;
+    min-height: 0;
     border-radius: 30px;
     margin-top: 30px;
     box-shadow: $shadow2;
@@ -159,7 +160,9 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     line-height: 1;
 }
 
-
+.splitted{
+    background-color: var(--primary-container-bg);
+}
 
 
 
@@ -167,21 +170,32 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
 
 
 .split-task-list-container {
-    margin: 10px 20px;
+    margin: 14px 10px;
+    padding: 6px 10px 6px 10px ;
     width:100%;
+    flex: 1;
+    border-radius: 20px;
 
+    background-color: var(--primary-container-bg);
 
     font-family: "Lexend", sans-serif;
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
 
 
 
-.task-container {
+.split-task-container {
     position: relative;
     font-family: "Lexend", sans-serif;
     box-shadow: $shadow2;
     transition: transform 0.2s ease;
     border-radius: 20px; 
+        margin-top: 10px;
+
+    &:first-child{
+        margin-top: 0;
+    }
 
     &:hover {
     transform: translateY(-2px);
@@ -199,13 +213,13 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     height: 66px;
 }
 
-.split-task-category-header {
+.split-task-id-header {
     letter-spacing: -0.5px;
     color: var(--secondary-container-bg);
     font-weight: 600;
     font-size: 24px;
     padding: 0px 15px; 
-    margin-top: 10px;
+    
     text-transform: capitalize;
     
 }
@@ -236,7 +250,6 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
     flex-shrink: 0; 
 }
 
@@ -302,5 +315,25 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     }
 }
 
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
+.loader {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  
+  /* Ustawiamy grubość ramki i jej styl */
+  border: 6px solid transparent; /* Bazowy kolor jest przezroczysty */
+  
+  /* Ustawiamy kolor dla górnej I dolnej krawędzi, co daje efekt dwóch łuków */
+  border-top-color: #ff6b6b; /* Np. koralowy kolor */
+  border-bottom-color: #ff6b6b;
+  
+  /* Jeśli chcesz tylko jeden łuk, usuń linijkę z border-bottom-color */
+
+  animation: spin 1.2s linear infinite; /* Nieco wolniejszy obrót */
+}
 

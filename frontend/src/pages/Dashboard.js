@@ -1,4 +1,4 @@
-import img from "../assets/pimpus_anim.webp";
+import img from "../assets/pimpus_happy_anim.webp";
 export default function Dashboard() {
     return (
         <div className=''>
