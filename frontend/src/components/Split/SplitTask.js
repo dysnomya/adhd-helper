@@ -7,10 +7,11 @@ import { ReactComponent as Edit} from "../../assets/Edit 2.svg";
 import { ReactComponent as Delete} from "../../assets/Trash.svg";
 import { ReactComponent as Accept} from "../../assets/Check.svg";
 import { ReactComponent as Cancel} from "../../assets/X.svg";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // import { fetchSubtasks } from "../../api/TaskApi"
 
-const SplitTask = ({ task, isSubtask = false }) => {
+const SplitTask = ({ task, isSubtask = false, onDelete }) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [isEdited, setIsEdited] = useState(false);
@@ -19,10 +20,11 @@ const SplitTask = ({ task, isSubtask = false }) => {
     const [taskTime, setTaskTime] = useState(task.timeNeeded);
     const [taskTimeMetric, setTaskTimeMetric] = useState('min');
     const [oldTaskTimeMetric, setOldTaskTimeMetric] = useState('min');
-    // const [subtasks, setSubtasks] = useState(task.subtasks || []);
-    const subtasks = task.subtasks || [];
-    const hasChildren = subtasks.length > 0;
+    const [subtasks, setSubtasks] = useState([]);
+    const [hasChildren, setHasChildren] = useState(false);
     
+    const genAI = new GoogleGenerativeAI("AIzaSyASUp9UVlusUXn-_wL_K9Fk_NkST9UZbSg");
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const categoryColor = task.category ? task.category.color : "#828282ff";
     const categoryName = task.category ? task.category.name : 'Ogólne';
@@ -32,6 +34,36 @@ const SplitTask = ({ task, isSubtask = false }) => {
         const newState = !isExpanded;
         setIsExpanded(!isExpanded);
     };
+
+    const splitSubTask = async () => {
+        const prompt = `
+                Rozbij zadanie "${task.name}" na kilka (do 8) mniejszych kroków.
+                Zwróć odpowiedź WYŁĄCZNIE jako czysty tablicowy format JSON.
+                Każdy obiekt w tablicy musi mieć pola:
+                - "id": numer kroku
+                - "name": krótka nazwa kroku
+                - "day": użyj dzisiejszej daty (${new Date().toISOString().split('T')[0]})
+                - "timeNeeded": wyestymuj czas wykonywania zadania w minutach
+                
+                Format wyjściowy:
+                [
+                {"id": ..., "name": "...", "day": "...", "timeNeeded": ...},
+                ...
+                ]
+            `;
+
+            const result = await model.generateContent(prompt);
+            const responseText = result.response.text();
+            
+            // Oczyszczanie tekstu (Gemini czasem dodaje ```json ... ```)
+            const cleanedJson = responseText.replace(/```json|```/g, "").trim();
+            const newSubTasks = JSON.parse(cleanedJson);
+
+            setSubtasks(newSubTasks);
+            setHasChildren(newSubTasks.length > 0);
+
+            console.log("Wygenerowane podzadania:", newSubTasks);
+    }
 
     const TaskInfo = () =>{
         if (isEdited) return(
@@ -84,8 +116,8 @@ const SplitTask = ({ task, isSubtask = false }) => {
                 ) : (
                     <div className="split-task-bg-icons">
                         <Edit className="split-task-bg-icon" onClick={() => setIsEdited(true)}></Edit>
-                        <SplitIcon className="split-task-bg-icon"onClick={() => task.name = taskName}></SplitIcon>
-                        <Delete className="split-task-bg-icon" onClick={() => setIsEdited(false)}></Delete>
+                        <SplitIcon className="split-task-bg-icon"onClick={splitSubTask}></SplitIcon>
+                        <Delete className="split-task-bg-icon" onClick={onDelete}></Delete>
                     </div>
                 )}
                 
@@ -147,7 +179,14 @@ const SplitTask = ({ task, isSubtask = false }) => {
                                         <span><span className="clock-icon"><Clock className="clock_icon"></Clock></span> {timeDisplay(task.timeNeeded)}</span>
                                     )
                                 }
-                                <button onClick={() => {setIsActionsShown(!isActionsShown); setIsEdited(!isEdited);}}>rozw</button>
+                                
+                                {isSubtask ? (
+                                    <span></span>
+                                ) : (
+                                    <button onClick={() => {setIsActionsShown(!isActionsShown); if(isActionsShown) setIsEdited(false);}}>rozw</button>
+                                )}
+
+                                
                             </span>
                         )}
                         
