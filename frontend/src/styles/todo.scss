@@ -431,7 +431,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
 }
 
 .task-card {
-    background-color: var(--cat-color); 
+    background: linear-gradient(90deg, var(--cat-color) 15%, var(--cat-color) 85%);
     border-radius: 20px; 
     
     position: relative;
