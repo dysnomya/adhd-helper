@@ -315,13 +315,40 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     }
 }
 
+.split-task-bg{
+    width:100%;
+    height: 82px;
+    background-color: var(--color-calendar-detail);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.split-task-card-container{
+    position: relative;
+    margin-top: -82px;
+}
+
+.split-task-bg-icons{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 5px;
+    padding-right: 10px;
+}
+.split-task-bg-icon{
+    width: 16px;
+    height: 16px;
+}
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
 .actions-shown{
-    margin-right: 50px;
+    margin-right: 34px;
 }
 
 .loader {

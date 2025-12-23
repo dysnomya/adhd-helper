@@ -2,16 +2,27 @@
 import React, { useState } from "react";
 import { timeDisplay } from "../../functions/TasksHelpers";
 import { ReactComponent as Clock} from "../../assets/clock_icon.svg";
+import { ReactComponent as SplitIcon} from "../../assets/Git merge.svg";
+import { ReactComponent as Edit} from "../../assets/Edit 2.svg";
+import { ReactComponent as Delete} from "../../assets/Trash.svg";
+import { ReactComponent as Accept} from "../../assets/Check.svg";
+import { ReactComponent as Cancel} from "../../assets/X.svg";
 
 // import { fetchSubtasks } from "../../api/TaskApi"
 
 const SplitTask = ({ task, isSubtask = false }) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isEdited, setIsEdited] = useState(false);
     const [isActionsShown, setIsActionsShown] = useState(false);
+    const [taskName, setTaskName] = useState(task.name);
+    const [taskTime, setTaskTime] = useState(task.timeNeeded);
+    const [taskTimeMetric, setTaskTimeMetric] = useState('min');
+    const [oldTaskTimeMetric, setOldTaskTimeMetric] = useState('min');
     // const [subtasks, setSubtasks] = useState(task.subtasks || []);
     const subtasks = task.subtasks || [];
     const hasChildren = subtasks.length > 0;
+    
 
     const categoryColor = task.category ? task.category.color : "#828282ff";
     const categoryName = task.category ? task.category.name : 'Ogólne';
@@ -22,19 +33,72 @@ const SplitTask = ({ task, isSubtask = false }) => {
         setIsExpanded(!isExpanded);
     };
 
+    const TaskInfo = () =>{
+        if (isEdited) return(
+            <input value={taskName} className={`split-task-name `} onChange={e => setTaskName(e.target.value)}>
+            </input>
+        )
+        else return(
+            <p className={`split-task-name `}>
+                {task.name}
+            </p>
+        )
+    }
+
     return (
 
         <div 
-            className={`split-task-container  ${isActionsShown ? 'actions-shown' : ''} ${isSubtask ? 'is-subtask' : ''}`}
+            className={`split-task-container ${isSubtask ? 'is-subtask' : ''}`}
             style={{ '--cat-color': categoryColor }}
         >
-            <div className="split-task-card">
-
-                {!isSubtask && (
-                    <div className="split-task-id-header">
-                        {task.id}
+            <div className="split-task-bg">
+                {isEdited ? (
+                    <div className="split-task-bg-icons">
+                        <Accept className="split-task-bg-icon" onClick={() => {
+                            
+        
+                            task.name = taskName;
+                            console.log(oldTaskTimeMetric);
+                            console.log(taskTimeMetric);
+                            if (taskTimeMetric != oldTaskTimeMetric){
+                                if(oldTaskTimeMetric == 'h') {
+                                    task.timeNeeded = taskTime/60;
+                                    setTaskTime(taskTime/60);
+                                }
+                                if(oldTaskTimeMetric == 'min'){
+                                    task.timeNeeded = taskTime*60;
+                                    setTaskTime(taskTime*60);
+                                } 
+                                
+                                setOldTaskTimeMetric(taskTimeMetric);
+                            }else{
+                                task.timeNeeded = taskTime
+                            }
+                            
+                            console.log(task.timeNeeded)
+                            setIsEdited(false);
+                            }}></Accept>
+                        <Cancel className="split-task-bg-icon" onClick={() => setIsEdited(false)}></Cancel>
+                     
+                    </div>
+                ) : (
+                    <div className="split-task-bg-icons">
+                        <Edit className="split-task-bg-icon" onClick={() => setIsEdited(true)}></Edit>
+                        <SplitIcon className="split-task-bg-icon"onClick={() => task.name = taskName}></SplitIcon>
+                        <Delete className="split-task-bg-icon" onClick={() => setIsEdited(false)}></Delete>
                     </div>
                 )}
+                
+
+            </div>
+            <div className={`split-task-card-container ${isActionsShown ? 'actions-shown' : ''}`}>
+                <div className="split-task-card">
+
+                    {!isSubtask && (
+                        <div className="split-task-id-header">
+                            {task.id}
+                        </div>
+                    )}
                 </div>
                 <div className="split-task-content-box">
 
@@ -53,17 +117,37 @@ const SplitTask = ({ task, isSubtask = false }) => {
                         )}
 
                         <div className="split-task-info">
-                            <p className={`split-task-name `}>
-                                {task.name}
-                            </p>
+                            {isEdited ? (
+                                <input 
+                                    value={taskName} 
+                                    className="split-task-name" 
+                                    onChange={e => setTaskName(e.target.value)}
+                                    autoFocus // Opcjonalnie: pomaga ustawić fokus przy wejściu w tryb edycji
+                                />
+                            ) : (
+                                <p className="split-task-name">
+                                    {task.name}
+                                </p>
+                            )}
                         </div>
                     </div>
 
                     <div className="split-task-right">
-                        {task.timeNeeded && (
+                        {(task.timeNeeded || isEdited) && (
                             <span className="split-task-time">
-                                <span className="clock-icon"><Clock className="clock_icon"></Clock></span> {timeDisplay(task.timeNeeded)}
-                                <button onClick={() => setIsActionsShown(!isActionsShown)}>rozw</button>
+                                {isEdited ? (
+                                        <span>
+                                        <input type="number" value={oldTaskTimeMetric == "h" ? taskTime/60 : taskTime} className={`split-task-time `} onChange={e => setTaskTime(e.target.value)}></input>
+                                        <select name="time-select" value={taskTimeMetric}  className={`split-task-time-select `} onChange={e => {setTaskTimeMetric(e.target.value); console.log(taskTimeMetric);}}>
+                                            <option value="min">min</option>
+                                            <option value="h">h</option>
+                                        </select>
+                                        </span>
+                                    ) : (
+                                        <span><span className="clock-icon"><Clock className="clock_icon"></Clock></span> {timeDisplay(task.timeNeeded)}</span>
+                                    )
+                                }
+                                <button onClick={() => {setIsActionsShown(!isActionsShown); setIsEdited(!isEdited);}}>rozw</button>
                             </span>
                         )}
                         
@@ -71,19 +155,20 @@ const SplitTask = ({ task, isSubtask = false }) => {
                     </div>
 
                 </div>
-            
+                
 
-            {hasChildren && isExpanded && (
-                <div className="split-subtasks-container">
-                    {subtasks.map(subtask => (
-                        <SplitTask 
-                            key={subtask.id} 
-                            task={{ ...subtask, parentId: task.id }} 
-                            isSubtask={true}
-                        />
-                    ))}
-                </div>
-            )}
+                {hasChildren && isExpanded && (
+                    <div className="split-subtasks-container">
+                        {subtasks.map(subtask => (
+                            <SplitTask 
+                                key={subtask.id} 
+                                task={{ ...subtask, parentId: task.id }} 
+                                isSubtask={true}
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
 
         </div>
 
