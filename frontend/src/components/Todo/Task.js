@@ -227,6 +227,16 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                                                 <p>{cat.name}</p>
                                             </div>
                                         ))}
+                                        <div 
+                                            className="edit-task-category-item"
+                                            style={{'--cat-color': "#828282ff"}}
+                                            onClick={() => {
+                                                setEditCategory(null);
+                                                setIsCatPopupOpen(null);
+                                            }}
+                                        >
+                                            <p>Bez kategorii</p>
+                                        </div>
                                     </div>
                                 </DropdownPortal>
                             )}
