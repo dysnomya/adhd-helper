@@ -57,7 +57,8 @@ const Todo = () => {
         error,
         addCategoryLocal,
         toggleTaskLocal,
-        deleteTaskLocal
+        deleteTaskLocal,
+        updateTaskLocal
     } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
 
 
@@ -152,6 +153,16 @@ const Todo = () => {
         } catch (e) {
             console.error("Błąd usuwania zadania", e);
             alert("Nie udało się usunąć zadania.");
+        }
+    };
+
+    const handleUpdateTask = async (taskId, updatedData) => {
+        try {
+            // API CALL
+            updateTaskLocal(taskId, updatedData);
+        } catch (e) {
+            console.error("Błąd edycji zadania", e);
+            alert("Nie udało się zedytować zadania.");
         }
     };
 
@@ -251,6 +262,8 @@ const Todo = () => {
                         datedTasks={datedTasks} 
                         onTaskStatusChange={toggleTaskLocal}
                         onDeleteTask={handleDeleteTask}
+                        onUpdateTask={handleUpdateTask}
+                        categories={categories}
                     ></TaskListContainer>
                 </div>
                 

@@ -108,7 +108,7 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         setTasks(prevTasks => {
             const filteredTasks = prevTasks.filter(task => task.id !== taskId);
 
-            if(filteredTasks.length != prevTasks.length) {
+            if(filteredTasks.length !== prevTasks.length) {
                 return filteredTasks;
             }
 
@@ -125,6 +125,34 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
     };
 
 
+    const updateTaskLocal = (taskId, updatedData) => {
+        setTasks(prevTasks => prevTasks.map(task => {
+
+            // task
+            if (task.id === taskId) {
+                return {
+                    ...task,
+                    ...updatedData
+                };
+            }
+
+            // subtask
+            if (task.subtasks) {
+                const subtaskIndex = task.subtasks.findIndex(subtask => subtask.id === taskId);
+
+                if (subtaskIndex !== -1) {
+                    const newSubtasks = [...task.subtasks];
+                    newSubtasks[subtaskIndex] = { ...newSubtasks[subtaskIndex], ...updatedData };
+                    return { ...task, subtasks: newSubtasks };
+                }
+            }
+            
+            return task;
+
+        }));
+    };
+
+
     return {
         tasks,
         categories,
@@ -132,7 +160,8 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         error,
         addCategoryLocal,
         toggleTaskLocal,
-        deleteTaskLocal
+        deleteTaskLocal,
+        updateTaskLocal
     };
 
 };
