@@ -1590,3 +1590,26 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
        width: 90%;
     }
 }
+
+.edit-date-picker-container {
+    position: absolute;
+    top: -35px;
+    left: 0;
+    background: var(--color-card-bg);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    z-index: 2000;
+    left: auto; 
+    right: 20px;
+    border-radius: 20px;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .date-input {
+        background: var(--color-card-bg);
+        border: none;
+        cursor: pointer;
+    }
+}

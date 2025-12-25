@@ -58,9 +58,11 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
     const [editTimeUnit, setEditTimeUnit] = useState('min');
     const [editCategory, setEditCategory] = useState(task.category || null);
     const [editPriority, setEditPriority] = useState(task.priority || null);
+    const [editDate, setEditDate] = useState(task.day);
 
     const [isCatPopupOpen, setIsCatPopupOpen] = useState(null);
     const [isPrioPopupOpen, setIsPrioPopupOpen] = useState(null);
+    const [isDatePopupOpen, setIsDatePopupOpen] = useState(null);
 
     useEffect(() => {
         setIsCompleted(task.completed);
@@ -130,6 +132,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
         setEditCategory(task.category);
         setEditPriority(task.priority);
         setIsEditing(true);
+        setEditDate(task.day);
     };
 
     const handleSaveEdit = async (e) => {
@@ -143,7 +146,8 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
             name: editName,
             timeNeeded: timeNeededConvert,
             category: editCategory,
-            priority: editPriority
+            priority: editPriority,
+            day: editDate
         };
 
         try {
@@ -182,6 +186,24 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
             setIsCatPopupOpen(null);
         }
     };
+
+    const handleDateClick = (e) => {
+        e.stopPropagation();
+        if (isDatePopupOpen) {
+            setIsDatePopupOpen(null);
+        } else {
+            const rect = e.currentTarget.getBoundingClientRect();
+            setIsDatePopupOpen(rect);
+            setIsCatPopupOpen(null);
+            setIsPrioPopupOpen(null);
+        }
+    };
+
+    const handleDateInput = (e) => {
+        const newDate = e.target.value;
+        setEditDate(newDate);
+    };
+
     
     let selectedCategory = null;
     if (editCategory !== null) {
@@ -293,7 +315,26 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
 
                     <div className="task-edit-actions-sidebar">
                         <CheckIcon className="action-btn confirm" onClick={handleSaveEdit}></CheckIcon>
-                        <CalendarIcon className="action-btn date"></CalendarIcon>
+                        <CalendarIcon 
+                            className="action-btn date"
+                            onClick={handleDateClick}
+                        ></CalendarIcon>
+
+                        {isDatePopupOpen && (
+                            <DropdownPortal rect={isDatePopupOpen} onClose={() => setIsDatePopupOpen(null)}>
+                                <div className='edit-date-picker-container'>
+                                    <input 
+                                        type="date" 
+                                        className="date-input"
+                                        value={editDate}
+                                        onChange={handleDateInput}
+                                    />
+
+                                </div>
+                            </DropdownPortal>
+                        )}
+                        
+
                         <XIcon className="action-btn cancel" onClick={handleCancelEdit}></XIcon>
                     </div>
 
