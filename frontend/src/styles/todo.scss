@@ -1554,3 +1554,27 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
 .default {
     background-color: #828282ff;
 }
+
+
+.editing-subtask {
+    .task-edit-header {
+        background: linear-gradient(90deg, var(--cat-color) 0%, var(--prio-color-edit) 100%);
+    }
+
+    .edit-header-item:first-child {
+        pointer-events: none;
+        visibility: hidden;
+    }
+
+    .edit-circle-icon {
+        width: 20px;
+        height: 20px;
+        border-width: 2px;
+        border-color: var(--cat-color);
+    }
+
+    .action-btn.date {
+        pointer-events: none;
+        visibility: hidden;
+    }
+}

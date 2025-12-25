@@ -150,7 +150,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
             await onUpdateTask(task.id, updatedData);
             setIsEditing(false);
         } catch (error) {
-            alert("Błąd zapisu edytowanych danych.");
+            alert("Błąd zapisu edytowanych danych." + error);
         }
     };
 
@@ -202,12 +202,12 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
 
             {isEditing ? (
                 
-                <div className="task-edit-wrapper">
-                    <div className="task-edit-header">
+                <div className={`task-edit-wrapper ${isSubtask ? 'editing-subtask' : ''}`}>
+                    <div className={`task-edit-header`}>
 
                         {/* CATEGORY */}
                         <div 
-                            className="edit-header-item"
+                            className={`edit-header-item choose-category`}
                             onClick={handleCatClick}
                         >
                             <span>{currentCatName} ▾</span>
@@ -235,7 +235,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
 
                         {/* PRIORITY */}
                         <div 
-                            className="edit-header-item" 
+                            className="edit-header-item choose-priority" 
                             onClick={handlePrioClick}
                         >
                             <span>{getPriorityName(editPriority) || "Priorytet"} ▾</span>
@@ -412,6 +412,8 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                                 isSubtask={true}
                                 onStatusChange={onStatusChange}
                                 onDeleteTask={onDeleteTask}
+                                onUpdateTask={onUpdateTask}
+                                categories={categories}
                             />
                         ))}
                     </div>
