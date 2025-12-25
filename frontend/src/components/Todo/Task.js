@@ -387,7 +387,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
 
                     </div>
 
-                    <div className={`task-swipe-content ${isExpandedOptions ? 'panel-open' : ''}`}>
+                    <div className={`task-swipe-content ${isExpandedOptions ? 'panel-open' : ''} `}>
 
                         <div className="task-card">
 
@@ -461,6 +461,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                                 key={subtask.id} 
                                 task={{ ...subtask, parentId: task.id }} 
                                 isSubtask={true}
+                                inCalendar={inCalendar}
                                 onStatusChange={onStatusChange}
                                 onDeleteTask={onDeleteTask}
                                 onUpdateTask={onUpdateTask}
@@ -474,9 +475,6 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
 
             )}
     
-
-            
-
 
 
         </div> // task container
