@@ -126,6 +126,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
         e.stopPropagation();
         setEditName(task.name);
         setEditTime(task.timeNeeded || 0);
+        setEditTimeUnit('min');
         setEditCategory(task.category);
         setEditPriority(task.priority);
         setIsEditing(true);
@@ -136,9 +137,11 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
 
         // depending on the backend (API CALL)
 
+        const timeNeededConvert = editTimeUnit === "godz" ? parseInt(editTime) * 60 : parseInt(editTime);
+
         const updatedData = {
             name: editName,
-            timeNeeded: editTimeUnit === "godz" ? parseInt(editTime) * 60 : parseInt(editTime),
+            timeNeeded: timeNeededConvert,
             category: editCategory,
             priority: editPriority
         };
@@ -240,10 +243,10 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                             {isPrioPopupOpen && (
                                 <DropdownPortal rect={isPrioPopupOpen} onClose={() => setIsPrioPopupOpen(null)}>
                                     <div className="edit-popup-list right">
-                                        <div onClick={() => { setEditPriority('HIGH'); setIsPrioPopupOpen(null); }}>Wysoki</div>
-                                        <div onClick={() => { setEditPriority('MEDIUM'); setIsPrioPopupOpen(null); }}>Średni</div>
-                                        <div onClick={() => { setEditPriority('LOW'); setIsPrioPopupOpen(null); }}>Niski</div>
-                                        <div onClick={() => { setEditPriority(null); setIsPrioPopupOpen(null); }}>Brak</div>
+                                        <div className="edit-task-priority-item high" onClick={() => { setEditPriority('HIGH'); setIsPrioPopupOpen(null); }}>Wysoki</div>
+                                        <div className="edit-task-priority-item medium" onClick={() => { setEditPriority('MEDIUM'); setIsPrioPopupOpen(null); }}>Średni</div>
+                                        <div className="edit-task-priority-item low" onClick={() => { setEditPriority('LOW'); setIsPrioPopupOpen(null); }}>Niski</div>
+                                        <div className="edit-task-priority-item default" onClick={() => { setEditPriority(null); setIsPrioPopupOpen(null); }}>Brak</div>
                                     </div>
                                 </DropdownPortal>
                             )}
@@ -272,7 +275,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                                 value={editTime}    
                                 onChange={(e) => setEditTime(e.target.value)}
                             />
-                            <div className="edit-unit-toggle" onClick={() => setEditTimeUnit(editTimeUnit === 'min' ? 'h' : 'min')}>
+                            <div className="edit-unit-toggle" onClick={() => setEditTimeUnit(editTimeUnit === 'min' ? 'godz' : 'min')}>
                                 {editTimeUnit}
                             </div>
                         </div>

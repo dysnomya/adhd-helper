@@ -1364,7 +1364,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     left: 0;
     background: var(--color-card-bg);
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
     padding: 5px 0px;
     z-index: 2000;
     min-width: 120px;
@@ -1520,3 +1520,37 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     }
 }
 
+
+.edit-task-priority-item {
+    color: var(--color-card-bg);
+
+    border-radius: 50px 0px;
+
+    height: 20px;
+    margin: 7px 10px;
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+
+    box-shadow: $shadow;
+    
+    user-select: none;
+
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 2px solid transparent;
+
+    p {
+        margin: 0;
+        pointer-events: none;
+        text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+    }
+
+}
+
+.default {
+    background-color: #828282ff;
+}
