@@ -1384,7 +1384,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     gap: 10px;
     z-index: 3;
     margin-top: -25px;
-    background-color: var(--color-card-bg);
+    background-color: var(--secondary-container-bg);
     // background-color: red;
     border-radius: 20px;
 }
@@ -1576,5 +1576,17 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     .action-btn.date {
         pointer-events: none;
         visibility: hidden;
+    }
+}
+
+@media (max-width: 850px) {
+    .edit-time-group {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .edit-input-name {
+       width: 90%;
     }
 }
