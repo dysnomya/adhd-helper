@@ -24,7 +24,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete }) => {
     const [subtasks, setSubtasks] = useState([]);
     const [hasChildren, setHasChildren] = useState(false);
     
-    const genAI = new GoogleGenerativeAI("AIzaSyASUp9UVlusUXn-_wL_K9Fk_NkST9UZbSg");
+    const genAI = new GoogleGenerativeAI("");
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const categoryColor = task.category ? task.category.color : "#828282ff";
