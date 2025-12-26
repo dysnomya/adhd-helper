@@ -3,7 +3,7 @@ import React from "react";
 import SplitTask from "./SplitTask"
 import { useState } from "react";
 
-const SplitTaskListContainer = ({ splittedTasks }) => {
+const SplitTaskListContainer = ({ splittedTasks, setGeminiAsked }) => {
 
     const [tasks, setTasks] = useState(splittedTasks || []);
 
@@ -24,6 +24,7 @@ const SplitTaskListContainer = ({ splittedTasks }) => {
                     key={task.id || index} 
                     task={task}
                     onDelete={() => removeTask(index)}
+                    setGeminiAsked={setGeminiAsked}
                 />
             ))}
         </div>

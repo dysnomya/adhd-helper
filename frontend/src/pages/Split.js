@@ -23,7 +23,7 @@ const Split = () => {
 
     // Inicjalizacja Gemini (Klucz API najlepiej trzymać w .env)
     // const genAI = new GoogleGenerativeAI("");
-    const genAI = new GoogleGenerativeAI("AIzaSyASUp9UVlusUXn-_wL_K9Fk_NkST9UZbSg");
+    const genAI = new GoogleGenerativeAI("AIzaSyA1UoiLF7bVwrKgw1sgx-fo_E7KDmbakgA");
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const SplitTaskButtonClicked = async () => {
@@ -93,7 +93,7 @@ const Split = () => {
         if (taskSplitted){
             return (
                 <div className="split-body splitted" >
-                    <SplitTaskListContainer splittedTasks = {geminiResult}></SplitTaskListContainer>
+                    <SplitTaskListContainer splittedTasks = {geminiResult} setGeminiAsked={setGeminiAsked}></SplitTaskListContainer>
                 </div>
                 )
             // console.log(datedTasks);
@@ -255,10 +255,10 @@ const Split = () => {
                     </div>
                 </div>
             </div>
+            
 
             <SplitBodyContent></SplitBodyContent>
             <SplitLoadingPopUp geminiAsked={geminiAsked} goodQuestion={goodQuestion} onClose={() => setGoodQuestion(true)}></SplitLoadingPopUp>
-
             
         </div>
     );

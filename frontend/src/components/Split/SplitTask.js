@@ -12,7 +12,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // import { fetchSubtasks } from "../../api/TaskApi"
 
-const SplitTask = ({ task, isSubtask = false, onDelete }) => {
+const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [isEdited, setIsEdited] = useState(false);
@@ -22,22 +22,25 @@ const SplitTask = ({ task, isSubtask = false, onDelete }) => {
     const [taskTimeMetric, setTaskTimeMetric] = useState('min');
     const [oldTaskTimeMetric, setOldTaskTimeMetric] = useState('min');
     const [subtasks, setSubtasks] = useState([]);
-    const [hasChildren, setHasChildren] = useState(false);
     
-    const genAI = new GoogleGenerativeAI("AIzaSyASUp9UVlusUXn-_wL_K9Fk_NkST9UZbSg");
+    const genAI = new GoogleGenerativeAI("AIzaSyA1UoiLF7bVwrKgw1sgx-fo_E7KDmbakgA");
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const categoryColor = task.category ? task.category.color : "#828282ff";
     const categoryName = task.category ? task.category.name : 'Ogólne';
 
     const handleToggleSubtask = async () => {
-        if(!hasChildren) return;
+        
+        if((subtasks.length <= 0)) return;
         const newState = !isExpanded;
         setIsExpanded(!isExpanded);
+        console.log(isExpanded)
     };
 
     const splitSubTask = async () => {
-        const prompt = `
+        // setGeminiAsked(true);
+        try{
+            const prompt = `
                 Rozbij zadanie "${task.name}" na kilka (do 8) mniejszych kroków.
                 Zwróć odpowiedź WYŁĄCZNIE jako czysty tablicowy format JSON.
                 Każdy obiekt w tablicy musi mieć pola:
@@ -59,11 +62,19 @@ const SplitTask = ({ task, isSubtask = false, onDelete }) => {
             // Oczyszczanie tekstu (Gemini czasem dodaje ```json ... ```)
             const cleanedJson = responseText.replace(/```json|```/g, "").trim();
             const newSubTasks = JSON.parse(cleanedJson);
-
             setSubtasks(newSubTasks);
-            setHasChildren(newSubTasks.length > 0);
+            console.log("Wygenerowane podzadania:", newSubTasks, "has", newSubTasks.length);
 
-            console.log("Wygenerowane podzadania:", newSubTasks);
+        // setGeminiAsked(false);
+        }
+        catch (error) {
+            console.error("Błąd podczas generowania zadań:", error);
+            // Tutaj możesz np. wyświetlić powiadomienie dla użytkownika
+        }
+
+        
+        
+
     }
 
     const TaskInfo = () =>{
@@ -98,7 +109,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete }) => {
                                     <div className="dot"></div>
                                 </div>
 
-                                {hasChildren && (
+                                {(subtasks.length > 0) && (
                                     <div 
                                         className={`split-expand-arrow ${isExpanded ? 'expanded' : ''}`}
                                         onClick={handleToggleSubtask}
@@ -128,7 +139,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete }) => {
                                     <span className="split-task-time">
                                         {isEdited ? (
                                                 <span>
-                                                <input type="number" value={oldTaskTimeMetric == "h" ? taskTime/60 : taskTime} className={`split-task-time `} onChange={e => setTaskTime(e.target.value)}></input>
+                                                <input type="number" value={oldTaskTimeMetric == "h" ? taskTime/60 : taskTime} className={`split-task-time-input `} onChange={e => setTaskTime(e.target.value)}></input>
                                                 <select name="time-select" value={taskTimeMetric}  className={`split-task-time-select `} onChange={e => {setTaskTimeMetric(e.target.value); console.log(taskTimeMetric);}}>
                                                     <option value="min">min</option>
                                                     <option value="h">h</option>
@@ -150,7 +161,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete }) => {
                         </div>
                     </div>
                     <div className="split-task-chevron">
-                        <Chevron className="split-task-bg-to-chevron-icon" onClick={() => {setIsActionsShown(!isActionsShown); if(isActionsShown) setIsEdited(false);}}></Chevron> 
+                        <Chevron className={`split-task-chevron-icon ${isActionsShown ? 'expanded' : ''}`} onClick={() => {setIsActionsShown(!isActionsShown); if(isActionsShown) setIsEdited(false); console.log(isActionsShown)}}></Chevron> 
                     </div>
                 </div>
 
@@ -187,7 +198,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete }) => {
                     <div className="split-task-bg-icons">
                         <Edit className="split-task-bg-icon" onClick={() => setIsEdited(true)}></Edit>
                         <SplitIcon className="split-task-bg-icon"onClick={splitSubTask}></SplitIcon>
-                        <Delete className="split-task-bg-icon" onClick={onDelete}></Delete>
+                        <Delete className="split-task-bg-icon" onClick={() => {setSubtasks([]);onDelete(); }}></Delete>
                     </div>
                 )}
             </div>
@@ -210,7 +221,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete }) => {
                                         <div className="dot"></div>
                                     </div>
 
-                                    {hasChildren && (
+                                    {(subtasks.length > 0) && (
                                         <div 
                                             className={`split-expand-arrow ${isExpanded ? 'expanded' : ''}`}
                                             onClick={handleToggleSubtask}
@@ -240,7 +251,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete }) => {
                                         <span className="split-task-time">
                                             {isEdited ? (
                                                     <span>
-                                                    <input type="number" value={oldTaskTimeMetric == "h" ? taskTime/60 : taskTime} className={`split-task-time `} onChange={e => setTaskTime(e.target.value)}></input>
+                                                    <input type="number" value={oldTaskTimeMetric == "h" ? taskTime/60 : taskTime} className={`split-task-time-input `} onChange={e => setTaskTime(e.target.value)}></input>
                                                     <select name="time-select" value={taskTimeMetric}  className={`split-task-time-select `} onChange={e => {setTaskTimeMetric(e.target.value); console.log(taskTimeMetric);}}>
                                                         <option value="min">min</option>
                                                         <option value="h">h</option>
@@ -262,7 +273,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete }) => {
                                 
                                 
                             </div>
-                            {hasChildren && isExpanded && (
+                            {(subtasks.length > 0) && isExpanded && (
                             <div className="split-subtasks-container">
                                 {subtasks.map(subtask => (
                                     <SplitTask 

@@ -104,7 +104,7 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     border: solid 2px var(--color-accent);
 }
 
-div:has( + .split-header-input-button:hover) > input    {
+div:has( + .split-header-input-button:hover) > input:focus    {
     transition: all 0.5s ease-in-out;
     border: solid 2px var(--color-accent-hover);
 }
@@ -239,6 +239,8 @@ div:has( + .split-header-input-button:hover) > input    {
     justify-content: stretch;
     // border: solid blue;
     margin-right: -34px;
+    transition: all 0.5s ease-in-out;
+
 }
 
 .split-task-chevron{
@@ -247,7 +249,15 @@ div:has( + .split-header-input-button:hover) > input    {
     display: flex;
     justify-content: center;
     align-items: center;
+    .expanded {
+        transform: rotate(180deg); 
+        transition: all 0.5s ease-in-out;
+    }
 }
+
+// .split-task-chevron-icon{
+
+// }
 
 .split-task-subtasks-bg{
     display:flex;
@@ -269,7 +279,7 @@ div:has( + .split-header-input-button:hover) > input    {
 .split-task-header-text {
     margin-top: -5px;
     margin-bottom: -4px;;
-    padding-left: 15px;
+    padding-left: 20px;
     height:30px;
     letter-spacing: -0.5px;
     color: var(--secondary-container-bg);
@@ -341,6 +351,7 @@ div:has( + .split-header-input-button:hover) > input    {
     display: flex;
     align-items: center;
     gap: 15px;
+    flex:1;
 }
 
 .split-custom-checkbox {
@@ -374,13 +385,12 @@ div:has( + .split-header-input-button:hover) > input    {
     font-size: 14px;
 }
 
-.expand-arrow {
-    font-size: 20px;
+.split-expand-arrow {
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
     transform: rotate(90deg); 
     transition: transform 0.3s ease;
-    padding: 5px;
 
     &.expanded {
         transform: rotate(-90deg); 
@@ -431,20 +441,77 @@ div:has( + .split-header-input-button:hover) > input    {
     margin-right: 0px;
 }
 
-.loader {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  
-  /* Ustawiamy grubość ramki i jej styl */
-  border: 6px solid transparent; /* Bazowy kolor jest przezroczysty */
-  
-  /* Ustawiamy kolor dla górnej I dolnej krawędzi, co daje efekt dwóch łuków */
-  border-top-color: #ff6b6b; /* Np. koralowy kolor */
-  border-bottom-color: #ff6b6b;
-  
-  /* Jeśli chcesz tylko jeden łuk, usuń linijkę z border-bottom-color */
-
-  animation: spin 1.2s linear infinite; /* Nieco wolniejszy obrót */
+.loader-bg{
+    position: absolute;
+    width:100%;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: -30px 0px 0px -30px;
 }
+
+.loader-div{
+    width: 30%;
+    background-color: var(--secondary-container-bg);
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    box-shadow: 4px 4px 20px rgba(0,0,0,0.25);
+    padding: 20px;
+}
+
+.loader {
+    margin: 20px;
+    width: 48px;
+    height: 48px;
+    border: 5px solid var(--color-accent);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;/* Nieco wolniejszy obrót */
+}
+
+input, .split-task-time-select{
+    background-color: var(--color-bg);
+    outline: none;
+    box-shadow: none;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.split-task-name{
+    flex:1 ;
+}
+
+.split-task-info{
+    flex:1 ;
+}
+
+.split-task-time-input{
+    width: 65px;
+    text-align: center;
+    padding-right: 5px;
+}
+
+.split-task-time-select{
+    width: 65px;
+    padding-right: 0px;;
+
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} 
 

@@ -14,7 +14,14 @@ const SplitLoadingPopUp = ({geminiAsked, goodQuestion, onClose}) => {
 
     
 
-    return <div class="loader"></div>
+    return (
+        <div className="loader-bg">
+            <div className="loader-div">
+                <div class="loader"></div>
+                <p>Pimpuś dzieli twoje zadanie</p>
+            </div>
+        </div>
+    )
 
 }
 
