@@ -23,7 +23,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
     const [oldTaskTimeMetric, setOldTaskTimeMetric] = useState('min');
     const [subtasks, setSubtasks] = useState([]);
     
-    const genAI = new GoogleGenerativeAI("AIzaSyA1UoiLF7bVwrKgw1sgx-fo_E7KDmbakgA");
+    const genAI = new GoogleGenerativeAI("");
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const categoryColor = task.category ? task.category.color : "#828282ff";
