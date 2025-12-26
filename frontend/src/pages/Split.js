@@ -23,7 +23,7 @@ const Split = () => {
 
     // Inicjalizacja Gemini (Klucz API najlepiej trzymać w .env)
     // const genAI = new GoogleGenerativeAI("");
-    const genAI = new GoogleGenerativeAI("");
+    const genAI = new GoogleGenerativeAI("AIzaSyASUp9UVlusUXn-_wL_K9Fk_NkST9UZbSg");
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const SplitTaskButtonClicked = async () => {
@@ -244,9 +244,9 @@ const Split = () => {
                         <div className="split-header-input-button-background"></div>
                         <div className="split-header-input-div-content">
                             <div className="split-header-input-background-div">
-                            <input type="text" className="split-header-input"
-                            value={taskDescription}
-                            onChange={(e) => setTaskDescription(e.target.value)}></input>
+                                <input type="text" className="split-header-input"
+                                value={taskDescription}
+                                onChange={(e) => setTaskDescription(e.target.value)}></input>
                             </div>
                             <button className="split-header-input-button" onClick={SplitTaskButtonClicked}>
                                 Podziel zadanie

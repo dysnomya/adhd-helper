@@ -11,6 +11,10 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     justify-content: stretch;
     height: 100vh;
     width: 100%;
+    transform: translateZ(0px);
+    will-change: transform;
+    overflow-x: hidden;
+
 }
 
 .split-header{
@@ -58,6 +62,12 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     background-color: var(--color-accent);
     border-radius: 20px;
     margin-left: 10px;
+    
+
+    & + div:has(button:hover){
+        background-color: var(--color-accent-hover);
+        transition: all 0.5s ease-in-out;
+    }
 }
 
 .split-header-input-div-content{
@@ -68,6 +78,8 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     justify-content: center;
     align-items: center;
     height:40px;
+    border-radius: 20px;
+    
 }
 
 .split-header-input-background-div{
@@ -85,7 +97,19 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     color: var(--color-text);
     font-size: 14px;
     padding: 0px 20px;
+    outline: none;
 }
+
+.split-header-input:focus{
+    border: solid 2px var(--color-accent);
+}
+
+div:has( + .split-header-input-button:hover) > input    {
+    transition: all 0.5s ease-in-out;
+    border: solid 2px var(--color-accent-hover);
+}
+
+
 
 .split-header-input-button{
     width:200px;
@@ -168,6 +192,113 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
 
 
 
+.split-task-bg{
+    position: absolute;
+    display: flex;
+    flex: row;
+    width:100%;
+    background-color: var(--color-calendar-detail);
+    border-radius: 20px;
+    justify-content: stretch;
+    // border:solid black; 
+    margin-right: 59px;
+}
+
+.split-task-bg-up{
+    display: flex;
+    flex: row;
+    width:100%;
+    border-radius: 20px;
+    justify-content: stretch;
+    // border:solid yellow; 
+    padding-right: 59px;
+}
+
+.split-task-bg-icons{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 5px;
+    padding-right: 10px;
+    width: 34px;
+    // border: solid blue;
+}
+
+.split-task-bg-icon{
+    width: 16px;
+    height: 16px;
+}
+
+.split-task-card {
+    flex: 1;
+    background-image: linear-gradient(270deg,var(--secondary-container-bg) 20%, var(--color-calendar-detail) 100%);
+    border-radius: 20px; 
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    // border: solid blue;
+    margin-right: -34px;
+}
+
+.split-task-chevron{
+    width:25px;
+    // border: solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.split-task-subtasks-bg{
+    display:flex;
+    flex-direction: column;
+    flex: 1;
+    // border: solid red;
+    background-color: var(--secondary-container-bg);
+    border-radius: 20px;
+}
+
+.split-task-header{
+    // margin:-1px;
+    display:flex;
+    flex-direction: column;
+    flex: 1;
+    // border: solid red;
+}
+
+.split-task-header-text {
+    margin-top: -5px;
+    margin-bottom: -4px;;
+    padding-left: 15px;
+    height:30px;
+    letter-spacing: -0.5px;
+    color: var(--secondary-container-bg);
+    font-weight: 600;
+    font-size: 24px;
+    // border:solid green;
+    
+    text-transform: capitalize;
+    
+}
+
+.split-task-content-box {
+    flex: 1;
+    background-color: var(--secondary-container-bg);
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 50px;
+    position: relative;
+    z-index: 2; 
+    // border: solid green;
+}
+
+.split-task-card-container{
+    position: relative;
+    margin-top: -82px;
+}
 
 .split-task-list-container {
     margin: 14px 10px;
@@ -183,12 +314,10 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     scrollbar-width: none;
 }
 
-
-
 .split-task-container {
     position: relative;
     font-family: "Lexend", sans-serif;
-    box-shadow: $shadow2;
+    filter: drop-shadow($shadow2);
     transition: transform 0.2s ease;
     border-radius: 20px; 
         margin-top: 10px;
@@ -203,38 +332,10 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
 
 }
 
-.split-task-card {
-    background-image: linear-gradient(270deg,var(--secondary-container-bg) 20%, var(--color-calendar-detail) 100%);
-    border-radius: 20px; 
-    
-    position: relative;
-    z-index: 1; 
-    margin-bottom: -40px;
-    height: 66px;
-}
 
-.split-task-id-header {
-    letter-spacing: -0.5px;
-    color: var(--secondary-container-bg);
-    font-weight: 600;
-    font-size: 24px;
-    padding: 0px 15px; 
-    
-    text-transform: capitalize;
-    
-}
 
-.split-task-content-box {
-    background-color: var(--secondary-container-bg);
-    border-radius: 20px;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 50px;
-    position: relative;
-    z-index: 2; 
-}
+
+
 
 .split-task-left {
     display: flex;
@@ -303,8 +404,8 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
         padding: 0;
 
         .split-task-content-box {
-            border: 1px solid #eee;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 3px solid var(--secondary-container-bg);
+            // box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
     }
 
@@ -315,40 +416,19 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     }
 }
 
-.split-task-bg{
-    width:100%;
-    height: 82px;
-    background-color: var(--color-calendar-detail);
-    border-radius: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: end;
+.is-subtask:first-child{
+    margin-top: 10px;
 }
 
-.split-task-card-container{
-    position: relative;
-    margin-top: -82px;
-}
-
-.split-task-bg-icons{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    padding: 5px;
-    padding-right: 10px;
-}
-.split-task-bg-icon{
-    width: 16px;
-    height: 16px;
-}
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
+
 .actions-shown{
-    margin-right: 34px;
+    margin-right: 0px;
 }
 
 .loader {
