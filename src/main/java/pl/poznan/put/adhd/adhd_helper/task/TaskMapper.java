@@ -1,10 +1,9 @@
 package pl.poznan.put.adhd.adhd_helper.task;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 import pl.poznan.put.adhd.adhd_helper.category.CategoryMapper;
+import pl.poznan.put.adhd.adhd_helper.task.model.TaskRequest;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskResponse;
 
 import java.util.Collection;
@@ -14,6 +13,11 @@ import java.util.Collection;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         uses = CategoryMapper.class)
 interface TaskMapper {
+
+    @Mapping(target = "category", source = "categoryId")
+    Task toEntity(TaskRequest taskRequest);
+
+    TaskResponse toResponse(Task task);
 
     Collection<TaskResponse> toResponse(Collection<Task> tasks);
 }

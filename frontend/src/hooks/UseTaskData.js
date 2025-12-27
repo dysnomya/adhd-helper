@@ -123,6 +123,40 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
             });
         });
     };
+    const updateCategoryLocal = (categoryId, updatedData) => {
+        setCategories(prevCategories => prevCategories.map(cat => 
+            cat.id === categoryId 
+                ? { ...cat, ...updatedData }
+                : cat
+        ));
+
+        setTasks(prevTasks => prevTasks.map(task => {
+            if (task.category && task.category.id === categoryId) {
+                return {
+                    ...task,
+                    category: {
+                        ...task.category,
+                        ...updatedData
+                    }
+                };
+            }
+            return task;
+        }));
+    }
+
+    const deleteCategoryLocal = (categoryId) => {
+        setCategories(prevCategories => prevCategories.filter(cat => cat.id !== categoryId));
+
+        setTasks(prevTasks => prevTasks.map(task => {
+            if (task.category && task.category.id === categoryId) {
+                return {
+                    ...task,
+                    category: null
+                };
+            }
+            return task;
+        }));
+    }
 
 
     return {
@@ -133,6 +167,8 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         addCategoryLocal,
         toggleTaskLocal,
         deleteTaskLocal
+        updateCategoryLocal,
+        deleteCategoryLocal
     };
 
 };

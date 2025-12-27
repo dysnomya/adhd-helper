@@ -51,19 +51,6 @@ public class SpecificationBuilder<T> {
         return this;
     }
 
-    public <V, K> SpecificationBuilder<T> in(
-            SingularAttribute<T, K> entityAttribute,
-            SingularAttribute<K, V> idAttribute,
-            Collection<V> ids) {
-        if (ids == null || ids.isEmpty()) return this;
-
-        Specification<T> spec =
-                (root, query, cb) -> root.get(entityAttribute).get(idAttribute).in(ids);
-
-        this.specification = this.specification.and(spec);
-        return this;
-    }
-
     public <V extends Comparable<? super V>> SpecificationBuilder<T> before(
             SingularAttribute<T, V> attribute, V value) {
         if (value == null) {
