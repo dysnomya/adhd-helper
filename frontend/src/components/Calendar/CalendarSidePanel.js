@@ -55,7 +55,7 @@ export default function CalendarSidePanel(props) {
                     <div className="calendar-side-panel-list">
                         {props.tasks.map(task => {
                             return (
-                                <Task key={task.id} task={task} />
+                                <Task key={task.id} task={task} inCalendar={true} />
                             );
                         })}
                     </div>

@@ -70,7 +70,7 @@ const TodoSidebar = ({
         <div className='todo-sidebar'>
             <nav className='todo-nav'>
 
-                <div>
+                <div className='todo-sidebar-date-and-categories'>
                     <p className='todo-sidebar-text-titles'>Data</p>
 
                     <div className='sidebar-date-picker-container'>
@@ -94,20 +94,24 @@ const TodoSidebar = ({
 
 
 
-                    {categories.map(category => (
-                        <Category
-                            key={category.id}
-                            category={category}
-                            onClick={() => handleCategoryClick(category.id)}
-                            isActive={activeFilter.includes(category.id)}
-                        />
-                    ))}
+                    <div className='todo-sidebar-categories-list'>
 
-                    <Category
-                        category={noCategoryOption}
-                        onClick={() => handleCategoryClick(noCategoryId)}
-                        isActive={activeFilter.includes(noCategoryId)}
-                    />
+                        {categories.map(category => (
+                            <Category
+                                key={category.id}
+                                category={category}
+                                onClick={() => handleCategoryClick(category.id)}
+                                isActive={activeFilter.includes(category.id)}
+                            />
+                        ))}
+
+                        <Category
+                            category={noCategoryOption}
+                            onClick={() => handleCategoryClick(noCategoryId)}
+                            isActive={activeFilter.includes(noCategoryId)}
+                        />
+
+                    </div>
 
                     <div 
                         className='todo-sidebar-add-button'
