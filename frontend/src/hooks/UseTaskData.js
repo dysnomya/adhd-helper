@@ -152,6 +152,24 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         }));
     };
 
+    const addTaskLocal = (newTask) => {
+        setTasks(prevTasks => {
+            if (newTask.parentId) {
+                return prevTasks.map(task => {
+                    if (task.id === newTask.parentId) {
+                        return {
+                            ...task,
+                            subtasks: [...(task.subtasks || []), newTask]
+                        };
+                    }
+                    
+                    return task;
+                });
+            }
+
+            return [...prevTasks, newTask];
+        });
+    };
 
     return {
         tasks,
@@ -161,7 +179,8 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         addCategoryLocal,
         toggleTaskLocal,
         deleteTaskLocal,
-        updateTaskLocal
+        updateTaskLocal,
+        addTaskLocal
     };
 
 };

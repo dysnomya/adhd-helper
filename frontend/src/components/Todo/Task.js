@@ -41,6 +41,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
     const [isExpandedOptions, setIsExpandedOptions] = useState(false);           // options
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);       // delete popup
     const [isEditing, setIsEditing] = useState(false);                           // edit task
+    const [isAdding, setIsAdding] = useState(false);
 
     const subtasks = task.subtasks || [];
     const hasChildren = subtasks.length > 0;

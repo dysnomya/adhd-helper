@@ -14,6 +14,8 @@ import DailyProgress from "../components/Todo/DailyProgress";
 
 import pimpus from "../assets/pimpus_happy_anim.webp";
 
+import AddTaskComponent from "../components/Todo/AddTaskComponent";
+
 //  todo?date=2025-12-06
 const Todo = () => {
     const location = useLocation();     // hook do pobrania adresu URL
@@ -58,7 +60,8 @@ const Todo = () => {
         addCategoryLocal,
         toggleTaskLocal,
         deleteTaskLocal,
-        updateTaskLocal
+        updateTaskLocal,
+        addTaskLocal
     } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
 
 
@@ -166,6 +169,26 @@ const Todo = () => {
         }
     };
 
+
+    const [isAddingTask, setIsAddingTask] = useState(false);
+
+    const handleAddNewTask = async (newTaskData) => {
+
+        try {
+            // API CALL
+            // const createdTask = await createTask(newTaskData); 
+            
+            addTaskLocal(newTaskData); 
+            setIsAddingTask(false);
+        } catch (e) {
+            console.error("Błąd dodawania zadania", e);
+        }
+    };
+
+    const handleAddTaskClick = () => {
+        setIsAddingTask(true);
+    };
+
     // Debugging - Do usunięcia później
     useEffect(() => {
         if (tasks.length > 0) {
@@ -236,7 +259,10 @@ const Todo = () => {
                     <DailyProgress 
                     />
                     <div className="add-task-btn-container">
-                        <button className="add-task-btn">
+                        <button 
+                            className="add-task-btn"
+                            onClick={handleAddTaskClick}    
+                        >
                         + Nowe zadanie
                     </button>
                     </div>
@@ -254,6 +280,18 @@ const Todo = () => {
                     {tasks.length === 0 && categories.length === 0 && (
                         <div className="no-data-yet">
                             <p>Nie stworzyłeś jeszcze tasków, zrób je dla Pimpusia!</p>
+                        </div>
+                    )}
+
+                    {isAddingTask && (
+                        <div style={{ marginBottom: '20px' }}>
+                            <AddTaskComponent 
+                                categories={categories}
+                                onConfirm={handleAddNewTask}
+                                onCancel={() => setIsAddingTask(false)}
+                                initialDate={selectedDateFilter}
+                                whereComponent={"todo"}
+                            />
                         </div>
                     )}
 
