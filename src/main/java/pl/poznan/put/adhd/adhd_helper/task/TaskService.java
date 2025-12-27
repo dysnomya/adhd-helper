@@ -54,4 +54,15 @@ public class TaskService {
         Task task = taskRepository.save(toSave);
         return taskMapper.toResponse(task);
     }
+
+    public TaskResponse updateTask(Long id, TaskRequest taskRequest) {
+        Task toUpdate = taskMapper.toEntity(taskRequest);
+        toUpdate.setId(id);
+        Task task = taskRepository.save(toUpdate);
+        return taskMapper.toResponse(task);
+    }
+
+    public void deleteTask(Long id) {
+        taskRepository.deleteById(id);
+    }
 }
