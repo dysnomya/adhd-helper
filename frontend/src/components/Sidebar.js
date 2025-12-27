@@ -3,6 +3,7 @@ import LogoutButton from "./LogoutButton";
 import { ReactComponent as IconPlaceholder } from "../assets/home-logo.svg";
 import { ReactComponent as CalendarPlaceholder } from "../assets/calendar-logo-placeholder.svg";
 import { ReactComponent as TodoPlaceholder } from "../assets/todo-logo-placeholder.svg";
+import { ReactComponent as GamePlaceholder } from "../assets/game-logo-placeholder.svg";
 
 import { ReactComponent as Logo } from "../assets/planny-logo.svg";
 
@@ -13,7 +14,7 @@ export default function Sidebar({ collapsed = false, onItemClick }) {
     { pageUrl: "/dashboard", pageLabel: "Dashboard", Icon: IconPlaceholder },
     { pageUrl: "/todo", pageLabel: "ToDo", Icon: TodoPlaceholder },
     { pageUrl: "/calendar", pageLabel: "Kalendarz", Icon: CalendarPlaceholder },
-    { pageUrl: "/user", pageLabel: "User", Icon: IconPlaceholder },
+    { pageUrl: "/game", pageLabel: "Pimpuś", Icon: GamePlaceholder },
   ];
 
   return (

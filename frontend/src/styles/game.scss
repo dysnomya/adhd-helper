@@ -1,0 +1,85 @@
+$game-border-radius: 2rem;
+$boss-color-temp: #d62525;
+
+.game-layout {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 40px;
+    padding: 40px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.game-layout::-webkit-scrollbar {
+    display: none;
+}
+
+.game-card {
+    background-color: var(--secondary-container-bg);
+    border-radius: $game-border-radius;
+    padding: 20px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+.game-pimpus {
+    transform: scale(0.7);
+    align-self: center;
+    margin: -200px -300px;
+}
+
+.game-boss {
+    transform: scale(0.5);
+    align-self: center;
+    margin: -150px -400px -250px -400px;
+    filter: hue-rotate(30deg) contrast(var(--split-contrast)) brightness(var(--split-brightness));
+}
+
+.game-boss-bg {
+    height: 100%;
+    padding: 20px;
+    border-radius: $game-border-radius;
+    background:
+        /* inner background gradient (from bottom) */
+        linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, $boss-color-temp 100%);
+
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+
+    border: 2px solid $boss-color-temp;
+    box-shadow:
+        inset 0 0 16px $boss-color-temp;
+
+    color: $boss-color-temp;
+}
+
+.game-level-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+
+@media (max-width: 1400px) {
+    .game-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr 1fr;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .game-pimpus {
+        transform: scale(0.3);
+        margin: -400px -450px;
+    }
+
+    .game-boss {
+        transform: scale(0.3);
+        margin: -400px -450px;
+    }
+}

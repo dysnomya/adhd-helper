@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import User from "./pages/User";
+import Game from "./pages/Game";
 import Login from "./pages/Login";
 import LoginLayout from "./layouts/LoginLayout";
 import MainLayout from "./layouts/MainLayout";
@@ -41,7 +41,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/todo" element={<Todo />} />
               <Route path="/calendar" element={<Calendar />} />
-              <Route path="/adhdUser" element={<User />} />
+              <Route path="/game" element={<Game />} />
             </Route>
           </Route>
         </Routes>
