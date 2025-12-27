@@ -65,7 +65,7 @@ const Todo = () => {
         error,
         addCategoryLocal,
         toggleTaskLocal,
-        deleteTaskLocal
+        deleteTaskLocal,
         updateCategoryLocal,
         deleteCategoryLocal
     } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
