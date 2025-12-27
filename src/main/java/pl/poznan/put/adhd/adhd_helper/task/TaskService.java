@@ -6,14 +6,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import pl.poznan.put.adhd.adhd_helper.common.specification.SpecificationBuilder;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskRequest;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskResponse;
+import pl.poznan.put.adhd.adhd_helper.task.model.TaskStatsResponse;
 import pl.poznan.put.adhd.adhd_helper.task.specification.TaskFilter;
 import pl.poznan.put.adhd.adhd_helper.task.specification.TaskSpecifications;
 import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
 import pl.poznan.put.adhd.adhd_helper.user.AdhdUserService;
 
+import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -32,6 +36,17 @@ public class TaskService {
                         TaskSpecifications.getTaskSpecification(taskFilter, currentAdhdUser), sort);
 
         return taskMapper.toResponse(parentTasks);
+    }
+
+    public TaskStatsResponse getTaskStatsForDay(LocalDate day) {
+        List<Task> taskOnDay =
+                taskRepository.findAll(
+                        SpecificationBuilder.<Task>empty().eq(Task_.day, day).build());
+
+        return new TaskStatsResponse(
+                day,
+                taskOnDay.stream().filter(Task::getCompleted).toList().size(),
+                taskOnDay.size());
     }
 
     public TaskResponse insertTask(TaskRequest taskRequest) {
