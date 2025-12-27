@@ -108,7 +108,7 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         setTasks(prevTasks => {
             const filteredTasks = prevTasks.filter(task => task.id !== taskId);
 
-            if(filteredTasks.length != prevTasks.length) {
+            if(filteredTasks.length !== prevTasks.length) {
                 return filteredTasks;
             }
 
