@@ -166,7 +166,7 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         error,
         addCategoryLocal,
         toggleTaskLocal,
-        deleteTaskLocal
+        deleteTaskLocal,
         updateCategoryLocal,
         deleteCategoryLocal
     };
