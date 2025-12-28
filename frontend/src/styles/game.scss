@@ -15,13 +15,24 @@ $level-font: "Space Mono", monospace;
     padding: 40px;
     overflow-x: hidden;
     overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
     font-family: $app-font;
-}
 
-.game-layout::-webkit-scrollbar {
-    display: none;
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--color-accent);
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        cursor: grab;
+    }
 }
 
 .game-card {
@@ -41,7 +52,7 @@ $level-font: "Space Mono", monospace;
 .game-pimpus {
     transform: scale(0.7);
     align-self: center;
-    margin: -200px -300px;
+    margin: -220px -300px -200px -300px;
 }
 
 .game-boss {
@@ -65,9 +76,9 @@ $level-font: "Space Mono", monospace;
     background-clip: padding-box, border-box;
 
     border: 5px solid $boss-color-temp;
-    box-shadow: inset 0px 0px 20px 5px $boss-color-temp;
+    box-shadow: inset 0 0 20px 5px $boss-color-temp;
     color: $boss-color-temp;
-    filter: hue-rotate(220deg); // hardcoded for now
+    filter: hue-rotate(40deg) contrast(0.9); // hardcoded for now
 }
 
 .game-level-bar {
@@ -130,7 +141,18 @@ $level-font: "Space Mono", monospace;
     color: var(--color-text-placeholder);
 }
 
-.pet-name {
+.game-pet-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: $game-border-radius;
+    box-shadow: inset 0 4px 12px -4px rgba(0, 0, 0, 0.5);
+    background:
+        radial-gradient(circle at center, var(--secondary-container-bg) 30%, 80%, var(--color-accent) 100%);
+}
+
+.game-pet-name {
     font-size: 3rem;
 }
 
@@ -161,7 +183,6 @@ $level-font: "Space Mono", monospace;
             #050505 60%);
 
     border: 1px solid $boss-color-temp;
-    border-radius: 12px;
 
     box-shadow:
         0 0 18px white,
@@ -177,6 +198,49 @@ $level-font: "Space Mono", monospace;
 
 .boss-button:active {
     transform: translateY(0);
+}
+
+.game-food-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+.game-food-buttons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    padding-inline: 5rem;
+}
+
+.game-food-button {
+    width: 50%;
+    max-width: 200px;
+    height: 50px;
+    background-color: var(--color-accent);
+    border: none;
+    border-radius: $game-border-radius;
+    color: var(--color-on-accent);
+    font-size: 24px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+
+    &:hover {
+        background-color: var(--color-accent-hover);
+        color: var(--color-on-accent);
+        transform: translateY(-2px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    &:disabled {
+        background-color: var(--color-disabled);
+        transform: translateY(0);
+    }
 }
 
 
@@ -212,5 +276,13 @@ $level-font: "Space Mono", monospace;
 
     .game-level-bar-track {
         height: 30px;
+    }
+
+    .game-food-buttons-container {
+        padding-inline: 0;
+    }
+
+    .game-pet-name {
+        font-size: 2rem;
     }
 }
