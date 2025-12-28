@@ -20,8 +20,12 @@ function App() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
+
   return (
-    <div className={theme} style={{ minHeight: '100vh', overflow: 'auto' }}>
+    <div style={{ minHeight: '100vh', overflow: 'auto' }}>
       <button
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         style={{ position: "fixed", bottom: 10, right: 10, zIndex: 200 }}

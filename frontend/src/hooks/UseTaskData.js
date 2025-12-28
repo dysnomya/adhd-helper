@@ -80,13 +80,13 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
             }
 
             if (task.subtasks && task.subtasks.length > 0) {
-                
+
                 const subtaskIndex = task.subtasks.findIndex(sub => sub.id === taskId);
 
                 if (subtaskIndex !== -1) {
-                    
+
                     const newSubtasks = [...task.subtasks];
-                    
+
                     newSubtasks[subtaskIndex] = {
                         ...newSubtasks[subtaskIndex],
                         completed: isCompleted
@@ -123,9 +123,39 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
             });
         });
     };
+
+
+    const updateTaskLocal = (taskId, updatedData) => {
+        setTasks(prevTasks => prevTasks.map(task => {
+
+            // task
+            if (task.id === taskId) {
+                return {
+                    ...task,
+                    ...updatedData
+                };
+            }
+
+            // subtask
+            if (task.subtasks) {
+                const subtaskIndex = task.subtasks.findIndex(subtask => subtask.id === taskId);
+
+                if (subtaskIndex !== -1) {
+                    const newSubtasks = [...task.subtasks];
+                    newSubtasks[subtaskIndex] = { ...newSubtasks[subtaskIndex], ...updatedData };
+                    return { ...task, subtasks: newSubtasks };
+                }
+            }
+
+            return task;
+
+        }));
+    };
+
+
     const updateCategoryLocal = (categoryId, updatedData) => {
-        setCategories(prevCategories => prevCategories.map(cat => 
-            cat.id === categoryId 
+        setCategories(prevCategories => prevCategories.map(cat =>
+            cat.id === categoryId
                 ? { ...cat, ...updatedData }
                 : cat
         ));
@@ -168,7 +198,8 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         toggleTaskLocal,
         deleteTaskLocal,
         updateCategoryLocal,
-        deleteCategoryLocal
+        deleteCategoryLocal,
+        updateTaskLocal
     };
 
 };
