@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Monoton&family=Pixelify+Sans:wght@400..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 $game-border-radius: 2rem;
 $boss-color-temp: #d62525;
+$level-font: "Space Mono", monospace;
 
 .game-layout {
     height: 100%;
@@ -37,7 +40,7 @@ $boss-color-temp: #d62525;
     transform: scale(0.5);
     align-self: center;
     margin: -150px -400px -250px -400px;
-    filter: hue-rotate(30deg) contrast(var(--split-contrast)) brightness(var(--split-brightness));
+    filter: hue-rotate(30deg) contrast(1.4) brightness(1.1);
 }
 
 .game-boss-bg {
@@ -45,16 +48,13 @@ $boss-color-temp: #d62525;
     padding: 20px;
     border-radius: $game-border-radius;
     background:
-        /* inner background gradient (from bottom) */
         linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, $boss-color-temp 100%);
 
     background-origin: border-box;
     background-clip: padding-box, border-box;
 
-    border: 2px solid $boss-color-temp;
-    box-shadow:
-        inset 0 0 16px $boss-color-temp;
-
+    border: 5px solid $boss-color-temp;
+    box-shadow: inset 0px 0px 20px 5px $boss-color-temp;
     color: $boss-color-temp;
 }
 
@@ -62,6 +62,64 @@ $boss-color-temp: #d62525;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    align-items: center;
+}
+
+.game-level-bar-container {
+    flex-grow: 1;
+    padding-inline: 1rem;
+}
+
+.game-level-bar-track {
+    width: 100%;
+    height: 50px;
+    background-color: var(--primary-container-bg);
+    border-radius: 30px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1)
+}
+
+.game-level-bar-fill {
+    height: 100%;
+    background-color: var(--color-accent);
+    background: linear-gradient(180deg,
+            color-mix(in srgb, var(--color-accent), white 20%) 0%,
+            var(--color-accent) 100%);
+    border-radius: 30px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+        inset 0 2px 2px rgba(255, 255, 255, 0.4),
+        inset 0 -2px 2px rgba(0, 0, 0, 0.1),
+        2px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.game-level-bar-scale {
+    height: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-inline: 1rem;
+    color: var(--color-text-placeholder);
+}
+
+.game-level-number {
+    margin: 0 2rem;
+    font-size: 6rem;
+    line-height: 6rem;
+    font-family: $level-font;
+}
+
+.game-current-level {
+    color: var(--color-accent);
+}
+
+.game-next-level {
+    color: var(--color-text-placeholder);
+}
+
+.pet-name {
+    font-size: 3rem;
 }
 
 
@@ -81,5 +139,21 @@ $boss-color-temp: #d62525;
     .game-boss {
         transform: scale(0.3);
         margin: -400px -450px;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-level-bar-container {
+        padding-inline: 0;
+    }
+
+    .game-level-number {
+        margin: 0 1rem;
+        font-size: 3rem;
+        line-height: 3rem;
+    }
+
+    .game-level-bar-track {
+        height: 30px;
     }
 }
