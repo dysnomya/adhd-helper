@@ -1,3 +1,5 @@
+@import "_variables.scss";
+
 $mobile-topbar-height: 60px;
 
 $sidebar-collapsed-width: 130px;
@@ -121,6 +123,7 @@ $sidebar-icon-size: 40px;
 }
 
 .nav-bar {
+  font-family: $app-font;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

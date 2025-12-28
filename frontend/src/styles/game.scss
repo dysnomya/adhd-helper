@@ -1,7 +1,8 @@
+@import "_variables.scss";
 @import url('https://fonts.googleapis.com/css2?family=Monoton&family=Pixelify+Sans:wght@400..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 $game-border-radius: 2rem;
-$boss-color-temp: #d62525;
+$boss-color-temp: #ff0080;
 $level-font: "Space Mono", monospace;
 
 .game-layout {
@@ -16,6 +17,7 @@ $level-font: "Space Mono", monospace;
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    font-family: $app-font;
 }
 
 .game-layout::-webkit-scrollbar {
@@ -30,6 +32,12 @@ $level-font: "Space Mono", monospace;
     text-align: center;
 }
 
+.game-name-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .game-pimpus {
     transform: scale(0.7);
     align-self: center;
@@ -39,13 +47,16 @@ $level-font: "Space Mono", monospace;
 .game-boss {
     transform: scale(0.5);
     align-self: center;
-    margin: -150px -400px -250px -400px;
-    filter: hue-rotate(30deg) contrast(1.4) brightness(1.1);
+    margin: -200px -400px -250px -400px;
+    filter: contrast(1.4) brightness(1.1);
 }
 
 .game-boss-bg {
     height: 100%;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     border-radius: $game-border-radius;
     background:
         linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, $boss-color-temp 100%);
@@ -56,6 +67,7 @@ $level-font: "Space Mono", monospace;
     border: 5px solid $boss-color-temp;
     box-shadow: inset 0px 0px 20px 5px $boss-color-temp;
     color: $boss-color-temp;
+    filter: hue-rotate(220deg); // hardcoded for now
 }
 
 .game-level-bar {
@@ -95,7 +107,7 @@ $level-font: "Space Mono", monospace;
 }
 
 .game-level-bar-scale {
-    height: 1rem;
+    height: 1.5rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -122,6 +134,51 @@ $level-font: "Space Mono", monospace;
     font-size: 3rem;
 }
 
+.game-title {
+    font-size: 20px;
+}
+
+.boss-button-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.boss-button {
+    font-size: 30px;
+    width: 80%;
+    height: 50%;
+    min-height: 50px;
+    align-self: center;
+    border-radius: $game-border-radius;
+
+    text-transform: uppercase;
+
+    color: white;
+    background: radial-gradient(circle at bottom,
+            $boss-color-temp,
+            #050505 60%);
+
+    border: 1px solid $boss-color-temp;
+    border-radius: 12px;
+
+    box-shadow:
+        0 0 18px white,
+        inset 0 0 10px $boss-color-temp;
+
+    cursor: pointer;
+    transition: box-shadow 0.25s ease, transform 0.15s ease;
+}
+
+.boss-button:hover {
+    transform: translateY(-5px);
+}
+
+.boss-button:active {
+    transform: translateY(0);
+}
+
 
 @media (max-width: 1400px) {
     .game-layout {
@@ -138,7 +195,7 @@ $level-font: "Space Mono", monospace;
 
     .game-boss {
         transform: scale(0.3);
-        margin: -400px -450px;
+        margin: -400px -450px -380px -450px;
     }
 }
 

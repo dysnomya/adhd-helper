@@ -9,7 +9,7 @@ export default function LevelBar() {
         <div className="game-level-bar">
                 <p className="game-level-number game-current-level">0</p>
                 <div className="game-level-bar-container">
-                    <h3>Twój poziom</h3>
+                    <h3>Poziom</h3>
                     <div className="game-level-bar-track">
                         <div
                             className="game-level-bar-fill"

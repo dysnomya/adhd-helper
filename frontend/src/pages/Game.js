@@ -1,4 +1,3 @@
-
 import BossView from "../components/Game/BossView";
 import LevelBar from "../components/Game/LevelBar";
 import PetView from "../components/Game/PetView";
@@ -11,9 +10,9 @@ export default function Game() {
             <div className="game-card">
                 <LevelBar />
             </div>
-            <div className="game-card">
-                <h1>Nazwa</h1>
-                <h3>Tytuł des tytules labadules</h3>
+            <div className="game-card game-name-title">
+                <h1>Imię nazwisko</h1>
+                <h3 className="game-title">Tytuł des tytules labadules</h3>
             </div>
             <div className="game-card">
                 <PetView />
