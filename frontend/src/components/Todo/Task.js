@@ -20,11 +20,12 @@ const getPriorityColor = (priority) => {
     }
 };
 
-const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false }) => {
+const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onDeleteTask }) => {
 
     const [isCompleted, setIsCompleted] = useState(task.completed);   // checkbox
     const [isExpanded, setIsExpanded] = useState(false);    // subtasks
     const [isExpandedOptions, setIsExpandedOptions] = useState(false);
+    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
     const subtasks = task.subtasks || [];
     const hasChildren = subtasks.length > 0;
@@ -82,9 +83,20 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false }) =
         console.log("Splitting")
     }
 
-    const handleOptionClickDelete = () => {
-        console.log("Deleting")
+    const handleOptionClickDelete = (e) => {
+        e.stopPropagation();
+        setIsDeleteConfirmOpen(true);
     }
+
+    const handleCancelDelete = (e) => {
+        e.stopPropagation();
+        setIsDeleteConfirmOpen(false);
+    };
+
+    const handleConfirmDelete = (e) => {
+        e.stopPropagation();
+        onDeleteTask(task.id);
+    };
 
     const priorityColor = getPriorityColor(task.priority);
     const finalPriorityColor = task.priority ? priorityColor : 'var(--cat-color)';
@@ -96,7 +108,21 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false }) =
             style={{ '--cat-color': categoryColor, '--prio-color': finalPriorityColor }}
         >
 
-            <div className="task-row-wrapper">
+            <div className={`task-row-wrapper ${isDeleteConfirmOpen ? 'allow-overflow' : ''}`}>
+
+                {isDeleteConfirmOpen && (
+                    <div className="delete-confirm-popup">
+                        <p className="delete-confirm-text">Usunąć na zawsze?</p>
+                        <div className="delete-confirm-actions">
+                            <button className="btn-cancel" onClick={handleCancelDelete}>
+                                Anuluj
+                            </button>
+                            <button className="btn-delete" onClick={handleConfirmDelete}>
+                                Usuń
+                            </button>
+                        </div>
+                    </div>
+                )}
 
                 <div className={`task-options-panel ${inCalendar ? 'in-calendar' : ''}`}>
                     <EditIcon 
@@ -109,10 +135,16 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false }) =
                         onClick={handleOptionClickSplit}
                     />
 
-                    <DeleteIcon 
-                        className="option-btn delete" 
-                        onClick={handleOptionClickDelete}
-                    />
+
+                    <div className="delete-btn-wrapper">
+
+                        <DeleteIcon 
+                            className="option-btn delete" 
+                            onClick={handleOptionClickDelete}
+                        />
+
+                    </div>
+
                 </div>
 
                 <div className={`task-swipe-content ${isExpandedOptions ? 'panel-open' : ''}`}>
@@ -190,6 +222,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false }) =
                             task={{ ...subtask, parentId: task.id }} 
                             isSubtask={true}
                             onStatusChange={onStatusChange}
+                            onDeleteTask={onDeleteTask}
                         />
                     ))}
                 </div>

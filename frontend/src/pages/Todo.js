@@ -65,6 +65,7 @@ const Todo = () => {
         error,
         addCategoryLocal,
         toggleTaskLocal,
+        deleteTaskLocal,
         updateCategoryLocal,
         deleteCategoryLocal
     } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
@@ -160,6 +161,16 @@ const Todo = () => {
 
     const isFirstLoad = isLoading && tasks.length === 0 && categories.length === 0;
 
+
+    const handleDeleteTask = async (taskId) => {
+        try {
+            // API CALL
+            deleteTaskLocal(taskId);
+        } catch (e) {
+            console.error("Błąd usuwania zadania", e);
+            alert("Nie udało się usunąć zadania.");
+        }
+    };
 
     const handleUpdateCategory = async (id, data) => {
         try {
@@ -282,6 +293,7 @@ const Todo = () => {
                     <TaskListContainer 
                         datedTasks={datedTasks} 
                         onTaskStatusChange={toggleTaskLocal}
+                        onDeleteTask={handleDeleteTask}
                     ></TaskListContainer>
                 </div>
                 
