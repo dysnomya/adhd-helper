@@ -227,6 +227,16 @@ const Todo = () => {
         }
     };
 
+    const handleUpdateTask = async (taskId, updatedData) => {
+        try {
+            // API CALL
+            updateTaskLocal(taskId, updatedData);
+        } catch (e) {
+            console.error("Błąd edycji zadania", e);
+            alert("Nie udało się zedytować zadania.");
+        }
+    };
+
     // Debugging - Do usunięcia później
     useEffect(() => {
         if (tasks.length > 0) {

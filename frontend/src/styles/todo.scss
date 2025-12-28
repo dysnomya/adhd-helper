@@ -408,12 +408,12 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     flex-direction: column;
     gap: 15px;
     position: relative;
-    z-index: 2; 
+    z-index: 2;
+
 
 }
 
 // task
-
 .task-container {
     position: relative;
     font-family: $app-font;
@@ -438,6 +438,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
         transform: none !important;
     }
 }
+
 
 .task-card {
     background: linear-gradient(90deg, var(--cat-color) 15%, var(--prio-color) 85%);
@@ -1452,7 +1453,6 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
 
         &:hover { opacity: 0.9; }
     }
-
 }
 
 .edit-popup-list {
