@@ -2,12 +2,15 @@ package pl.poznan.put.adhd.adhd_helper.task.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import lombok.Builder;
+
 import pl.poznan.put.adhd.adhd_helper.category.CategoryDto;
 import pl.poznan.put.adhd.adhd_helper.priority.Priority;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Builder
 public record TaskResponse(
         Long id,
         CategoryDto category,
