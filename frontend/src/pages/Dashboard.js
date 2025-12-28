@@ -3,10 +3,12 @@ import DailyProgress from "../components/Todo/DailyProgress";
 import { useTaskData } from "../hooks/UseTaskData";
 import { ReactComponent as SadPimpus } from "../assets/pimpus_sad.svg";
 import { useMemo } from "react";
+import TaskProgressGaugeChart from "../components/Dashboard/TaskProgressGaugeChart"
 
 export default function Dashboard() {
 
-    const { tasks, categories, isLoading, error } = useTaskData([], "", true);
+    const emptyFilters = useMemo(() => [], []);
+    const { tasks, categories, isLoading, error } = useTaskData(emptyFilters, "", true);
 
     const stats = useMemo(() => {
         if (!tasks || tasks.length === 0) return null;
@@ -40,6 +42,8 @@ export default function Dashboard() {
 
     const isFirstLoad = isLoading && tasks.length === 0 && categories.length === 0;
 
+    const percentage = stats ? stats.percentage : 0;
+
     return (
         <div className='dashboard-main-container'>
 
@@ -56,6 +60,10 @@ export default function Dashboard() {
                 </div>
 
                 <div className="dashboard-left-middle">
+
+                    <div className="dashboard-percentage-of-done-tasks">
+                        <TaskProgressGaugeChart percentage={percentage} />
+                    </div>
 
                 </div>
 
