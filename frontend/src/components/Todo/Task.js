@@ -3,10 +3,29 @@ import React, { useState, useEffect, useRef } from "react";
 import { timeDisplay } from "../../functions/TasksHelpers";
 import { ReactComponent as Clock} from "../../assets/clock_icon.svg";
 
-const Task = ({ task, isSubtask = false, onStatusChange }) => {
+import { ReactComponent as CheckIcon } from "../../assets/check_icon.svg";
+import { ReactComponent as TriangleArrowIcon } from "../../assets/triangle-arrow-button.svg";
+
+import { ReactComponent as EditIcon } from "../../assets/edit-button.svg";
+import { ReactComponent as SplitIcon } from "../../assets/split-button.svg";
+import { ReactComponent as DeleteIcon } from "../../assets/delete-button.svg";
+
+
+const getPriorityColor = (priority) => {
+    switch (priority) {
+        case 'HIGH': return '#D22727';
+        case 'MEDIUM': return '#E9BD2B';
+        case 'LOW': return '#A5DD3C';
+        default: return 'transparent';
+    }
+};
+
+const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onDeleteTask }) => {
 
     const [isCompleted, setIsCompleted] = useState(task.completed);   // checkbox
     const [isExpanded, setIsExpanded] = useState(false);    // subtasks
+    const [isExpandedOptions, setIsExpandedOptions] = useState(false);
+    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
     const subtasks = task.subtasks || [];
     const hasChildren = subtasks.length > 0;
@@ -51,57 +70,147 @@ const Task = ({ task, isSubtask = false, onStatusChange }) => {
         setIsExpanded(!isExpanded);
     };
 
+    const handleExpandOptions = () => {
+        setIsExpandedOptions(!isExpandedOptions);
+    };
+
+
+    const handleOptionClickEdit = () => {
+        console.log("Editing")
+    }
+
+    const handleOptionClickSplit = () => {
+        console.log("Splitting")
+    }
+
+    const handleOptionClickDelete = (e) => {
+        e.stopPropagation();
+        setIsDeleteConfirmOpen(true);
+    }
+
+    const handleCancelDelete = (e) => {
+        e.stopPropagation();
+        setIsDeleteConfirmOpen(false);
+    };
+
+    const handleConfirmDelete = (e) => {
+        e.stopPropagation();
+        onDeleteTask(task.id);
+    };
+
+    const priorityColor = getPriorityColor(task.priority);
+    const finalPriorityColor = task.priority ? priorityColor : 'var(--cat-color)';
+    
     return (
 
         <div 
             className={`task-container ${isSubtask ? 'is-subtask' : ''}`}
-            style={{ '--cat-color': categoryColor }}
+            style={{ '--cat-color': categoryColor, '--prio-color': finalPriorityColor }}
         >
 
-            <div className="task-card">
+            <div className={`task-row-wrapper ${isDeleteConfirmOpen ? 'allow-overflow' : ''}`}>
 
-                {!isSubtask && (
-                    <div className="task-category-header">
-                        {categoryName}
+                {isDeleteConfirmOpen && (
+                    <div className="delete-confirm-popup">
+                        <p className="delete-confirm-text">Usunąć na zawsze?</p>
+                        <div className="delete-confirm-actions">
+                            <button className="btn-cancel" onClick={handleCancelDelete}>
+                                Anuluj
+                            </button>
+                            <button className="btn-delete" onClick={handleConfirmDelete}>
+                                Usuń
+                            </button>
+                        </div>
                     </div>
                 )}
+
+                <div className={`task-options-panel ${inCalendar ? 'in-calendar' : ''}`}>
+                    <EditIcon 
+                        className="option-btn edit" 
+                        onClick={handleOptionClickEdit}
+                    />
+
+                    <SplitIcon 
+                        className="option-btn split" 
+                        onClick={handleOptionClickSplit}
+                    />
+
+
+                    <div className="delete-btn-wrapper">
+
+                        <DeleteIcon 
+                            className="option-btn delete" 
+                            onClick={handleOptionClickDelete}
+                        />
+
+                    </div>
+
                 </div>
-                <div className="task-content-box">
 
-                    <div className="task-left">
-                        <div 
-                            className={`custom-checkbox ${task.completed ? 'checked' : ''}`}
-                            onClick={handleCheckedTask}
-                        >
-                            {isCompleted && <div className="dot"></div>}
-                        </div>
+                <div className={`task-swipe-content ${isExpandedOptions ? 'panel-open' : ''}`}>
 
-                        {hasChildren && (
-                            <div 
-                                className={`expand-arrow ${isExpanded ? 'expanded' : ''}`}
-                                onClick={handleToggleSubtask}
-                            >
-                                ›
+                    <div className="task-card">
+
+                        {!isSubtask && (
+                            <div className="task-category-header">
+                                {categoryName}
                             </div>
                         )}
-
-                        <div className="task-info">
-                            <p className={`task-name ${task.completed ? 'completed-text' : ''}`}>
-                                {task.name}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="task-right">
-                        {task.timeNeeded && (
-                            <span className="task-time">
-                                <span className="clock-icon"><Clock className="clock_icon"></Clock></span> {timeDisplay(task.timeNeeded)}
-                            </span>
+                        {isSubtask && (
+                            <div className="subtask-header">
+                            </div>
                         )}
-                       
                     </div>
+
+                    <div className="task-content-box">
+
+                        
+
+                        <div className="task-left">
+                            <div 
+                                className={`custom-checkbox ${task.completed ? 'checked' : ''}`}
+                                onClick={handleCheckedTask}
+                            >
+                                {isCompleted && <CheckIcon className="dot"></CheckIcon>}
+                            </div>
+
+                            {hasChildren && (
+                                <div 
+                                    className={`expand-arrow ${isExpanded ? 'expanded' : ''}`}
+                                    onClick={handleToggleSubtask}
+                                >
+                                    ›
+                                </div>
+                            )}
+
+                            <div className="task-info">
+                                <p className={`task-name ${task.completed ? 'completed-text' : ''}`}>
+                                    {task.name}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="task-right">
+                            {task.timeNeeded && (
+                                <span className="task-time">
+                                    <span className="clock-icon"><Clock className="clock_icon"></Clock></span> {timeDisplay(task.timeNeeded)}
+                                </span>
+                            )}
+
+                            <TriangleArrowIcon 
+                                className={`task-expand-options ${isExpandedOptions ? 'options-expanded' : ''} ${inCalendar ? 'in-calendar' : ''}`} 
+                                onClick={handleExpandOptions}
+                            />
+                        
+                        </div>
+
+                        
+                    </div>
+                
                 </div>
             
+            </div>
+
 
             {hasChildren && isExpanded && (
                 <div className="subtasks-container">
@@ -113,6 +222,7 @@ const Task = ({ task, isSubtask = false, onStatusChange }) => {
                             task={{ ...subtask, parentId: task.id }} 
                             isSubtask={true}
                             onStatusChange={onStatusChange}
+                            onDeleteTask={onDeleteTask}
                         />
                     ))}
                 </div>

@@ -78,11 +78,51 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
 
                 return { ...task, completed: isCompleted, subtasks: updatedSubtasks };
             }
+
+            if (task.subtasks && task.subtasks.length > 0) {
+                
+                const subtaskIndex = task.subtasks.findIndex(sub => sub.id === taskId);
+
+                if (subtaskIndex !== -1) {
+                    
+                    const newSubtasks = [...task.subtasks];
+                    
+                    newSubtasks[subtaskIndex] = {
+                        ...newSubtasks[subtaskIndex],
+                        completed: isCompleted
+                    };
+
+                    return {
+                        ...task,
+                        subtasks: newSubtasks
+                    };
+                }
+            }
+
             return task;
         }));
     };
 
 
+    const deleteTaskLocal = (taskId) => {
+        setTasks(prevTasks => {
+            const filteredTasks = prevTasks.filter(task => task.id !== taskId);
+
+            if(filteredTasks.length !== prevTasks.length) {
+                return filteredTasks;
+            }
+
+            return prevTasks.map(task => {
+                if (task.subtasks && task.subtasks.length > 0) {
+                    return {
+                        ...task,
+                        subtasks: task.subtasks.filter(subtask => subtask.id !== taskId)
+                    };
+                }
+                return task;
+            });
+        });
+    };
     const updateCategoryLocal = (categoryId, updatedData) => {
         setCategories(prevCategories => prevCategories.map(cat => 
             cat.id === categoryId 
@@ -126,6 +166,7 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         error,
         addCategoryLocal,
         toggleTaskLocal,
+        deleteTaskLocal,
         updateCategoryLocal,
         deleteCategoryLocal
     };

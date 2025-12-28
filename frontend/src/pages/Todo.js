@@ -10,6 +10,9 @@ import { ReactComponent as Dynks} from "../assets/dynks.svg";
 import { ReactComponent as Filter} from "../assets/Filter_icon.svg";
 import { useLocation } from "react-router-dom";
 import { ReactComponent as SadPimpus } from "../assets/pimpus_sad.svg";
+import DailyProgress from "../components/Todo/DailyProgress";
+
+import pimpus from "../assets/pimpus_happy_anim.webp";
 
 import EditCategoryModal from "../components/Todo/EditCategoryModal";
 
@@ -19,26 +22,40 @@ import EditCategoryModal from "../components/Todo/EditCategoryModal";
 const Todo = () => {
     const location = useLocation();     // hook do pobrania adresu URL
 
+    const initialFilters = useMemo(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const dateParam = searchParams.get('date');
+        
+        return {
+            date: dateParam || '',
+            showAll: !dateParam
+        };
+    }, [location.search]);
+
     const [activeFilter, setActiveFilter] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    const [selectedDateFilter, setSelectedDateFilter] = useState('');
-    const [showAllTasks, setShowAllTasks] = useState(true);
+    const [selectedDateFilter, setSelectedDateFilter] = useState(initialFilters.date);
+    const [showAllTasks, setShowAllTasks] = useState(initialFilters.showAll);
 
     const [areCategoriesInitialized, setAreCategoriesInitialized] = useState(false);
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+    const [selectedPriority, setSelectedPriority] = useState(null);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const dateParam = searchParams.get('date');
 
         if (dateParam) {
-            setSelectedDateFilter(dateParam);
+            setSelectedDateFilter(prev => (prev !== dateParam ? dateParam : prev));
             setShowAllTasks(false);
+        } else if (initialFilters.showAll) {
+            setShowAllTasks(prev => (!prev ? true : prev));
         }
-    }, [location]);
+    }, [location.search, initialFilters]);
 
     // Loading tasks data from database
     const {
@@ -48,10 +65,10 @@ const Todo = () => {
         error,
         addCategoryLocal,
         toggleTaskLocal,
+        deleteTaskLocal,
         updateCategoryLocal,
         deleteCategoryLocal
     } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
-
 
     useEffect(() => {     
         if (categories.length > 0 && !areCategoriesInitialized) {
@@ -81,6 +98,14 @@ const Todo = () => {
 
         setIsModalOpen(false);
     }
+
+    const tasksFilteredByPriority = useMemo(() => {
+        if (!selectedPriority) return tasks;
+
+        return tasks.filter(task => {
+            return task.priority === selectedPriority;
+        })
+    }, [tasks, selectedPriority]);
 
     const prepareDatedTasks = (tasksToGroup) => {
 
@@ -130,12 +155,22 @@ const Todo = () => {
     }
 
     const datedTasks = useMemo(() => {
-        return prepareDatedTasks(tasks);
-    }, [tasks]);
+        return prepareDatedTasks(tasksFilteredByPriority);
+    }, [tasksFilteredByPriority]);
 
 
     const isFirstLoad = isLoading && tasks.length === 0 && categories.length === 0;
 
+
+    const handleDeleteTask = async (taskId) => {
+        try {
+            // API CALL
+            deleteTaskLocal(taskId);
+        } catch (e) {
+            console.error("Błąd usuwania zadania", e);
+            alert("Nie udało się usunąć zadania.");
+        }
+    };
 
     const handleUpdateCategory = async (id, data) => {
         try {
@@ -217,6 +252,9 @@ const Todo = () => {
                         onToggleShowAll={setShowAllTasks}
 
                         onEditCategoryClick={() => setIsEditModalOpen(true)}
+
+                        selectedPriority={selectedPriority}
+                        onPriorityChange={setSelectedPriority}
                     />
 
                 </div>
@@ -225,6 +263,23 @@ const Todo = () => {
             
 
             <div className="todo-main-content-area">
+
+                <div className="todo-daily-wrapper">
+                    <DailyProgress 
+                    />
+                    <div className="add-task-btn-container">
+                        <button className="add-task-btn">
+                        + Nowe zadanie
+                    </button>
+                    </div>
+                    <div className="todo-progress-pimpus-wrapper">
+                        <img 
+                            src={pimpus} 
+                            alt="Happy Pimpus" 
+                            className="todo-progress-pimpus"
+                        />
+                    </div>
+                </div>
 
                 <div className="todo-tasks-list">
 
@@ -238,6 +293,7 @@ const Todo = () => {
                     <TaskListContainer 
                         datedTasks={datedTasks} 
                         onTaskStatusChange={toggleTaskLocal}
+                        onDeleteTask={handleDeleteTask}
                     ></TaskListContainer>
                 </div>
                 

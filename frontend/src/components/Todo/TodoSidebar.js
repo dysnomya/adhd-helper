@@ -12,7 +12,9 @@ const TodoSidebar = ({
     onDateChange,
     showAllTasks,
     onToggleShowAll,
-    onEditCategoryClick
+    onEditCategoryClick,
+    selectedPriority,
+    onPriorityChange
 
 }) => {
 
@@ -51,7 +53,16 @@ const TodoSidebar = ({
         const allCategoryIds = categories.map(cat => cat.id);
         allCategoryIds.push("NULL_CATEGORY");
         setActiveFilter(allCategoryIds);
+        onPriorityChange(null);
     }
+
+    const handlePriorityClick = (priority) => {
+        if (selectedPriority === priority) {
+            onPriorityChange(null);
+        } else {
+            onPriorityChange(priority);
+        }
+    };
 
 
     return (
@@ -59,7 +70,7 @@ const TodoSidebar = ({
         <div className='todo-sidebar'>
             <nav className='todo-nav'>
 
-                <div>
+                <div className='todo-sidebar-date-and-categories'>
                     <p className='todo-sidebar-text-titles'>Data</p>
 
                     <div className='sidebar-date-picker-container'>
@@ -83,20 +94,24 @@ const TodoSidebar = ({
 
 
 
-                    {categories.map(category => (
-                        <Category
-                            key={category.id}
-                            category={category}
-                            onClick={() => handleCategoryClick(category.id)}
-                            isActive={activeFilter.includes(category.id)}
-                        />
-                    ))}
+                    <div className='todo-sidebar-categories-list'>
 
-                    <Category
-                        category={noCategoryOption}
-                        onClick={() => handleCategoryClick(noCategoryId)}
-                        isActive={activeFilter.includes(noCategoryId)}
-                    />
+                        {categories.map(category => (
+                            <Category
+                                key={category.id}
+                                category={category}
+                                onClick={() => handleCategoryClick(category.id)}
+                                isActive={activeFilter.includes(category.id)}
+                            />
+                        ))}
+
+                        <Category
+                            category={noCategoryOption}
+                            onClick={() => handleCategoryClick(noCategoryId)}
+                            isActive={activeFilter.includes(noCategoryId)}
+                        />
+
+                    </div>
 
                     <div 
                         className='todo-sidebar-add-button'
@@ -111,9 +126,24 @@ const TodoSidebar = ({
                     <div className='todo-sidebar-priorytet'>
                         <p className='todo-sidebar-text-titles'>Priorytet</p>
 
-                        <div className='priority high'>Wysoki</div>
-                        <div className='priority medium'>Średni</div>
-                        <div className='priority low'>Niski</div>
+                        <div 
+                            className={`priority high ${selectedPriority === 'HIGH' ? 'active' : ''}`}
+                            onClick={() => handlePriorityClick('HIGH')}
+                            > Wysoki
+                        </div>
+
+                        <div 
+                            className={`priority medium ${selectedPriority === 'MEDIUM' ? 'active' : ''}`}
+                            onClick={() => handlePriorityClick('MEDIUM')}
+                            > Średni
+                        </div>
+
+                        <div 
+                            className={`priority low ${selectedPriority === 'LOW' ? 'active' : ''}`}
+                            onClick={() => handlePriorityClick('LOW')}
+                            > Niski
+                        </div>
+                        
                     </div>
 
 
