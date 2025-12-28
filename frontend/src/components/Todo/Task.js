@@ -10,6 +10,16 @@ import { ReactComponent as EditIcon } from "../../assets/edit-button.svg";
 import { ReactComponent as SplitIcon } from "../../assets/split-button.svg";
 import { ReactComponent as DeleteIcon } from "../../assets/delete-button.svg";
 
+
+const getPriorityColor = (priority) => {
+    switch (priority) {
+        case 'HIGH': return '#D22727';
+        case 'MEDIUM': return '#E9BD2B';
+        case 'LOW': return '#A5DD3C';
+        default: return 'transparent';
+    }
+};
+
 const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false }) => {
 
     const [isCompleted, setIsCompleted] = useState(task.completed);   // checkbox
@@ -75,12 +85,15 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false }) =
     const handleOptionClickDelete = () => {
         console.log("Deleting")
     }
+
+    const priorityColor = getPriorityColor(task.priority);
+    const finalPriorityColor = task.priority ? priorityColor : 'var(--cat-color)';
     
     return (
 
         <div 
             className={`task-container ${isSubtask ? 'is-subtask' : ''}`}
-            style={{ '--cat-color': categoryColor }}
+            style={{ '--cat-color': categoryColor, '--prio-color': finalPriorityColor }}
         >
 
             <div className="task-row-wrapper">
