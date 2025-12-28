@@ -170,25 +170,7 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         });
     };
 
-    const deleteTaskLocal = (taskId) => {
-        setTasks(prevTasks => {
-            const filteredTasks = prevTasks.filter(task => task.id !== taskId);
 
-            if(filteredTasks.length !== prevTasks.length) {
-                return filteredTasks;
-            }
-
-            return prevTasks.map(task => {
-                if (task.subtasks && task.subtasks.length > 0) {
-                    return {
-                        ...task,
-                        subtasks: task.subtasks.filter(subtask => subtask.id !== taskId)
-                    };
-                }
-                return task;
-            });
-        });
-    };
     const updateCategoryLocal = (categoryId, updatedData) => {
         setCategories(prevCategories => prevCategories.map(cat =>
             cat.id === categoryId

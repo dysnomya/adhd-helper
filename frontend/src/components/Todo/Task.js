@@ -52,6 +52,18 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
     const priorityColor = getPriorityColor(task.priority);
     const finalPriorityColor = task.priority ? priorityColor : 'var(--cat-color)';
 
+    // editing
+    const [editName, setEditName] = useState(task.name);
+    const [editTime, setEditTime] = useState(task.timeNeeded || 0);
+    const [editTimeUnit, setEditTimeUnit] = useState('min');
+    const [editCategory, setEditCategory] = useState(task.category || null);
+    const [editPriority, setEditPriority] = useState(task.priority || null);
+    const [editDate, setEditDate] = useState(task.day);
+
+    const [isCatPopupOpen, setIsCatPopupOpen] = useState(null);
+    const [isPrioPopupOpen, setIsPrioPopupOpen] = useState(null);
+    const [isDatePopupOpen, setIsDatePopupOpen] = useState(null);
+
     useEffect(() => {
         setIsCompleted(task.completed);
     }, [task.completed]);

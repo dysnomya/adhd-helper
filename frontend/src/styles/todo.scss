@@ -1689,7 +1689,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     position: absolute;
     top: -35px;
     left: 0;
-    background: var(--color-card-bg);
+    background-color: #e0e0e0;;
     box-shadow: 0 5px 20px rgba(0,0,0,0.4);
     z-index: 2000;
     left: auto;
@@ -1702,7 +1702,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     align-items: center;
 
     .date-input {
-        background: var(--color-card-bg);
+        background-color: #e0e0e0;
         border: none;
         cursor: pointer;
     }
