@@ -1,0 +1,22 @@
+
+.dashboard-main-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.dashboard-left {
+    background-color: blue;
+    width: 70%;
+}
+
+.dashboard-right {
+    background-color: red;
+    width: 30%;
+}
+
+.dashboard-left-top {
+    margin: 10px;
+}
+
