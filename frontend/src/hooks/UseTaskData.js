@@ -80,13 +80,13 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
             }
 
             if (task.subtasks && task.subtasks.length > 0) {
-                
+
                 const subtaskIndex = task.subtasks.findIndex(sub => sub.id === taskId);
 
                 if (subtaskIndex !== -1) {
-                    
+
                     const newSubtasks = [...task.subtasks];
-                    
+
                     newSubtasks[subtaskIndex] = {
                         ...newSubtasks[subtaskIndex],
                         completed: isCompleted
@@ -146,11 +146,47 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
                     return { ...task, subtasks: newSubtasks };
                 }
             }
-            
+
             return task;
 
         }));
     };
+
+
+    const updateCategoryLocal = (categoryId, updatedData) => {
+        setCategories(prevCategories => prevCategories.map(cat =>
+            cat.id === categoryId
+                ? { ...cat, ...updatedData }
+                : cat
+        ));
+
+        setTasks(prevTasks => prevTasks.map(task => {
+            if (task.category && task.category.id === categoryId) {
+                return {
+                    ...task,
+                    category: {
+                        ...task.category,
+                        ...updatedData
+                    }
+                };
+            }
+            return task;
+        }));
+    }
+
+    const deleteCategoryLocal = (categoryId) => {
+        setCategories(prevCategories => prevCategories.filter(cat => cat.id !== categoryId));
+
+        setTasks(prevTasks => prevTasks.map(task => {
+            if (task.category && task.category.id === categoryId) {
+                return {
+                    ...task,
+                    category: null
+                };
+            }
+            return task;
+        }));
+    }
 
 
     return {
@@ -161,6 +197,8 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         addCategoryLocal,
         toggleTaskLocal,
         deleteTaskLocal,
+        updateCategoryLocal,
+        deleteCategoryLocal,
         updateTaskLocal
     };
 

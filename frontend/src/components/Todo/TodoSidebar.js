@@ -1,7 +1,9 @@
 import React from 'react';
 import Category from './Category';
 
-const TodoSidebar = ({ 
+import { ReactComponent as EditCategoryIcon } from "../../assets/edit-category.svg";
+
+const TodoSidebar = ({
     categories, 
     setActiveFilter, 
     activeFilter, 
@@ -9,7 +11,10 @@ const TodoSidebar = ({
     selectedDate,
     onDateChange,
     showAllTasks,
-    onToggleShowAll
+    onToggleShowAll,
+    onEditCategoryClick,
+    selectedPriority,
+    onPriorityChange
 
 }) => {
 
@@ -48,7 +53,16 @@ const TodoSidebar = ({
         const allCategoryIds = categories.map(cat => cat.id);
         allCategoryIds.push("NULL_CATEGORY");
         setActiveFilter(allCategoryIds);
+        onPriorityChange(null);
     }
+
+    const handlePriorityClick = (priority) => {
+        if (selectedPriority === priority) {
+            onPriorityChange(null);
+        } else {
+            onPriorityChange(priority);
+        }
+    };
 
 
     return (
@@ -70,7 +84,15 @@ const TodoSidebar = ({
 
                     </div>
 
-                    <p className='todo-sidebar-text-titles'>Kategorie</p>
+                    <div className='categories-header-container'>
+                        <p className='todo-sidebar-text-titles'>Kategorie</p>
+                        <EditCategoryIcon
+                            className='edit-category-button'
+                            onClick={onEditCategoryClick}
+                        />
+                    </div>
+
+
 
                     <div className='todo-sidebar-categories-list'>
 
@@ -91,7 +113,7 @@ const TodoSidebar = ({
 
                     </div>
 
-                    <div 
+                    <div
                         className='todo-sidebar-add-button'
                         onClick={onAddCategoryClick}
                     >
@@ -104,9 +126,24 @@ const TodoSidebar = ({
                     <div className='todo-sidebar-priorytet'>
                         <p className='todo-sidebar-text-titles'>Priorytet</p>
 
-                        <div className='priority high'>Wysoki</div>
-                        <div className='priority medium'>Średni</div>
-                        <div className='priority low'>Niski</div>
+                        <div
+                            className={`priority high ${selectedPriority === 'HIGH' ? 'active' : ''}`}
+                            onClick={() => handlePriorityClick('HIGH')}
+                            > Wysoki
+                        </div>
+
+                        <div
+                            className={`priority medium ${selectedPriority === 'MEDIUM' ? 'active' : ''}`}
+                            onClick={() => handlePriorityClick('MEDIUM')}
+                            > Średni
+                        </div>
+
+                        <div
+                            className={`priority low ${selectedPriority === 'LOW' ? 'active' : ''}`}
+                            onClick={() => handlePriorityClick('LOW')}
+                            > Niski
+                        </div>
+
                     </div>
 
 

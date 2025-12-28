@@ -14,6 +14,10 @@ import DailyProgress from "../components/Todo/DailyProgress";
 
 import pimpus from "../assets/pimpus_happy_anim.webp";
 
+import EditCategoryModal from "../components/Todo/EditCategoryModal";
+
+// import { updateCategory, deleteCategory } from "../api/TaskApi";
+
 //  todo?date=2025-12-06
 const Todo = () => {
     const location = useLocation();     // hook do pobrania adresu URL
@@ -21,7 +25,7 @@ const Todo = () => {
     const initialFilters = useMemo(() => {
         const searchParams = new URLSearchParams(location.search);
         const dateParam = searchParams.get('date');
-        
+
         return {
             date: dateParam || '',
             showAll: !dateParam
@@ -36,6 +40,10 @@ const Todo = () => {
     const [showAllTasks, setShowAllTasks] = useState(initialFilters.showAll);
 
     const [areCategoriesInitialized, setAreCategoriesInitialized] = useState(false);
+
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+    const [selectedPriority, setSelectedPriority] = useState(null);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -58,6 +66,8 @@ const Todo = () => {
         addCategoryLocal,
         toggleTaskLocal,
         deleteTaskLocal,
+        updateCategoryLocal,
+        deleteCategoryLocal,
         updateTaskLocal
     } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
 
@@ -90,6 +100,14 @@ const Todo = () => {
 
         setIsModalOpen(false);
     }
+
+    const tasksFilteredByPriority = useMemo(() => {
+        if (!selectedPriority) return tasks;
+
+        return tasks.filter(task => {
+            return task.priority === selectedPriority;
+        })
+    }, [tasks, selectedPriority]);
 
     const prepareDatedTasks = (tasksToGroup) => {
 
@@ -139,8 +157,8 @@ const Todo = () => {
     }
 
     const datedTasks = useMemo(() => {
-        return prepareDatedTasks(tasks);
-    }, [tasks]);
+        return prepareDatedTasks(tasksFilteredByPriority);
+    }, [tasksFilteredByPriority]);
 
 
     const isFirstLoad = isLoading && tasks.length === 0 && categories.length === 0;
@@ -153,6 +171,26 @@ const Todo = () => {
         } catch (e) {
             console.error("Błąd usuwania zadania", e);
             alert("Nie udało się usunąć zadania.");
+        }
+    };
+
+    const handleUpdateCategory = async (id, data) => {
+        try {
+            // await updateCategory(id, data);
+            updateCategoryLocal(id, data);
+        } catch (e) {
+            console.error("Błąd edycji kategorii", e);
+            alert("Nie udało się edytować kategorii");
+        }
+    };
+
+    const handleDeleteCategory = async (id) => {
+        try {
+            // await deleteCategory(id);
+            deleteCategoryLocal(id);
+        } catch (e) {
+            console.error("Błąd usuwania kategorii", e);
+            alert("Nie udało się usunąć kategorii");
         }
     };
 
@@ -223,6 +261,11 @@ const Todo = () => {
 
                         showAllTasks={showAllTasks}
                         onToggleShowAll={setShowAllTasks}
+
+                        onEditCategoryClick={() => setIsEditModalOpen(true)}
+
+                        selectedPriority={selectedPriority}
+                        onPriorityChange={setSelectedPriority}
                     />
 
                 </div>
@@ -233,7 +276,7 @@ const Todo = () => {
             <div className="todo-main-content-area">
 
                 <div className="todo-daily-wrapper">
-                    <DailyProgress 
+                    <DailyProgress
                     />
                     <div className="add-task-btn-container">
                         <button className="add-task-btn">
@@ -241,9 +284,9 @@ const Todo = () => {
                     </button>
                     </div>
                     <div className="todo-progress-pimpus-wrapper">
-                        <img 
-                            src={pimpus} 
-                            alt="Happy Pimpus" 
+                        <img
+                            src={pimpus}
+                            alt="Happy Pimpus"
                             className="todo-progress-pimpus"
                         />
                     </div>
@@ -274,6 +317,14 @@ const Todo = () => {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onConfirm={handleConfirmAddCategory}
+            />
+
+            <EditCategoryModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                categories={categories}
+                onUpdate={handleUpdateCategory}
+                onDelete={handleDeleteCategory}
             />
 
         </div>

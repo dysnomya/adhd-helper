@@ -204,12 +204,12 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
         setEditDate(newDate);
     };
 
-    
+
     let selectedCategory = null;
     if (editCategory !== null) {
         selectedCategory = categories?.find(c => c.id === editCategory.id);
     }
-    
+
     const currentCatName = selectedCategory ? selectedCategory.name : "Wybierz kategorię";
     const currentCatColor = selectedCategory ? selectedCategory.color : "#828282ff";
 
@@ -220,15 +220,15 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
             style={{ '--cat-color': categoryColor, '--prio-color': finalPriorityColor, '--cat-color-edit': currentCatColor, '--prio-color-edit': editPriority ? getPriorityColor(editPriority) : currentCatColor }}
         >
 
-      
+
 
             {isEditing ? (
-                
+
                 <div className={`task-edit-wrapper ${isSubtask ? 'editing-subtask' : ''}`}>
                     <div className={`task-edit-header`}>
 
                         {/* CATEGORY */}
-                        <div 
+                        <div
                             className={`edit-header-item choose-category`}
                             onClick={handleCatClick}
                         >
@@ -237,8 +237,8 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                                 <DropdownPortal rect={isCatPopupOpen} onClose={() => setIsCatPopupOpen(null)}>
                                     <div className="edit-popup-list left">
                                         {categories.map(cat => (
-                                            <div 
-                                                key={cat.id} 
+                                            <div
+                                                key={cat.id}
                                                 className="edit-task-category-item"
                                                 style={{'--cat-color': cat.color}}
                                                 onClick={() => {
@@ -249,7 +249,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                                                 <p>{cat.name}</p>
                                             </div>
                                         ))}
-                                        <div 
+                                        <div
                                             className="edit-task-category-item"
                                             style={{'--cat-color': "#828282ff"}}
                                             onClick={() => {
@@ -266,8 +266,8 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                         </div>
 
                         {/* PRIORITY */}
-                        <div 
-                            className="edit-header-item choose-priority" 
+                        <div
+                            className="edit-header-item choose-priority"
                             onClick={handlePrioClick}
                         >
                             <span>{getPriorityName(editPriority) || "Priorytet"} ▾</span>
@@ -291,9 +291,9 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
 
                     <div className="task-edit-body">
                         <div className="edit-circle-icon"></div>
-                        
-                        <input 
-                            type="text" 
+
+                        <input
+                            type="text"
                             className="edit-input-name"
                             value={editName}
                             onChange={(e) => setEditName(e.target.value)}
@@ -301,10 +301,10 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                         />
 
                         <div className="edit-time-group">
-                            <input 
-                                type="number" 
+                            <input
+                                type="number"
                                 className="edit-input-time"
-                                value={editTime}    
+                                value={editTime}
                                 onChange={(e) => setEditTime(e.target.value)}
                             />
                             <div className="edit-unit-toggle" onClick={() => setEditTimeUnit(editTimeUnit === 'min' ? 'godz' : 'min')}>
@@ -315,7 +315,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
 
                     <div className="task-edit-actions-sidebar">
                         <CheckIcon className="action-btn confirm" onClick={handleSaveEdit}></CheckIcon>
-                        <CalendarIcon 
+                        <CalendarIcon
                             className="action-btn date"
                             onClick={handleDateClick}
                         ></CalendarIcon>
@@ -323,8 +323,8 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                         {isDatePopupOpen && (
                             <DropdownPortal rect={isDatePopupOpen} onClose={() => setIsDatePopupOpen(null)}>
                                 <div className='edit-date-picker-container'>
-                                    <input 
-                                        type="date" 
+                                    <input
+                                        type="date"
                                         className="date-input"
                                         value={editDate}
                                         onChange={handleDateInput}
@@ -333,7 +333,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                                 </div>
                             </DropdownPortal>
                         )}
-                        
+
 
                         <XIcon className="action-btn cancel" onClick={handleCancelEdit}></XIcon>
                     </div>
@@ -344,7 +344,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
 
 
             ) : (
-            
+
                 <>
                 {/* TASK */}
                 <div className={`task-row-wrapper ${isDeleteConfirmOpen ? 'allow-overflow' : ''} `}>
@@ -365,21 +365,21 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                     )}
 
                     <div className={`task-options-panel ${inCalendar ? 'in-calendar' : ''}`}>
-                        <EditIcon 
-                            className="option-btn edit" 
+                        <EditIcon
+                            className="option-btn edit"
                             onClick={handleOptionClickEdit}
                         />
 
-                        <SplitIcon 
-                            className="option-btn split" 
+                        <SplitIcon
+                            className="option-btn split"
                             onClick={handleOptionClickSplit}
                         />
 
 
                         <div className="delete-btn-wrapper">
 
-                            <DeleteIcon 
-                                className="option-btn delete" 
+                            <DeleteIcon
+                                className="option-btn delete"
                                 onClick={handleOptionClickDelete}
                             />
 
@@ -404,10 +404,10 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
 
                         <div className="task-content-box">
 
-                            
+
 
                             <div className="task-left">
-                                <div 
+                                <div
                                     className={`custom-checkbox ${task.completed ? 'checked' : ''}`}
                                     onClick={handleCheckedTask}
                                 >
@@ -415,7 +415,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                                 </div>
 
                                 {hasChildren && (
-                                    <div 
+                                    <div
                                         className={`expand-arrow ${isExpanded ? 'expanded' : ''}`}
                                         onClick={handleToggleSubtask}
                                     >
@@ -437,18 +437,18 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                                     </span>
                                 )}
 
-                                <TriangleArrowIcon 
-                                    className={`task-expand-options ${isExpandedOptions ? 'options-expanded' : ''} ${inCalendar ? 'in-calendar' : ''}`} 
+                                <TriangleArrowIcon
+                                    className={`task-expand-options ${isExpandedOptions ? 'options-expanded' : ''} ${inCalendar ? 'in-calendar' : ''}`}
                                     onClick={handleExpandOptions}
                                 />
-                            
+
                             </div>
 
-                            
+
                         </div>
-                    
+
                     </div>
-                
+
                 </div>
 
 
@@ -457,9 +457,9 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                         {[...subtasks]
                         .sort((a, b) => a.id - b.id)
                         .map(subtask => (
-                            <Task 
-                                key={subtask.id} 
-                                task={{ ...subtask, parentId: task.id }} 
+                            <Task
+                                key={subtask.id}
+                                task={{ ...subtask, parentId: task.id }}
                                 isSubtask={true}
                                 inCalendar={inCalendar}
                                 onStatusChange={onStatusChange}
@@ -469,12 +469,12 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                             />
                         ))}
                     </div>
-                )} 
+                )}
 
                 </>
 
             )}
-    
+
 
 
         </div> // task container
