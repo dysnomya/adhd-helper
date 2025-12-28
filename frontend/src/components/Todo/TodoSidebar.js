@@ -3,7 +3,7 @@ import Category from './Category';
 
 import { ReactComponent as EditCategoryIcon } from "../../assets/edit-category.svg";
 
-const TodoSidebar = ({ 
+const TodoSidebar = ({
     categories, 
     setActiveFilter, 
     activeFilter, 
@@ -86,7 +86,7 @@ const TodoSidebar = ({
 
                     <div className='categories-header-container'>
                         <p className='todo-sidebar-text-titles'>Kategorie</p>
-                        <EditCategoryIcon 
+                        <EditCategoryIcon
                             className='edit-category-button'
                             onClick={onEditCategoryClick}
                         />
@@ -113,7 +113,7 @@ const TodoSidebar = ({
 
                     </div>
 
-                    <div 
+                    <div
                         className='todo-sidebar-add-button'
                         onClick={onAddCategoryClick}
                     >
@@ -126,24 +126,24 @@ const TodoSidebar = ({
                     <div className='todo-sidebar-priorytet'>
                         <p className='todo-sidebar-text-titles'>Priorytet</p>
 
-                        <div 
+                        <div
                             className={`priority high ${selectedPriority === 'HIGH' ? 'active' : ''}`}
                             onClick={() => handlePriorityClick('HIGH')}
                             > Wysoki
                         </div>
 
-                        <div 
+                        <div
                             className={`priority medium ${selectedPriority === 'MEDIUM' ? 'active' : ''}`}
                             onClick={() => handlePriorityClick('MEDIUM')}
                             > Średni
                         </div>
 
-                        <div 
+                        <div
                             className={`priority low ${selectedPriority === 'LOW' ? 'active' : ''}`}
                             onClick={() => handlePriorityClick('LOW')}
                             > Niski
                         </div>
-                        
+
                     </div>
 
 
