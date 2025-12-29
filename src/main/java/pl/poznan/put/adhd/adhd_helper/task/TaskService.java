@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import pl.poznan.put.adhd.adhd_helper.common.specification.SpecificationBuilder;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskRequest;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskResponse;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskStatsResponse;
@@ -39,9 +38,9 @@ public class TaskService {
     }
 
     public TaskStatsResponse getTaskStatsForDay(LocalDate day) {
+        AdhdUser currentAdhdUser = adhdUserService.getCurrentUser();
         List<Task> taskOnDay =
-                taskRepository.findAll(
-                        SpecificationBuilder.<Task>empty().eq(Task_.day, day).build());
+                taskRepository.findByCreatedByAndDay(currentAdhdUser, day);
 
         return new TaskStatsResponse(
                 day,
