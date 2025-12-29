@@ -55,6 +55,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
                 ...
                 ]
             `;
+            setGeminiAsked(true);
 
             const result = await model.generateContent(prompt);
             const responseText = result.response.text();
@@ -62,6 +63,8 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
             // Oczyszczanie tekstu (Gemini czasem dodaje ```json ... ```)
             const cleanedJson = responseText.replace(/```json|```/g, "").trim();
             const newSubTasks = JSON.parse(cleanedJson);
+            
+            setGeminiAsked(false);
             setSubtasks(newSubTasks);
             console.log("Wygenerowane podzadania:", newSubTasks, "has", newSubTasks.length);
 
@@ -252,9 +255,9 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
                                             {isEdited ? (
                                                     <span>
                                                     <input type="number" value={oldTaskTimeMetric == "h" ? taskTime/60 : taskTime} className={`split-task-time-input `} onChange={e => setTaskTime(e.target.value)}></input>
-                                                    <select name="time-select" value={taskTimeMetric}  className={`split-task-time-select `} onChange={e => {setTaskTimeMetric(e.target.value); console.log(taskTimeMetric);}}>
+                                                    <select name="time-select" value={taskTimeMetric}  className={`split-task-time-select `} onClick={e => {if(e.target.value == 'min') { e.target.value='h';setTaskTimeMetric(e.target.value);} else{ e.target.value='min'}setTaskTimeMetric(e.target.value)}} onChange={e => {setTaskTimeMetric(e.target.value); console.log(taskTimeMetric);}}>
                                                         <option value="min">min</option>
-                                                        <option value="h">h</option>
+                                                        <option value="h">godz</option>
                                                     </select>
                                                     </span>
                                                 ) : (

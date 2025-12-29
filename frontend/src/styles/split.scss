@@ -150,7 +150,7 @@ div:has( + .split-header-input-button:hover) > input:focus    {
     min-width: 0px;
     width: 100%;
     background-image: var(--bg-img);
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     z-index: 2;
 
@@ -462,6 +462,8 @@ div:has( + .split-header-input-button:hover) > input:focus    {
     
     box-shadow: 4px 4px 20px rgba(0,0,0,0.25);
     padding: 20px;
+    z-index: 3;
+    text-align: center;
 }
 
 .loader {
@@ -474,6 +476,7 @@ div:has( + .split-header-input-button:hover) > input:focus    {
     display: inline-block;
     box-sizing: border-box;
     animation: rotation 1s linear infinite;/* Nieco wolniejszy obrót */
+    z-index: 4;
 }
 
 input, .split-task-time-select{
@@ -481,30 +484,72 @@ input, .split-task-time-select{
     outline: none;
     box-shadow: none;
     border: none;
-    padding: 8px 16px;
+    padding: 5px 10px;
     border-radius: 20px;
-    width: 100%;
 }
 
 .split-task-name{
     flex:1 ;
+    width:100%;
+    font-size: 14px;
 }
 
 .split-task-info{
     flex:1 ;
+    width:100%;
 }
 
 .split-task-time-input{
-    width: 65px;
     text-align: center;
-    padding-right: 5px;
+    // padding: 5px 5px;
+    width:60px;
+    appearance: none;
+    margin: 0px 10px;
+    // padding-right: -45px;
+    -webkit-appearance: textfield;
+     -moz-appearance: textfield;
+          appearance: textfield;
+}
+.split-task-time-input:hover{
+    text-align: center;
+    // padding: 5px 5px;
+    width:60px;
+    appearance: none;
+    margin: 0px 10px;
+    padding-right: -45px;
+    -webkit-appearance: textfield;
+     -moz-appearance: textfield;
+          appearance: textfield;
+}
+
+
+.split-task-time-select{
+    padding-left: 10px;
 }
 
 .split-task-time-select{
-    width: 65px;
-    padding-right: 0px;;
-
+    text-align: center;
+    text-align-last: center;
+    appearance: none;
 }
+
+select,
+::picker(select) {
+  appearance: base-select;
+}
+
+::picker(select){
+    display: none;
+    width:0;
+    appearance: none;
+}
+
+::picker-icon{
+   display: none;
+   width: 0;
+}
+
+
 
 @keyframes rotation {
     0% {

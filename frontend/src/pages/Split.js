@@ -89,28 +89,28 @@ const Split = () => {
     }
 };   
 
-    const SplitBodyContent = () =>{
-        if (taskSplitted){
-            return (
-                <div className="split-body splitted" >
-                    <SplitTaskListContainer splittedTasks = {geminiResult} setGeminiAsked={setGeminiAsked}></SplitTaskListContainer>
-                </div>
-                )
-            // console.log(datedTasks);
-        } else {
-            return (
-                <div className="split-body" >
-                    <div className="split-body-placeholder">
-                        <div className="split-body-bubbles" style={{'--bg-img': `url(${Bubbles})`}}></div>
-                            <div className="split-body-pimpus-div"><Pimpus class="split-body-pimpus"></Pimpus></div>
+    // const SplitBodyContent = () =>{
+    //     if (taskSplitted){
+    //         return (
+    //             <div className="split-body splitted" >
+    //                 <SplitTaskListContainer splittedTasks = {geminiResult} setGeminiAsked={setGeminiAsked}></SplitTaskListContainer>
+    //             </div>
+    //             )
+    //         // console.log(datedTasks);
+    //     } else {
+    //         return (
+    //             <div className="split-body" >
+    //                 <div className="split-body-placeholder">
+    //                     <div className="split-body-bubbles" style={{'--bg-img': `url(${Bubbles})`}}></div>
+    //                         <div className="split-body-pimpus-div"><Pimpus class="split-body-pimpus"></Pimpus></div>
                         
-                        <p className="split-body-text">Pimpuś nie może się doczekać<br/> aby pomóc ci z zadaniem !</p>
-                    </div>
-                </div>
+    //                     <p className="split-body-text">Pimpuś nie może się doczekać<br/> aby pomóc ci z zadaniem !</p>
+    //                 </div>
+    //             </div>
                 
-            )
-        }
-    }
+    //         )
+    //     }
+    // }
 
 
 
@@ -257,7 +257,25 @@ const Split = () => {
             </div>
             
 
-            <SplitBodyContent></SplitBodyContent>
+            {taskSplitted ? (
+                <div className="split-body splitted">
+                    <SplitTaskListContainer 
+                        splittedTasks={geminiResult} 
+                        setGeminiAsked={setGeminiAsked} 
+                    />
+                </div>
+            ) : (
+                <div className="split-body">
+                    <div className="split-body-placeholder">
+                        <div className="split-body-bubbles" style={{'--bg-img': `url(${Bubbles})`}}></div>
+                        <div className="split-body-pimpus-div">
+                            <Pimpus className="split-body-pimpus" /> {/* Poprawiłem class na className */}
+                        </div>
+                        <p className="split-body-text">Pimpuś nie może się doczekać<br/> aby pomóc ci z zadaniem !</p>
+                    </div>
+                </div>
+            )}
+
             <SplitLoadingPopUp geminiAsked={geminiAsked} goodQuestion={goodQuestion} onClose={() => setGoodQuestion(true)}></SplitLoadingPopUp>
             
         </div>
