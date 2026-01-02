@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskRequest;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskResponse;
+import pl.poznan.put.adhd.adhd_helper.task.model.TaskStatsResponse;
 import pl.poznan.put.adhd.adhd_helper.task.specification.TaskFilter;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 @RestController
@@ -29,6 +31,11 @@ public class TaskController {
     @GetMapping
     public Collection<TaskResponse> getAllTasks(@ModelAttribute TaskFilter taskFilter, Sort sort) {
         return taskService.getAllTasks(taskFilter, sort);
+    }
+
+    @GetMapping(path = "/stats")
+    public TaskStatsResponse getTaskStats(@RequestParam LocalDate day) {
+        return taskService.getTaskStatsForDay(day);
     }
 
     @PostMapping

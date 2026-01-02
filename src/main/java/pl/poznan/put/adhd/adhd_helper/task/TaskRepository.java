@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
+import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -17,4 +20,6 @@ interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExec
     @NonNull
     @Override
     List<Task> findAll(Specification<Task> specification, @NonNull Sort sort);
+
+    List<Task> findByCreatedByAndDay(AdhdUser createdBy, LocalDate day);
 }
