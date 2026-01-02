@@ -11,9 +11,12 @@ import org.springframework.stereotype.Repository;
 import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
 
 import java.time.LocalDate;
+import pl.poznan.put.adhd.adhd_helper.configuration.audit.EnableUserFilter;
+
 import java.util.List;
 
 @Repository
+@EnableUserFilter
 interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor<Task> {
 
     @EntityGraph(attributePaths = {"category", "subtasks"})

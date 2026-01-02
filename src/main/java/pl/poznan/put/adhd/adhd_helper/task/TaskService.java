@@ -11,8 +11,6 @@ import pl.poznan.put.adhd.adhd_helper.task.model.TaskResponse;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskStatsResponse;
 import pl.poznan.put.adhd.adhd_helper.task.specification.TaskFilter;
 import pl.poznan.put.adhd.adhd_helper.task.specification.TaskSpecifications;
-import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
-import pl.poznan.put.adhd.adhd_helper.user.AdhdUserService;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -25,14 +23,11 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
-    private final AdhdUserService adhdUserService;
 
     public Collection<TaskResponse> getAllTasks(TaskFilter taskFilter, Sort sort) {
 
-        AdhdUser currentAdhdUser = adhdUserService.getCurrentUser();
         Collection<Task> parentTasks =
-                taskRepository.findAll(
-                        TaskSpecifications.getTaskSpecification(taskFilter, currentAdhdUser), sort);
+                taskRepository.findAll(TaskSpecifications.getTaskSpecification(taskFilter), sort);
 
         return taskMapper.toResponse(parentTasks);
     }
@@ -50,14 +45,13 @@ public class TaskService {
 
     public TaskResponse insertTask(TaskRequest taskRequest) {
         Task toSave = taskMapper.toEntity(taskRequest);
-        toSave.setCompleted(false);
         Task task = taskRepository.save(toSave);
         return taskMapper.toResponse(task);
     }
 
     public TaskResponse updateTask(Long id, TaskRequest taskRequest) {
-        Task toUpdate = taskMapper.toEntity(taskRequest);
-        toUpdate.setId(id);
+        Task toUpdate = taskRepository.getReferenceById(id);
+        taskMapper.update(taskRequest, toUpdate);
         Task task = taskRepository.save(toUpdate);
         return taskMapper.toResponse(task);
     }

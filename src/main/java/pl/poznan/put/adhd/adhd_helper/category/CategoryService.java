@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
-import pl.poznan.put.adhd.adhd_helper.user.AdhdUserService;
-
 import java.util.List;
 
 @Service
@@ -14,11 +12,9 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
-    private final AdhdUserService adhdUserService;
 
     public List<CategoryDto> getAllCategories() {
-        List<Category> allCategories =
-                categoryRepository.findAllByAdhdUser(adhdUserService.getCurrentUser());
+        List<Category> allCategories = categoryRepository.findAll();
         return categoryMapper.toDto(allCategories);
     }
 

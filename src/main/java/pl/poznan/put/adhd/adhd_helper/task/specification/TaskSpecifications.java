@@ -11,7 +11,6 @@ import pl.poznan.put.adhd.adhd_helper.common.specification.SpecificationBuilder;
 import pl.poznan.put.adhd.adhd_helper.priority.Priority;
 import pl.poznan.put.adhd.adhd_helper.task.Task;
 import pl.poznan.put.adhd.adhd_helper.task.Task_;
-import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
 
 import java.util.Collection;
 import java.util.List;
@@ -20,11 +19,9 @@ import java.util.Objects;
 @UtilityClass
 public class TaskSpecifications {
 
-    public static Specification<Task> getTaskSpecification(
-            TaskFilter taskFilter, AdhdUser adhdUser) {
+    public static Specification<Task> getTaskSpecification(TaskFilter taskFilter) {
 
         return SpecificationBuilder.<Task>empty()
-                .eq(Task_.createdBy, adhdUser)
                 .isNull(Task_.parent)
                 .eq(Task_.day, taskFilter.day())
                 .and(categoryIn(taskFilter.category()))
