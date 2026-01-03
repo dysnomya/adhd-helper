@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -25,8 +22,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-@FilterDef(name = "createdByFilter", parameters = @ParamDef(name = "userId", type = Long.class))
-@Filter(name = "createdByFilter", condition = "user_id = :userId")
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

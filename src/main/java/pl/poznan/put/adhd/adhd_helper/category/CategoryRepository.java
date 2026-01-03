@@ -1,11 +1,16 @@
 package pl.poznan.put.adhd.adhd_helper.category;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import pl.poznan.put.adhd.adhd_helper.configuration.audit.EnableUserFilter;
 import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
 
+import java.util.Collection;
 import java.util.List;
 
-@EnableUserFilter
-interface CategoryRepository extends JpaRepository<Category, Long> {}
+@Repository
+interface CategoryRepository extends JpaRepository<Category, Long> {
+    List<Category> findByAdhdUser(AdhdUser adhdUser);
+
+    List<Category> findByAdhdUserAndIdIn(AdhdUser adhdUser, Collection<Long> ids);
+}

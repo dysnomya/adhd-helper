@@ -11,12 +11,10 @@ import org.springframework.stereotype.Repository;
 import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
 
 import java.time.LocalDate;
-import pl.poznan.put.adhd.adhd_helper.configuration.audit.EnableUserFilter;
-
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-@EnableUserFilter
 interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor<Task> {
 
     @EntityGraph(attributePaths = {"category", "subtasks"})
@@ -24,5 +22,9 @@ interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExec
     @Override
     List<Task> findAll(Specification<Task> specification, @NonNull Sort sort);
 
-    List<Task> findByCreatedByAndDay(AdhdUser createdBy, LocalDate day);
+    Optional<Task> findByIdAndCreatedBy(Long id, AdhdUser createdBy);
+
+    List<Task> findByDayAndParentNullAndCreatedBy(LocalDate day, AdhdUser createdBy);
+
+    void deleteByIdAndCreatedBy(Long id, AdhdUser createdBy);
 }
