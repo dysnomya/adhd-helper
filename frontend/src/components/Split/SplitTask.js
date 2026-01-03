@@ -23,7 +23,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
     const [oldTaskTimeMetric, setOldTaskTimeMetric] = useState('min');
     const [subtasks, setSubtasks] = useState([]);
     
-    const genAI = new GoogleGenerativeAI("");
+    const genAI = new GoogleGenerativeAI("AIzaSyASUp9UVlusUXn-_wL_K9Fk_NkST9UZbSg");
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const categoryColor = task.category ? task.category.color : "#828282ff";
@@ -143,10 +143,10 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
                                         {isEdited ? (
                                                 <span>
                                                 <input type="number" value={oldTaskTimeMetric == "h" ? taskTime/60 : taskTime} className={`split-task-time-input `} onChange={e => setTaskTime(e.target.value)}></input>
-                                                <select name="time-select" value={taskTimeMetric}  className={`split-task-time-select `} onChange={e => {setTaskTimeMetric(e.target.value); console.log(taskTimeMetric);}}>
-                                                    <option value="min">min</option>
-                                                    <option value="h">h</option>
-                                                </select>
+                                                <select name="time-select" value={taskTimeMetric}  className={`split-task-time-select `} onClick={e => {if(e.target.value == 'min') { e.target.value='h';setTaskTimeMetric(e.target.value);} else{ e.target.value='min'}setTaskTimeMetric(e.target.value)}} onChange={e => {setTaskTimeMetric(e.target.value); console.log(taskTimeMetric);}}>
+                                                        <option value="min">min</option>
+                                                        <option value="h">godz</option>
+                                                    </select>
                                                 </span>
                                             ) : (
                                                 <span><span className="clock-icon"><Clock className="clock_icon"></Clock></span> {timeDisplay(task.timeNeeded)}</span>

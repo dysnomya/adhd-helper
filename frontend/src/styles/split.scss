@@ -324,6 +324,10 @@ div:has( + .split-header-input-button:hover) > input:focus    {
     scrollbar-width: none;
 }
 
+
+
+
+
 .split-task-container {
     position: relative;
     font-family: "Lexend", sans-serif;
@@ -341,7 +345,6 @@ div:has( + .split-header-input-button:hover) > input:focus    {
     }
 
 }
-
 
 
 
@@ -549,6 +552,425 @@ select,
    width: 0;
 }
 
+
+.split-categories-popup-div{
+    width: 30%;
+    background-color: var(--secondary-container-bg);
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    max-height: 80%;
+    
+    box-shadow: 4px 4px 20px rgba(0,0,0,0.25);
+    padding: 20px 40px;
+    z-index: 10;
+    text-align: center;
+}
+
+.split-categories-scroll-list{
+    overflow-y: auto;
+}
+
+
+
+
+.split-text-kategorie {
+    color: var(--color-text);
+    font-size: 25px;
+    padding-top: 15px;
+    letter-spacing: -1px;
+}
+
+.split-category-item {
+    background-color: var(--color-category-unfocus);
+    color: var(--color-card-bg);
+
+    border-radius: 50px 0px;
+
+    height: 20px;
+    margin: 20px 30px;
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    
+    user-select: none;
+
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 2px solid transparent;
+
+    p {
+        margin: 0;
+        pointer-events: none;
+        text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+    }
+
+    &:hover {
+        background-color: var(--color-category-hover);
+    }
+
+    &.active {
+        p{text-shadow: 1px 1px 5px rgba(0,0,0,0.0);}
+
+        background-color: var(--cat-color);
+        color: var(--color-card-bg); 
+        transform: scale(1.05); 
+        box-shadow: 0 0px 20px -5px var(--cat-color);
+    }
+
+}
+
+
+
+.split-add-button {
+    background-color: var(--color-category-unfocus);
+    color: var(--color-card-bg);
+
+    border-radius: 50px 0px;
+
+    height: 20px;
+    margin: 15px 30px;
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    
+    user-select: none;
+
+    transform: scale(1.05); 
+    box-shadow: $shadow2;
+
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 2px solid transparent;
+
+    p {
+        margin: 0;
+        pointer-events: none;
+        text-shadow: 1px 1px 10px rgba(0,0,0,0.3);
+    }
+
+    &:hover {
+        background-color: var(--color-category-hover);
+    }
+}
+
+.categories-popup-buttons{
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.add-category-btn-cancel {
+    background-color: var(--color-card-bg);
+    color: var(--color-text-placeholder);
+    border: 2px solid var(--color-text-placeholder);
+    
+    
+
+    &:hover {
+        background-color: var(--primary-container-bg);
+    }
+}
+
+.add-category-btn-confirm {
+    background-color: var(--color-accent);
+    color: var(--color-text-white);
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+
+    &:hover {
+        background-color: var(--color-accent-hover);
+    }
+}
+
+
+
+
+
+.split-main-calendar{
+    display: flex;
+    flex-direction: row;
+    font-family: "Lexend", sans-serif;
+    height:100%;
+    width:100%;
+}
+.split-calendar-sidebar-bg{
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    max-width: 300px;
+    height: 100vh;
+    max-height: 100%;
+    background-color: var(--secondary-container-bg);
+}
+
+
+
+
+.split-task-container-calendar{
+    font-family: "Lexend", sans-serif;
+    filter: drop-shadow($shadow2);
+    transition: transform 0.2s ease;
+    border-radius: 20px; 
+        margin-top: 10px;
+
+    &:first-child{
+        margin-top: 0;
+    }
+
+    &:hover {
+    transform: translateY(-2px);
+    }
+}
+
+.split-task-list-container-calendar{
+    margin: 14px 10px;
+    padding: 10px;
+    flex: 1;
+    border-radius: 20px;
+    background-color: var(--primary-container-bg);
+    font-family: "Lexend", sans-serif;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+.split-task-calendar-up{
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    // width:100%;
+    border-radius: 20px;
+    justify-content: stretch;
+    // border:solid yellow; 
+}
+
+
+
+.split-task-card-calendar {
+    flex: 1;
+    background-image: linear-gradient(270deg,var(--secondary-container-bg) 20%, var(--cat-color) 100%);
+    border-radius: 20px; 
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    // border: solid purple;
+    transition: all 0.5s ease-in-out;
+
+}
+
+
+.split-task-content-box-calendar {
+    flex: 1;
+    background-color: var(--secondary-container-bg);
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 50px;
+    position: relative;
+    z-index: 2; 
+    // border: solid green;
+}
+
+.split-task-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex:1;
+}
+
+.split-custom-checkbox-calendar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 6px solid var(--cat-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; 
+}
+
+.split-task-name-calendar {
+    margin: 0;
+    font-weight: 400;
+    color: var(--color-text);
+    font-size: 14px;
+
+    &.completed-text {
+    text-decoration: line-through;
+    color: #aaa;
+    }
+}
+
+.split-task-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-text);
+    font-size: 14px;
+}
+
+.split-task-info-calendar{
+    flex:1 ;
+}
+
+.split-calendar-sidebar-text-zadania{
+    color: var(--color-text);
+    font-size: 25px;
+    letter-spacing: -1px;
+    padding: 0px 5px;
+    padding-top: 15px;
+    margin-bottom: -5px;
+
+}
+.split-calendar-sidebar-text-pod{
+    color: var(--color-text);
+    font-size: 15px;
+    letter-spacing: -1px;
+    padding: 0px 5px;
+    margin-bottom: 10px;
+}
+
+.split-calendar-sidebar-header{
+    text-align: center;
+}
+
+.selected-calendar-task{
+    outline:solid var(--color-accent);
+}
+
+.split-calendar-page{
+    width: 100%;
+    height: 100%;
+    padding: 3vh;
+}
+
+
+.split-actions{
+    margin-top: 0;
+}
+
+
+.split-add-category-modal-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+
+    button {
+        flex: 1;
+        padding: 12px;
+        border-radius: 30px;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: transform 0.1s;
+        height: 40px;
+        margin:10px;
+        box-shadow: $shadow2; 
+
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+
+    .add-category-btn-cancel {
+        background-color: var(--color-card-bg);
+        color: var(--color-text-placeholder);
+        border: 2px solid var(--color-text-placeholder);
+        
+        
+
+        &:hover {
+            background-color: var(--primary-container-bg);
+        }
+    }
+}
+
+.split-task-left-calendar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex:1;
+}
+
+
+
+.split-calendar-checkbox-div{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+.container {
+    margin: 0;
+    margin-right: 5px;
+        padding: 0;
+
+  width: 41px;
+  height: 21px;
+  position: relative;
+}
+
+/* Hide default HTML checkbox */
+.checkbox {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.switch {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: var(--primary-container-bg);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+
+/* The slider */
+.slider {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: calc(50% - 16px/2 - 10px);
+  top: calc(50% - 16px/2);
+  border-radius: 50%;
+  background: var(--secondary-container-bg);
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15), 0px 3px 1px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease-out;
+  cursor: pointer;
+}
+
+.checkbox:checked + .switch {
+  background-color: var(--color-accent);
+}
+
+.checkbox:checked + .switch .slider {
+  left: calc(50% - 16px/2 + 10px);
+  top: calc(50% - 16px/2);
+}
+
+.select-all-tasks{
+    outline: solid var(--color-accent);
+}
 
 
 @keyframes rotation {

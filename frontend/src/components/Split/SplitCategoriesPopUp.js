@@ -1,0 +1,81 @@
+import React, { useState } from "react";
+import "../../styles/split.scss";
+import Category from '../Split/SplitCategory';
+import "../../styles/todo.scss";
+import AddCategoryModal from "../Todo/AddCategoryModal";
+
+
+
+const SplitCategoriesPopUp = ({splitAccepted, setSplitAccepted, categories, onAddCategoryClick, handleConfirmAddCategory, setCalendarVisible, setSelectedCategory}) => {
+
+    const noCategoryId = "NULL_CATEGORY";
+
+    const [activeCategory, setActiveCategory] = useState(0);
+
+    const noCategoryOption = {
+        id: noCategoryId,
+        name: "Bez kategorii",
+        color: "#828282ff"
+    }
+
+    const handleCategoryClick = (categoryId) => {
+        setActiveCategory(categoryId);
+    };
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+    
+    return (
+        splitAccepted ?
+        
+        <div className="loader-bg">
+            
+            <div className="split-categories-popup-div">
+                <p className='split-text-kategorie'>Wybierz kategorie</p>
+                <div className="split-categories-scroll-list">
+                    {categories.map(category => (
+                        <Category
+                            key={category.id}
+                            category={category}
+                            onClick={() => handleCategoryClick(category.id)}
+                            isActive={(category.id == activeCategory)}
+                        />
+                    ))}
+
+                    <Category
+                        category={noCategoryOption}
+                        onClick={() => handleCategoryClick(noCategoryId)}
+                        isActive={(noCategoryId == activeCategory)}
+                    />
+
+                    
+                </div>
+
+                <div 
+                        className='split-add-button'
+                        onClick={onAddCategoryClick}
+                    >
+                        <p>+</p>
+                </div>
+
+                <div className="add-category-modal-actions split-actions">
+                    <button className="add-category-btn-cancel" onClick={() => setSplitAccepted(false)}>Anuluj</button>
+                    <button className="add-category-btn-confirm" onClick={() => {setSplitAccepted(false); setCalendarVisible(true); setSelectedCategory(categories.find(categorie => categorie.id == activeCategory))}}>Potwierdź</button>
+                </div>
+
+            </div>
+
+            
+            
+            
+        </div>
+        : 
+            <span></span>
+            
+    )
+
+}
+
+export default SplitCategoriesPopUp;
+
