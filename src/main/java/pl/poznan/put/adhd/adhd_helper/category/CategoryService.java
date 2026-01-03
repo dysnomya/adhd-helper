@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import pl.poznan.put.adhd.adhd_helper.category.model.CategoryRequest;
+import pl.poznan.put.adhd.adhd_helper.category.model.CategoryResponse;
 import pl.poznan.put.adhd.adhd_helper.common.SecurityContextUtils;
 
 import java.util.List;
@@ -19,10 +20,10 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    public List<CategoryRequest> getAllCategories() {
+    public List<CategoryResponse> getAllCategories() {
         List<Category> allCategories =
                 categoryRepository.findByAdhdUser(SecurityContextUtils.getAdhdUser());
-        return categoryMapper.toDto(allCategories);
+        return categoryMapper.toResponse(allCategories);
     }
 
     public Set<Long> findAllById(Set<Long> requestedCategoryIds) {
@@ -34,9 +35,9 @@ public class CategoryService {
     }
 
     @Transactional
-    public CategoryRequest addCategory(CategoryRequest categoryRequest) {
+    public CategoryResponse addCategory(CategoryRequest categoryRequest) {
         Category category = categoryMapper.toEntity(categoryRequest);
         Category savedCategory = categoryRepository.save(category);
-        return categoryMapper.toDto(savedCategory);
+        return categoryMapper.toResponse(savedCategory);
     }
 }

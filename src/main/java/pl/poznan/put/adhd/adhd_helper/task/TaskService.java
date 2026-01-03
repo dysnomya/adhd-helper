@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pl.poznan.put.adhd.adhd_helper.common.SecurityContextUtils;
+import pl.poznan.put.adhd.adhd_helper.exceptions.InvalidResourceStateException;
 import pl.poznan.put.adhd.adhd_helper.exceptions.ResourceNotFoundException;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskRequest;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskResponse;
@@ -45,6 +47,7 @@ public class TaskService {
                 taskOnDay.size());
     }
 
+    @Transactional
     public TaskResponse insertTask(TaskRequest taskRequest) {
         taskValidator.validateTask(taskRequest);
 
@@ -53,6 +56,7 @@ public class TaskService {
         return taskMapper.toResponse(task);
     }
 
+    @Transactional
     public TaskResponse updateTask(Long id, TaskRequest taskRequest) {
         Task toUpdate = getTaskById(id);
         taskValidator.validateTask(taskRequest);
@@ -62,13 +66,54 @@ public class TaskService {
         return taskMapper.toResponse(task);
     }
 
+    @Transactional
     public void deleteTask(Long id) {
         taskRepository.deleteByIdAndCreatedBy(id, SecurityContextUtils.getAdhdUser());
+    }
+
+    @Transactional
+    public TaskResponse completeTask(Long id) {
+        Task toComplete = getTaskById(id);
+        validateTaskIsUncompleted(toComplete);
+
+        toComplete.setCompleted(true);
+        toComplete.setCompletedAt(LocalDate.now());
+        return taskMapper.toResponse(toComplete);
+    }
+
+    @Transactional
+    public TaskResponse uncompleteTask(Long id) {
+        Task toUncomplete = getTaskById(id);
+        validateTaskIsCompletedToday(toUncomplete);
+
+        toUncomplete.setCompleted(false);
+        toUncomplete.setCompletedAt(null);
+        return taskMapper.toResponse(toUncomplete);
     }
 
     private Task getTaskById(Long id) {
         return taskRepository
                 .findByIdAndCreatedBy(id, SecurityContextUtils.getAdhdUser())
                 .orElseThrow(ResourceNotFoundException.single("Task", id));
+    }
+
+    private void validateTaskIsUncompleted(Task task) {
+        if (task.isCompleted()) {
+            throw InvalidResourceStateException.of(
+                    "Task", "COMPLETED", "Task with id " + task.getId() + " is already completed");
+        }
+    }
+
+    private void validateTaskIsCompletedToday(Task task) {
+        if (!task.isCompleted()) {
+            return; // uncompleting uncompleted task won't hurt
+        }
+
+        if (task.getCompletedAt().isBefore(LocalDate.now())) {
+            throw InvalidResourceStateException.of(
+                    "Task",
+                    "COMPLETED_TODAY",
+                    "Task with id " + task.getId() + " is not completed today.");
+        }
     }
 }

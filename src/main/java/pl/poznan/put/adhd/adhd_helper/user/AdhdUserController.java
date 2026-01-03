@@ -16,7 +16,6 @@ import pl.poznan.put.adhd.adhd_helper.common.SecurityContextUtils;
 @Tag(name = "User", description = "Operations related to the currently authenticated user")
 @RequiredArgsConstructor
 public class AdhdUserController {
-    private final AdhdUserService adhdUserService;
 
     @GetMapping("/me")
     @Operation(

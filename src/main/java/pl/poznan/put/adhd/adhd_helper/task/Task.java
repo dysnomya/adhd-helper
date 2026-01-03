@@ -60,4 +60,7 @@ public class Task {
 
     @Column(nullable = false)
     private boolean completed;
+
+    @Column(name = "completed_at")
+    private LocalDate completedAt;
 }

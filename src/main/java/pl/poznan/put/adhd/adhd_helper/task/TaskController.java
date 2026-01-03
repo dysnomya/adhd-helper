@@ -75,4 +75,33 @@ public class TaskController {
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
     }
+
+    @Operation(
+            summary = "Mark task as completed",
+            description = "Marks the specified task as completed.")
+    @PatchMapping("/tasks/{id}/complete")
+    public TaskResponse completeTask(
+            @Parameter(description = "Id of the task to mark as completed", example = "42")
+                    @PathVariable
+                    Long id) {
+
+        return taskService.completeTask(id);
+    }
+
+    @Operation(
+            summary = "Mark task as not completed",
+            description =
+                    """
+        Marks the specified task as not completed.
+        Can only uncomplete tasks that were marked as completed today.
+        If it was completed before, uncompleting is no longer possible.
+        """)
+    @PatchMapping("/tasks/{id}/uncomplete")
+    public TaskResponse uncompleteTask(
+            @Parameter(description = "Id of the task to mark as not completed", example = "42")
+                    @PathVariable
+                    Long id) {
+
+        return taskService.uncompleteTask(id);
+    }
 }

@@ -6,6 +6,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.util.List;
+
 @Component
 public class ExceptionTranslator {
 
@@ -32,6 +34,14 @@ public class ExceptionTranslator {
                 .status(HttpStatus.NOT_FOUND)
                 .message(ex.getMessage())
                 .details(ex.getResources())
+                .build();
+    }
+
+    public ApiError translate(InvalidResourceStateException ex) {
+        return ApiError.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .message(ex.getMessage())
+                .details(List.of("Resource: " + ex.getResource(), "State: " + ex.getState()))
                 .build();
     }
 

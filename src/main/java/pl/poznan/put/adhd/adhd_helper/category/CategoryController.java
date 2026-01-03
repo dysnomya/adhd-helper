@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import pl.poznan.put.adhd.adhd_helper.category.model.CategoryRequest;
+import pl.poznan.put.adhd.adhd_helper.category.model.CategoryResponse;
 
 import java.util.List;
 
@@ -25,13 +26,13 @@ public class CategoryController {
     @Operation(
             summary = "Get all categories",
             description = "Returns a list of all available task categories for user.")
-    public List<CategoryRequest> getAllCategories() {
+    public List<CategoryResponse> getAllCategories() {
         return categoryService.getAllCategories();
     }
 
     @PostMapping
     @Operation(summary = "Create a new category", description = "Creates a new task category.")
-    public CategoryRequest addCategory(@RequestBody CategoryRequest categoryRequest) {
+    public CategoryResponse addCategory(@RequestBody CategoryRequest categoryRequest) {
         return categoryService.addCategory(categoryRequest);
     }
 }
