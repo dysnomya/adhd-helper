@@ -79,7 +79,7 @@ public class TaskController {
     @Operation(
             summary = "Mark task as completed",
             description = "Marks the specified task as completed.")
-    @PatchMapping("/tasks/{id}/complete")
+    @PatchMapping("/{id}/complete")
     public TaskResponse completeTask(
             @Parameter(description = "Id of the task to mark as completed", example = "42")
                     @PathVariable
@@ -96,7 +96,7 @@ public class TaskController {
         Can only uncomplete tasks that were marked as completed today.
         If it was completed before, uncompleting is no longer possible.
         """)
-    @PatchMapping("/tasks/{id}/uncomplete")
+    @PatchMapping("/{id}/uncomplete")
     public TaskResponse uncompleteTask(
             @Parameter(description = "Id of the task to mark as not completed", example = "42")
                     @PathVariable

@@ -15,7 +15,7 @@ interface CategoryRepository extends JpaRepository<Category, Long> {
 
     List<Category> findByAdhdUserAndIdIn(AdhdUser adhdUser, Collection<Long> ids);
 
-    long deleteByIdAndAdhdUser(Long id, AdhdUser adhdUser);
+    Long deleteByIdAndAdhdUser(Long id, AdhdUser adhdUser);
 
     Optional<Category> findByIdAndAdhdUser(Long id, AdhdUser adhdUser);
 }
