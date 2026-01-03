@@ -68,7 +68,12 @@ public class TaskService {
 
     @Transactional
     public void deleteTask(Long id) {
-        taskRepository.deleteByIdAndCreatedBy(id, SecurityContextUtils.getAdhdUser());
+        long deleted =
+                taskRepository.deleteByIdAndCreatedBy(id, SecurityContextUtils.getAdhdUser());
+
+        if (deleted == 0) {
+            throw ResourceNotFoundException.single("Task", id).get();
+        }
     }
 
     @Transactional

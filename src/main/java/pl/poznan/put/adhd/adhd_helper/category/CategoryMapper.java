@@ -11,6 +11,8 @@ import java.util.List;
         componentModel = MappingConstants.ComponentModel.SPRING,
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CategoryMapper {
+    void update(CategoryRequest categoryRequest, @MappingTarget Category category);
+
     CategoryResponse toResponse(Category category);
 
     List<CategoryResponse> toResponse(List<Category> categories);

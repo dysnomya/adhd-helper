@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.poznan.put.adhd.adhd_helper.category.model.CategoryRequest;
 import pl.poznan.put.adhd.adhd_helper.category.model.CategoryResponse;
 import pl.poznan.put.adhd.adhd_helper.common.SecurityContextUtils;
+import pl.poznan.put.adhd.adhd_helper.exceptions.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Set;
@@ -39,5 +40,30 @@ public class CategoryService {
         Category category = categoryMapper.toEntity(categoryRequest);
         Category savedCategory = categoryRepository.save(category);
         return categoryMapper.toResponse(savedCategory);
+    }
+
+    @Transactional
+    public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
+        Category category = getCategoryById(id);
+        categoryMapper.update(categoryRequest, category);
+
+        categoryRepository.save(category);
+        return categoryMapper.toResponse(category);
+    }
+
+    @Transactional
+    public void deleteCategory(Long id) {
+        long deleted =
+                categoryRepository.deleteByIdAndAdhdUser(id, SecurityContextUtils.getAdhdUser());
+
+        if (deleted == 0) {
+            throw ResourceNotFoundException.single("Category", id).get();
+        }
+    }
+
+    private Category getCategoryById(Long id) {
+        return categoryRepository
+                .findByIdAndAdhdUser(id, SecurityContextUtils.getAdhdUser())
+                .orElseThrow(ResourceNotFoundException.single("Category", id));
     }
 }
