@@ -3,7 +3,13 @@ import DailyProgress from "../components/Todo/DailyProgress";
 import { useTaskData } from "../hooks/UseTaskData";
 import { ReactComponent as SadPimpus } from "../assets/pimpus_sad.svg";
 import { useMemo } from "react";
-import TaskProgressGaugeChart from "../components/Dashboard/TaskProgressGaugeChart"
+import TaskProgressGaugeChart from "../components/Dashboard/TaskProgressGaugeChart";
+import TaskSplineAreaChart from "../components/Dashboard/TaskSplineAreaChart";
+import DateComponent from "../components/Dashboard/DateComponent";
+import UpcomingTasks from "../components/Dashboard/UpcomingTasks";
+
+import { ReactComponent as Glut } from "../assets/dashboard-glut.svg";
+import pimpus from "../assets/pimpus_happy_anim.webp";
 
 export default function Dashboard() {
 
@@ -30,6 +36,29 @@ export default function Dashboard() {
         };
     }, [tasks]);
 
+    const chartData = useMemo(() => {
+        if (!tasks || tasks.length === 0) return [];
+
+        const last30Days = new Array(30).fill(0).map((_, i) => {
+            const d = new Date();
+            d.setDate(d.getDate() - (29 - i));
+            return d.toISOString().split('T')[0];
+        });
+
+        const dataMap = {};
+        last30Days.forEach(date => dataMap[date] = 0);
+
+        tasks.forEach(task => {
+            if (task.completed && task.day) {
+                if (dataMap[task.day] !== undefined) {
+                    dataMap[task.day]++;
+                }
+            }
+        });
+
+        return last30Days.map(date => dataMap[date]);
+    }, [tasks]);
+
     if (error) return (
         <div className="server-data-error-main">
             <div className="server-data-error">
@@ -53,6 +82,8 @@ export default function Dashboard() {
                 </div>
             )}
 
+            <Glut className="dashboard-glut"/>
+
             <div className="dashboard-left">
                 <div className="dashboard-left-top">
                     <DailyProgress 
@@ -61,24 +92,42 @@ export default function Dashboard() {
 
                 <div className="dashboard-left-middle">
 
-                    <div className="dashboard-percentage-of-done-tasks">
-                        <TaskProgressGaugeChart percentage={percentage} />
-                    </div>
+                    <TaskProgressGaugeChart percentage={percentage} />
+
+                    <TaskSplineAreaChart data={chartData}/>
 
                 </div>
 
                 <div className="dashboard-left-bottom">
-
+                    <div className="dashboard-calendar-container">
+                        <DateComponent />
+                    </div>
                 </div>
 
             </div>
 
             <div className="dashboard-right">
                 <div className="dashboard-right-top">
-                
+                    <div className="dashboard-pimpek-text">
+                        <p>Cześć PimpekMaster3000!</p>
+                    </div>
+                    <div className="dashboard-pimpek">
+
+                        <div className="dashboard-pimpek-floor">
+
+                        </div>
+                        
+                        <img 
+                            src={pimpus} 
+                            alt="Happy Pimpus" 
+                            className="dashboard-pimpus"
+                        />
+
+                        
+                    </div>
                 </div>
                 <div className="dashboard-right-bottom">
-                
+                    <UpcomingTasks tasks={tasks}/>
                 </div>
             </div>
         </div>
