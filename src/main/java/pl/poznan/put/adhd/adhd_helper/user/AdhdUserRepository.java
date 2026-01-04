@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Repository
 interface AdhdUserRepository extends JpaRepository<AdhdUser, Long> {
-    Optional<AdhdUser> getByGoogleId(String googleId);
+    Optional<AdhdUser> findByGoogleId(String googleId);
 }
