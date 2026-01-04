@@ -2,7 +2,7 @@
 import React from "react";
 import Task from "./Task"
 
-const TaskListContainer = ({ datedTasks, onTaskStatusChange }) => {
+const TaskListContainer = ({ datedTasks, onTaskStatusChange, onDeleteTask, onUpdateTask, categories}) => {
 
     return (
         <div className="todo-task-list-container">
@@ -20,6 +20,9 @@ const TaskListContainer = ({ datedTasks, onTaskStatusChange }) => {
                                 key={task.id}
                                 task={task}
                                 onStatusChange={onTaskStatusChange}
+                                onDeleteTask={onDeleteTask}
+                                onUpdateTask={onUpdateTask}
+                                categories={categories}
                             ></Task>
                         ))}
                     </div>

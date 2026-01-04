@@ -25,7 +25,7 @@ const Todo = () => {
     const initialFilters = useMemo(() => {
         const searchParams = new URLSearchParams(location.search);
         const dateParam = searchParams.get('date');
-        
+
         return {
             date: dateParam || '',
             showAll: !dateParam
@@ -65,9 +65,12 @@ const Todo = () => {
         error,
         addCategoryLocal,
         toggleTaskLocal,
+        deleteTaskLocal,
         updateCategoryLocal,
-        deleteCategoryLocal
+        deleteCategoryLocal,
+        updateTaskLocal
     } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
+
 
     useEffect(() => {     
         if (categories.length > 0 && !areCategoriesInitialized) {
@@ -161,6 +164,16 @@ const Todo = () => {
     const isFirstLoad = isLoading && tasks.length === 0 && categories.length === 0;
 
 
+    const handleDeleteTask = async (taskId) => {
+        try {
+            // API CALL
+            deleteTaskLocal(taskId);
+        } catch (e) {
+            console.error("Błąd usuwania zadania", e);
+            alert("Nie udało się usunąć zadania.");
+        }
+    };
+
     const handleUpdateCategory = async (id, data) => {
         try {
             // await updateCategory(id, data);
@@ -173,7 +186,7 @@ const Todo = () => {
 
     const handleDeleteCategory = async (id) => {
         try {
-            // await deleteCategory(id);   
+            // await deleteCategory(id);
             deleteCategoryLocal(id);
         } catch (e) {
             console.error("Błąd usuwania kategorii", e);
@@ -181,6 +194,15 @@ const Todo = () => {
         }
     };
 
+    const handleUpdateTask = async (taskId, updatedData) => {
+        try {
+            // API CALL
+            updateTaskLocal(taskId, updatedData);
+        } catch (e) {
+            console.error("Błąd edycji zadania", e);
+            alert("Nie udało się zedytować zadania.");
+        }
+    };
 
     // Debugging - Do usunięcia później
     useEffect(() => {
@@ -254,7 +276,7 @@ const Todo = () => {
             <div className="todo-main-content-area">
 
                 <div className="todo-daily-wrapper">
-                    <DailyProgress 
+                    <DailyProgress
                     />
                     <div className="add-task-btn-container">
                         <button className="add-task-btn">
@@ -262,9 +284,9 @@ const Todo = () => {
                     </button>
                     </div>
                     <div className="todo-progress-pimpus-wrapper">
-                        <img 
-                            src={pimpus} 
-                            alt="Happy Pimpus" 
+                        <img
+                            src={pimpus}
+                            alt="Happy Pimpus"
                             className="todo-progress-pimpus"
                         />
                     </div>
@@ -282,6 +304,9 @@ const Todo = () => {
                     <TaskListContainer 
                         datedTasks={datedTasks} 
                         onTaskStatusChange={toggleTaskLocal}
+                        onDeleteTask={handleDeleteTask}
+                        onUpdateTask={handleUpdateTask}
+                        categories={categories}
                     ></TaskListContainer>
                 </div>
                 
