@@ -249,7 +249,9 @@ const Todo = () => {
     );
 
     return (
-        <div className="todo-main">
+        <div 
+            className="todo-main"
+        >
 
             {isLoading && (
                 <div className={`loading-overlay ${isFirstLoad ? 'initial-load' : ''}`}>
@@ -327,15 +329,15 @@ const Todo = () => {
                     )}
 
                     {isAddingTask && (
-                        <div style={{ marginBottom: '20px' }}>
-                            <AddTaskComponent
-                                categories={categories}
-                                onConfirm={handleAddNewTask}
-                                onCancel={() => setIsAddingTask(false)}
-                                initialDate={selectedDateFilter}
-                                whereComponent={"todo"}
-                            />
-                        </div>
+                        
+                        <AddTaskComponent
+                            categories={categories}
+                            onConfirm={handleAddNewTask}
+                            onCancel={() => setIsAddingTask(false)}
+                            initialDate={selectedDateFilter}
+                            whereComponent={"todo"}
+                        />
+                     
                     )}
 
 
