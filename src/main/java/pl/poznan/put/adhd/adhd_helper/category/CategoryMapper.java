@@ -2,19 +2,22 @@ package pl.poznan.put.adhd.adhd_helper.category;
 
 import org.mapstruct.*;
 
+import pl.poznan.put.adhd.adhd_helper.category.model.CategoryRequest;
+import pl.poznan.put.adhd.adhd_helper.category.model.CategoryResponse;
+
 import java.util.List;
 
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CategoryMapper {
-    CategoryDto toDto(Category category);
+    void update(CategoryRequest categoryRequest, @MappingTarget Category category);
 
-    List<CategoryDto> toDto(List<Category> categories);
+    CategoryResponse toResponse(Category category);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "adhdUser", ignore = true)
-    Category toEntity(CategoryDto categoryDto);
+    List<CategoryResponse> toResponse(List<Category> categories);
+
+    Category toEntity(CategoryRequest categoryRequest);
 
     Category toEntity(Long id);
 }

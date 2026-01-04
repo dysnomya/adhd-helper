@@ -13,6 +13,8 @@ import java.util.Collection;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         uses = CategoryMapper.class)
 interface TaskMapper {
+    @Mapping(target = "category", source = "categoryId")
+    void update(TaskRequest taskRequest, @MappingTarget Task task);
 
     @Mapping(target = "category", source = "categoryId")
     Task toEntity(TaskRequest taskRequest);

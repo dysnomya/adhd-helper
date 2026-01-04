@@ -59,5 +59,8 @@ public class Task {
     private Integer expAmount;
 
     @Column(nullable = false)
-    private Boolean completed;
+    private boolean completed;
+
+    @Column(name = "completed_at")
+    private LocalDate completedAt;
 }
