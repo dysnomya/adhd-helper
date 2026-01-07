@@ -1,20 +1,17 @@
 @import 'https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap';
 
 $shadow2: 2px 2px 4px rgba(0,0,0,0.25);
-$shadow4: 4px 4px 4px rgba(0,0,0,0.25);
+$calendar-cell-border-radius: clamp(1rem, 2vmin, 5rem);
 
 .split-main{
     font-family: "Lexend", sans-serif;
-    padding:30px;
     display:flex;
     flex-direction: column;
     justify-content: stretch;
-    height: 100vh;
+    height: 100%;
     width: 100%;
-    transform: translateZ(0px);
-    will-change: transform;
-    overflow-x: hidden;
-
+    padding: 30px;
+    position: relative;
 }
 
 .split-header{
@@ -40,7 +37,7 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
 }
 
 .split-header-body{
-    background-color: var(--color-card-bg);
+    background-color: var(--split-container-bg);
     height: 100%;
     border-radius: 30px;
 }
@@ -79,12 +76,14 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     align-items: center;
     height:40px;
     border-radius: 20px;
-    
+    transition: all 0.3s ease-in-out;
+
 }
 
 .split-header-input-background-div{
     width:100%;
     height: 100%;
+
 }
 
 .split-header-input{
@@ -93,11 +92,12 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
     height: 100%;
     border-radius: 20px;
     background-color: var(--color-bg);
-    border: none;
+    border: solid 2px transparent;
     color: var(--color-text);
     font-size: 14px;
     padding: 0px 20px;
     outline: none;
+    transition: border ease-in-out 0.3s;
 }
 
 .split-header-input:focus{
@@ -105,8 +105,12 @@ $shadow4: 4px 4px 4px rgba(0,0,0,0.25);
 }
 
 div:has( + .split-header-input-button:hover) > input:focus    {
-    transition: all 0.5s ease-in-out;
+    transition: all 0.3s ease-in-out;
     border: solid 2px var(--color-accent-hover);
+}
+form{
+    width:100%;
+    height: 100%;
 }
 
 
@@ -122,7 +126,7 @@ div:has( + .split-header-input-button:hover) > input:focus    {
 }
 
 .split-body{
-    background-color: var(--color-card-bg);
+    background-color: var(--split-container-bg);
     flex: 1;
     min-height: 0;
     border-radius: 30px;
@@ -152,7 +156,9 @@ div:has( + .split-header-input-button:hover) > input:focus    {
     background-image: var(--bg-img);
     background-size: cover;
     background-repeat: no-repeat;
+    background-clip:content-box;
     z-index: 2;
+    // animation: przsuwanie 10s linear infinite;
 
 }
 .split-body-pimpus-div{
@@ -165,11 +171,25 @@ div:has( + .split-header-input-button:hover) > input:focus    {
     height: 100%;
     z-index: 3;
 }
+
+.split-body-pimpus-shadow-div{
+    position: relative;
+}
 .split-body-pimpus{
-    height: 100%;
+    position: relative;
+    height: calc(100% + 30px);
+    margin:-30px -30px -15px -15px;
     width:fit-content;
     filter: hue-rotate(var(--split-hue)) contrast(var(--split-contrast)) brightness(var(--split-brightness));
     z-index: 3;
+}
+.split-body-pimpus-ellipse{
+    position: absolute;
+    z-index: 1;
+    width: 120%;
+    height:auto;
+    margin-left: -110%;
+    bottom:0;
 }
 
 .split-body-text{
@@ -178,7 +198,7 @@ div:has( + .split-header-input-button:hover) > input:focus    {
     margin-top: -90px;
     margin-left: 40px;
     z-index: 4;
-    color: var(--color-card-bg);
+    color: var(--split-container-bg);
     font-weight: 600;
     letter-spacing: -1px;
     line-height: 1;
@@ -188,9 +208,25 @@ div:has( + .split-header-input-button:hover) > input:focus    {
     background-color: var(--primary-container-bg);
 }
 
+.split-body-submit-div{
+    position: absolute;
+    width: fit-content;
+    right: 0;
+    bottom: 0;
+    margin: 20px 5px 5px 5px;
+    padding:15px;
+    background-color: var(--content-bg);
+    border-radius: 30px 0px 0px 0px;
+}
 
-
-
+.split-body-submit-btn{
+    width: 100%;
+    padding: 6px 20px;
+    border-radius: 20px;
+    border:none;
+    background-color: var(--color-accent);
+    color: var(--color-text-white)
+}
 
 .split-task-bg{
     position: absolute;
@@ -221,6 +257,7 @@ div:has( + .split-header-input-button:hover) > input:focus    {
     padding: 5px;
     padding-right: 10px;
     width: 34px;
+    color: var(--color-text-white);
     // border: solid blue;
 }
 
@@ -249,15 +286,16 @@ div:has( + .split-header-input-button:hover) > input:focus    {
     display: flex;
     justify-content: center;
     align-items: center;
+    transform: rotate(0deg);
     .expanded {
         transform: rotate(180deg); 
         transition: all 0.5s ease-in-out;
     }
 }
 
-// .split-task-chevron-icon{
-
-// }
+.split-task-chevron-icon{
+    width:20px;
+}
 
 .split-task-subtasks-bg{
     display:flex;
@@ -320,8 +358,24 @@ div:has( + .split-header-input-button:hover) > input:focus    {
     background-color: var(--primary-container-bg);
 
     font-family: "Lexend", sans-serif;
-    overflow-y: scroll;
-    scrollbar-width: none;
+    overflow-y: auto;
+    // scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent; 
+        margin: 10px 0px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--content-bg);
+        border-radius: 4px;
+        // border: 2px solid #f4f4f4;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        cursor: grab;
+    }
 }
 
 
@@ -422,6 +476,7 @@ div:has( + .split-header-input-button:hover) > input:focus    {
         }
     }
 
+
     .split-custom-checkbox {
         width: 20px;
         height: 20px;
@@ -456,7 +511,7 @@ div:has( + .split-header-input-button:hover) > input:focus    {
 
 .loader-div{
     width: 30%;
-    background-color: var(--secondary-container-bg);
+    background-color: var(--split-container-bg);
     border-radius: 30px;
     display: flex;
     flex-direction: column;
@@ -487,8 +542,9 @@ input, .split-task-time-select{
     outline: none;
     box-shadow: none;
     border: none;
-    padding: 5px 10px;
+    padding: 5px 12px;
     border-radius: 20px;
+    color: var(--color-text)
 }
 
 .split-task-name{
@@ -554,7 +610,7 @@ select,
 
 
 .split-categories-popup-div{
-    width: 30%;
+    width: 400px;
     background-color: var(--secondary-container-bg);
     border-radius: 30px;
     display: flex;
@@ -571,6 +627,21 @@ select,
 
 .split-categories-scroll-list{
     overflow-y: auto;
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent; 
+        margin: 20px 0px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--content-bg);
+        border-radius: 4px;
+        // border: 2px solid #f4f4f4;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        cursor: grab;
+    }
 }
 
 
@@ -805,6 +876,12 @@ select,
     font-weight: 400;
     color: var(--color-text);
     font-size: 14px;
+    overflow-wrap: break-word; 
+    word-wrap: break-word;
+    word-break: break-word; 
+
+    /* Upewnij się, że nie masz ustawionego white-space: nowrap */
+    white-space: normal;
 
     &.completed-text {
     text-decoration: line-through;
@@ -812,13 +889,6 @@ select,
     }
 }
 
-.split-task-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--color-text);
-    font-size: 14px;
-}
 
 .split-task-info-calendar{
     flex:1 ;
@@ -841,9 +911,42 @@ select,
     margin-bottom: 10px;
 }
 
+.split-calendar-sidebar-text-checkbox{
+    color: var(--color-text);
+    font-size: 15px;
+    letter-spacing: -1px;
+    padding: 0;
+    width: fit-content;
+}
+
 .split-calendar-sidebar-header{
     text-align: center;
 }
+
+.split-calendar-sidebar-header-top{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.split-calendar-sidebar-header-right{
+    text-align: center;
+}
+
+.split-calendar-sidebar-header-back{
+    margin-top: 5px;
+    height:30px;
+    width:30px;
+    transform: rotate(180deg);
+    cursor: pointer;
+    color: var(--color-text);
+    
+    &.none{
+        color: var(--secondary-container-bg);
+    }
+}
+
 
 .selected-calendar-task{
     outline:solid var(--color-accent);
@@ -914,17 +1017,20 @@ select,
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
+    padding:0px 15px;
+    gap:5px;
 }
 
 
 .container {
-    margin: 0;
+    margin: 0px;
     margin-right: 5px;
-        padding: 0;
+    padding: 0;
 
-  width: 41px;
-  height: 21px;
-  position: relative;
+    width: 41px;
+    height: 21px;
+    position: relative;
 }
 
 /* Hide default HTML checkbox */
@@ -933,6 +1039,7 @@ select,
   width: 0;
   height: 0;
   position: absolute;
+  
 }
 
 .switch {
@@ -943,6 +1050,7 @@ select,
   border-radius: 16px;
   cursor: pointer;
   transition: all 0.2s ease-out;
+  
 }
 
 /* The slider */
@@ -972,6 +1080,67 @@ select,
     outline: solid var(--color-accent);
 }
 
+.calendar-added-task{
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--cat-color);
+    color: var(--color-text-white);
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 100%;
+    margin-right: -10px;
+    padding-left: 3px;
+    box-shadow: -2px 0px 2px rgba(0, 0, 0, 0.25);
+
+    &:last-of-type{
+        justify-content: center;
+        padding-left: 0px;
+    }
+}
+
+.split-calendar-cell-content {
+    padding: 5px 14px 5px 7px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex: 1;
+    height: 75%;
+    flex-wrap: wrap;
+}
+
+.split-calendar-cell-number {
+    background-color: var(--color-calendar-detail);
+    color: var(--color-on-accent);
+    width: 40px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top-left-radius: $calendar-cell-border-radius;
+    border-bottom-right-radius: $calendar-cell-border-radius;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    margin-top: -2px;
+    margin-left: -2px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.wrong-question-div{
+    position: absolute;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    padding: 50px 100px;
+    background-color: var(--split-container-bg);
+    border-radius: 30px;
+    box-shadow: $shadow2;
+}
+
+.wrong-question-text{
+    padding-bottom: 20px;
+}
 
 @keyframes rotation {
     0% {
@@ -982,3 +1151,25 @@ select,
     }
 } 
 
+@media (max-width: 768px) {
+    .split-main{
+        padding: 15px;
+    }
+
+    .split-calendar-cell-number {
+      width: auto;
+      height: auto;
+      padding: 0.25em 0.5em;
+      font-size: 16px;
+      border-radius: 0.5rem;
+      margin: 0;
+    }
+
+    .split-calendar-sidebar-text-checkbox{
+        width: min-content;
+    }
+
+    .split-custom-checkbox-calendar {
+        display: none;
+    }
+}

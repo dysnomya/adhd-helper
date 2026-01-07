@@ -1,8 +1,6 @@
 
 import React, { useState } from "react";
 
-// import { fetchSubtasks } from "../../api/TaskApi"
-
 const SplitTaskCalendar = ({ task, isSubtask = false, onClick, isSelected, selectedCategory, selectAllTasks}) => {
     const [taskName, setTaskName] = useState(task.name);
     const categoryColor = selectedCategory ? selectedCategory.color : "#828282ff";

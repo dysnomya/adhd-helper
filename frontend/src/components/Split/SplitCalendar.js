@@ -1,11 +1,12 @@
 import { useState } from "react";
 import "../../styles/calendar.scss";
+import "../../styles/split.scss";
 import SplitCalendarCell from "../Split/SplitCalendarCell";
 import CalendarSidePanel from "../Calendar/CalendarSidePanel.js";
 import capitalizeFirstLetter from "../../functions/TextFunctions.js";
 import { ReactComponent as Arrow } from "../../assets/arrow-right.svg";
 
-export default function SplitCalendar({setOutSelectedDate, tasks, onClickDay}) {
+export default function SplitCalendar({setOutSelectedDate, tasks, onClickDay, selectedCategory}) {
     const days = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Ndz"];
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -17,6 +18,8 @@ export default function SplitCalendar({setOutSelectedDate, tasks, onClickDay}) {
 
     const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
     const lastDay = new Date(year, month + 1, 0).getDate();
+
+    console.log(selectedCategory.color);
 
     const isSameDay = (date1, date2) => {
     // Zabezpieczenie przed null/undefined
@@ -93,6 +96,7 @@ export default function SplitCalendar({setOutSelectedDate, tasks, onClickDay}) {
                             openPanel={openPanel}
                             onClick={() => selectDate(day)}
                             tasks={tasks.filter(task => isSameDay(task.date, new Date(year, month, day)))}
+                            selectedCategory={selectedCategory}
                         />
                     ))}
                 </div>

@@ -3,10 +3,6 @@ import { useState } from "react";
 export default function SplitCalendarCell(props) {
     const isTabbable = props.day && !props.openPanel;
 
-    const [tasks, setTasks] = useState([]);
-
-    // setTasks(props.tasks);
-
     console.log(props.day, props.tasks)
 
     return (
@@ -20,12 +16,12 @@ export default function SplitCalendarCell(props) {
                 }
             }}
         >
-            <div className={props.day && "calendar-cell-number"}>
+            <div className={props.day && "split-calendar-cell-number"}>
                 {props.day}
             </div>
-            <div className="calendar-cell-content">
+            <div className="split-calendar-cell-content">
                 {props.tasks.map((task, index) => (
-                        <span>{task.id}</span>
+                        <div className="calendar-added-task" style={{ '--cat-color': props.selectedCategory.color }}><span className="calendar-added-task-text">{task.id}</span></div>
                     ))}
             </div>
         </div>

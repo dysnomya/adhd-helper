@@ -8,17 +8,16 @@ const SplitTaskListContainer = ({ splittedTasks, setGeminiAsked, isCalendarTasks
 
     const [tasks, setTasks] = useState(splittedTasks || []);
     
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-    const removeTask = (indexToRemove) => {
+    const removeTask = async (indexToRemove) => {
+        await sleep(200);
         tasks.forEach(task => {
             if(task.id > indexToRemove) task.id = task.id-1 
         });
         setTasks(prevTasks => prevTasks.filter((_, index) => index !== indexToRemove));
         
     };
-
-
-
 
     const handleClick = ( clickedTask ) => {
         if (selectedTasks.find(task => task.id === clickedTask.id)){
@@ -58,9 +57,7 @@ const SplitTaskListContainer = ({ splittedTasks, setGeminiAsked, isCalendarTasks
                     isSelected={selectedTasks.some(t => t.id === task.id)}
                     selectedCategory={selectedCategory}
                     selectAllTasks={selectAllTasks}
-                    />
-                
-                
+                    />   
             ))}
         </div>
     );
