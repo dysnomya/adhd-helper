@@ -1,18 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { getTaskStats } from "../../api/TaskApi";
 
+const DailyProgress = ({ date, refreshTrigger }) => {
 
-const DailyProgress = () => {
+    const [stats, setStats] = useState({ completed: 0, total: 0 });
+    const [isLoading, setIsLoading] = useState(false);
 
-    const completedTasks = 2;
-    const totalTasks = 3;
+    useEffect(() => {
+        const fetchStats = async () => {
+            if (!date) return;
 
-    const percentage = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+            setIsLoading(true);
+            try {
+                const data = await getTaskStats(date);
+                setStats({
+                    completed: data.completed,
+                    total: data.total
+                });
+            } catch (error) {
+                console.error("Błąd pobierania statystyk:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchStats();
+
+    }, [date, refreshTrigger]);
+
+    const percentage = stats.total === 0 ? 0 : Math.round((stats.completed / stats.total) * 100);
 
     return (
         <div className="todo-daily-progress-container">
             
                 
-            {totalTasks === 0 ? (
+            {stats.total === 0 ? (
                 <div className="todo-progress-no-tasks-message">
                     <p>Brak zaplanowanych zadań! </p>
                 </div>
