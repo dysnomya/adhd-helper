@@ -6,7 +6,6 @@ $sidebar-element-size: 88px;
 $sidebar-icon-size: 40px;
 
 .main-content {
-    padding: 0vh;
     height: 100dvh;
 }
 
@@ -15,14 +14,13 @@ $sidebar-icon-size: 40px;
 /* ------------------------- */
 @media (min-width: 768px) {
   .main-content {
-    padding-left: calc(0vh + $sidebar-collapsed-width);
+    padding-left: calc($sidebar-collapsed-width);
   }
 }
 
 @media (max-width: 768px) {
   .main-content {
-    padding: 0vh;
-    padding-top: calc(0vh + $mobile-topbar-height);
+    padding-top: calc($mobile-topbar-height);
   }
 }
 
@@ -214,7 +212,18 @@ $sidebar-icon-size: 40px;
   background-color: var(--color-accent);
   color: var(--color-on-accent);
   border: none;
+  border-radius: 30px;
   width: $sidebar-element-size;
+  padding: 10px 20px;
+  min-width: 80px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover, &:focus, &:active, &:disabled{
+    background-color: var(--color-accent-hover);
+    color: var(--color-on-accent);
+  }
 }
 
 .content {

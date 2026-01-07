@@ -11,7 +11,7 @@ import "../styles/sidebar.scss";
 export default function Sidebar({ collapsed = false, onItemClick }) {
   const items = [
     { pageUrl: "/dashboard", pageLabel: "Dashboard", Icon: IconPlaceholder },
-    { pageUrl: "/todo", pageLabel: "Todo", Icon: TodoPlaceholder },
+    { pageUrl: "/todo", pageLabel: "ToDo", Icon: TodoPlaceholder },
     { pageUrl: "/calendar", pageLabel: "Kalendarz", Icon: CalendarPlaceholder },
     { pageUrl: "/user", pageLabel: "User", Icon: IconPlaceholder },
   ];

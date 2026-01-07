@@ -14,22 +14,12 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://accounts.google.com
-      client:
-        registration:
-          google:
-            client-id: ${adhdhelper-dev-google-client-id}
-            client-secret: ${adhdhelper-dev-google-client-secret}
-
-        provider:
-          google:
-            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
-            token-uri: https://www.googleapis.com/oauth2/v4/token
-            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
-  cloud:
     azure:
       keyvault:
         secret:
-          endpoint: https://adhd-helper-kv.vault.azure.net/
+          property-sources:
+            - endpoint: https://adhd-helper-kv.vault.azure.net/
 logging:
   level:
     web: debug
+    org.springframework.security: DEBUG

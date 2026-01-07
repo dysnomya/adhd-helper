@@ -16,7 +16,22 @@ export default function CalendarCell(props) {
                 {props.day}
             </div>
             <div className="calendar-cell-content">
+                {props.day && props.taskCounts?.map((count, index) => {
+                    const classes = [];
+                    if (count > 0) classes.push("calendar-cell-task-count");
 
+                    classes.push(
+                        index === 0 ? "priority-low"
+                            : index === 1 ? "priority-medium"
+                                : "priority-high"
+                    );
+
+                    return (
+                        <div key={index} className={classes.join(" ")}>
+                            {count > 0 && count}
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

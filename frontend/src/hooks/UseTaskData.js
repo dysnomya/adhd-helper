@@ -1,71 +1,122 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useCallback} from "react";
 import {fetchAllCategories, fetchAllTasks} from "../api/TaskApi";
 
-export const useTaskData = () => {
+export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
 
     const [tasks, setTasks] = useState([]);
     const [categories, setCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
+
+    const loadData = useCallback(async () => {
+
+        if (!localStorage.getItem("token")) {
+            setIsLoading(false);
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            const apiFilters = {};
+
+            if (!showAllTasks && selectedDate) {
+                apiFilters.day = selectedDate;
+            }
+
+            if (activeFilter && activeFilter.length > 0) {
+                apiFilters.categories = activeFilter;
+            }
+
+            const [tasksData, categoriesData] = await Promise.all([
+                fetchAllTasks(apiFilters),
+                fetchAllCategories()
+            ]);
+
+
+            const processedTasks = tasksData.map(task => ({
+                ...task,
+                categoryId: task.category ? task.category.id : null,
+                subtasks: task.subtasks || [],
+                hasSubtasks: task.subtasks && task.subtasks.length > 0
+            }));
+
+            setTasks(processedTasks);
+            setCategories(categoriesData);
+
+        } catch (e) {
+            if (e.message === '401 Unauthorized') {
+                localStorage.removeItem("token");
+            } else {
+                console.error("Błąd pobierania danych:", e);
+                setError(e);
+            }
+
+        } finally {
+            setIsLoading(false);
+        }
+
+    }, [activeFilter, selectedDate, showAllTasks]);
 
     useEffect(() => {
-
-        const loadInitialData = async () => {
-
-            if (!localStorage.getItem("token")) {
-                setIsLoading(false);
-                // setIsAuthenticated(false);
-                return;
-            }
-
-            setIsLoading(true);
-
-            try {
-
-                const [tasksData, categoriesData] = await Promise.all([
-                    fetchAllTasks(),
-                    fetchAllCategories()
-                ]);
-
-
-                const processedTasks = tasksData.map(task => ({
-                    ...task,
-                    categoryId: task.category ? task.category.id : null,
-                    subtasks: task.subtasks || [],
-                    hasSubtasks: task.subtasks && task.subtasks.length > 0
-                }));
-
-                setTasks(processedTasks);
-                setCategories(categoriesData);
-                // setIsAuthenticated(true);
-
-                
-
-            } catch (e) {
-
-                if (e.message === '401 Unauthorized') {
-                    localStorage.removeItem("token");
-                    // setIsAuthenticated(false);
-                } else {
-                    setError(e);
-                    console.error("Critical error fetching data:", e);
-                }
-
-            } finally {
-                setIsLoading(false);
-            }
-
-        };
-        loadInitialData();
-
-    }, []);
+        loadData();
+    }, [loadData]);
 
 
     const addCategoryLocal = (newCategory) => {
         setCategories(prevCategories => [...prevCategories, newCategory]);
     };
+
+    const toggleTaskLocal = (taskId, isCompleted) => {
+        setTasks(prevTasks => prevTasks.map(task => {
+            if (task.id === taskId) {
+                const updatedSubtasks = task.subtasks ? task.subtasks.map(sub => ({
+                    ...sub,
+                    completed: isCompleted
+                })) : [];
+
+                return { ...task, completed: isCompleted, subtasks: updatedSubtasks };
+            }
+            return task;
+        }));
+    };
+
+
+    const updateCategoryLocal = (categoryId, updatedData) => {
+        setCategories(prevCategories => prevCategories.map(cat => 
+            cat.id === categoryId 
+                ? { ...cat, ...updatedData }
+                : cat
+        ));
+
+        setTasks(prevTasks => prevTasks.map(task => {
+            if (task.category && task.category.id === categoryId) {
+                return {
+                    ...task,
+                    category: {
+                        ...task.category,
+                        ...updatedData
+                    }
+                };
+            }
+            return task;
+        }));
+    }
+
+    const deleteCategoryLocal = (categoryId) => {
+        setCategories(prevCategories => prevCategories.filter(cat => cat.id !== categoryId));
+
+        setTasks(prevTasks => prevTasks.map(task => {
+            if (task.category && task.category.id === categoryId) {
+                return {
+                    ...task,
+                    category: null
+                };
+            }
+            return task;
+        }));
+    }
 
 
     return {
@@ -73,7 +124,10 @@ export const useTaskData = () => {
         categories,
         isLoading,
         error,
-        addCategoryLocal
+        addCategoryLocal,
+        toggleTaskLocal,
+        updateCategoryLocal,
+        deleteCategoryLocal
     };
 
 };

@@ -1,9 +1,6 @@
 package pl.poznan.put.adhd.adhd_helper.category;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -18,4 +15,6 @@ public interface CategoryMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "adhdUser", ignore = true)
     Category toEntity(CategoryDto categoryDto);
+
+    Category toEntity(Long id);
 }

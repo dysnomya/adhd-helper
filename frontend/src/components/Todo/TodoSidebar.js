@@ -1,7 +1,20 @@
 import React from 'react';
 import Category from './Category';
 
-const TodoSidebar = ({ categories, setActiveFilter, activeFilter, onAddCategoryClick }) => {
+import { ReactComponent as EditCategoryIcon } from "../../assets/edit-category.svg";
+
+const TodoSidebar = ({
+    categories,
+    setActiveFilter,
+    activeFilter,
+    onAddCategoryClick,
+    selectedDate,
+    onDateChange,
+    showAllTasks,
+    onToggleShowAll,
+    onEditCategoryClick
+
+}) => {
 
     const noCategoryId = "NULL_CATEGORY";
 
@@ -23,41 +36,100 @@ const TodoSidebar = ({ categories, setActiveFilter, activeFilter, onAddCategoryC
 
     };
 
+    const handleDateInput = (e) => {
+        const newDate = e.target.value;
+        onDateChange(newDate);
+        if (newDate) {
+            onToggleShowAll(false);
+        }
+    };
+
+    const handleClearFilters = () => {
+        onToggleShowAll(true);
+        onDateChange('');
+
+        const allCategoryIds = categories.map(cat => cat.id);
+        allCategoryIds.push("NULL_CATEGORY");
+        setActiveFilter(allCategoryIds);
+    }
+
+
     return (
 
         <div className='todo-sidebar'>
             <nav className='todo-nav'>
 
-                <p className='todo-sidebar-text-kategorie'>Kategorie</p>
+                <div>
+                    <p className='todo-sidebar-text-titles'>Data</p>
 
-                {categories.map(category => (
+                    <div className='sidebar-date-picker-container'>
+
+                        <input
+                            type="date"
+                            className="date-input"
+                            value={selectedDate}
+                            onChange={handleDateInput}
+                        />
+
+                    </div>
+
+                    <div className='categories-header-container'>
+                        <p className='todo-sidebar-text-titles'>Kategorie</p>
+                        <EditCategoryIcon
+                            className='edit-category-button'
+                            onClick={onEditCategoryClick}
+                        />
+                    </div>
+
+
+
+                    {categories.map(category => (
+                        <Category
+                            key={category.id}
+                            category={category}
+                            onClick={() => handleCategoryClick(category.id)}
+                            isActive={activeFilter.includes(category.id)}
+                        />
+                    ))}
+
                     <Category
-                        key={category.id}
-                        category={category}
-                        onClick={() => handleCategoryClick(category.id)}
-                        isActive={activeFilter.includes(category.id)}
+                        category={noCategoryOption}
+                        onClick={() => handleCategoryClick(noCategoryId)}
+                        isActive={activeFilter.includes(noCategoryId)}
                     />
-                ))}
 
-                <Category
-                    category={noCategoryOption}
-                    onClick={() => handleCategoryClick(noCategoryId)}
-                    isActive={activeFilter.includes(noCategoryId)}
-                />
+                    <div
+                        className='todo-sidebar-add-button'
+                        onClick={onAddCategoryClick}
+                    >
+                        <p>+</p>
+                    </div>
+                </div>
 
-                <div 
-                    className='todo-sidebar-add-button'
-                    onClick={onAddCategoryClick}
-                >
-                    <p>+</p>
+
+                <div>
+                    <div className='todo-sidebar-priorytet'>
+                        <p className='todo-sidebar-text-titles'>Priorytet</p>
+
+                        <div className='priority high'>Wysoki</div>
+                        <div className='priority medium'>Średni</div>
+                        <div className='priority low'>Niski</div>
+                    </div>
+
+
+                    <div className='clear-filters'>
+                        <button
+                            className="btn-clear-filters"
+                            onClick={handleClearFilters}>
+                                Wyczyść filtry
+                        </button>
+                    </div>
                 </div>
 
             </nav>
         </div>
-        
+
 
     );
-
 }
-
 export default TodoSidebar;

@@ -11,9 +11,28 @@ const getHeaders = () => {
 };
 
 // GET
-export const fetchAllTasks = async () => {
+export const fetchAllTasks = async (filters ={}) => {
 
-    const response = await fetch(TASKS_URL, {
+    const params = new URLSearchParams();
+
+    if (filters.day) {
+        params.append('day', filters.day);
+    }
+
+    if (filters.categories && filters.categories.length > 0) {
+
+        // ominięcie NULL_CATEGORY na razie
+        const categoryIds = filters.categories.filter(id => typeof id === 'number');
+
+        if (categoryIds.length > 0) {
+            params.append('category', categoryIds.join(','));
+        }
+
+    }
+
+    const url = `${TASKS_URL}?${params.toString()}`;
+
+    const response = await fetch(url, {
         headers: getHeaders(),
     });
 
@@ -51,16 +70,18 @@ export const createCategory = async (categoryData) => {
 
 };
 
+export const fetchTaskDataForTimePeriod = async (dayFrom, dayTo) => {
 
-// export const fetchSubtasks = async (parentId) => {
-//     const response = await fetch(`/api/tasks/${parentId}/subtasks`, {
-//         headers: getHeaders(),
-//     });
-//     if (response.status === 204) {
-//         return [];
-//     }
-//     if (!response.ok) {
-//         throw new Error('Błąd pobierania podzadań');
-//     }
-//     return response.json();
-// };
+    const filters = {
+        "dayFrom": new Intl.DateTimeFormat('en-CA').format(dayFrom),
+        "dayTo": new Intl.DateTimeFormat('en-CA').format(dayTo)
+    };
+
+    const params = new URLSearchParams(filters);
+
+    const taskRes = await fetch(`${TASKS_URL}?${params}`, {
+        headers: getHeaders()
+    });
+
+    return await taskRes.json();
+};

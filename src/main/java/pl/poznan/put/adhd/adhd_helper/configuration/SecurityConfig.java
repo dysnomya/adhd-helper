@@ -1,6 +1,5 @@
 package pl.poznan.put.adhd.adhd_helper.configuration;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.annotation.Bean;
@@ -15,31 +14,29 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Slf4j
 @Configuration
-@RequiredArgsConstructor
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig implements WebMvcConfigurer {
-    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable) // Bo korzystamy z tokenów JWT
-                .cors(Customizer.withDefaults()) // Włączenie współpracy CORS
+    public SecurityFilterChain filterChain(
+            HttpSecurity http, CustomJwtAuthenticationConverter jwtAuthConverter) throws Exception {
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         auth ->
-                                auth.requestMatchers("/", "/auth/**", "/error")
+                                auth.requestMatchers(
+                                                "/",
+                                                "/error",
+                                                "/v3/**",
+                                                "/swagger-ui.html",
+                                                "/swagger-ui/**")
                                         .permitAll()
                                         .anyRequest()
                                         .authenticated())
-
-                // Włączenie Serwera Zasobów JWT (odczytywanie tokenów z nagłówka)
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-
-                // Tworzenie usera, jeśli nie jest on jeszcze w db
-                .oauth2Login(
-                        oauth ->
-                                oauth.userInfoEndpoint(
-                                        info -> info.userService(customOAuth2UserService)))
+                .oauth2ResourceServer(
+                        oauth2 ->
+                                oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter)))
                 .build();
     }
 }

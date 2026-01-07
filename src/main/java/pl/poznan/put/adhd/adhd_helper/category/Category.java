@@ -1,7 +1,12 @@
 package pl.poznan.put.adhd.adhd_helper.category;
 
 import jakarta.persistence.*;
+
 import lombok.*;
+
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
 
 @Entity
@@ -11,6 +16,7 @@ import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
 @Getter
 @Setter
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +24,7 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @CreatedBy
     private AdhdUser adhdUser;
 
     @Column(nullable = false)
