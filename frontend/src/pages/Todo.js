@@ -187,13 +187,14 @@ const Todo = () => {
 
         const apiPayload = {
             ...updatedData,
-            categoryId: updatedData.category ? updatedData.category.id : (updatedData.categoryId || "%00"),
+            categoryId: updatedData.category ? updatedData.category.id : (updatedData.categoryId || null),
             category: undefined,
             subtasks: updatedData.subtasks || []
         };
 
         try {
-            const updatedTaskFromBackend = await updateTask(taskId, apiPayload);
+            // const updatedTaskFromBackend = await updateTask(taskId, apiPayload);
+            await updateTask(taskId, apiPayload);
             updateTaskLocal(taskId, updatedData);
         } catch (e) {
             console.error("Błąd edycji zadania", e);
@@ -208,15 +209,15 @@ const Todo = () => {
 
         const apiPayload = {
             ...newTaskData,
-            categoryId: newTaskData.category ? newTaskData.category.id : "%00",
+            categoryId: newTaskData.category ? newTaskData.category.id : null,
             category: undefined,
             subtasks: newTaskData.subtasks || []
         };
 
         try {
             // API CALL
-            const createdTaskFromBackend = await createTask(apiPayload);
-
+            // const createdTaskFromBackend = await createTask(apiPayload);
+            await createTask(apiPayload);
             // addTaskLocal(createdTaskFromBackend);
             addTaskLocal(newTaskData);
             setIsAddingTask(false);

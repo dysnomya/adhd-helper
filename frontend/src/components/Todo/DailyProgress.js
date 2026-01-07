@@ -4,13 +4,11 @@ import { getTaskStats } from "../../api/TaskApi";
 const DailyProgress = ({ date, refreshTrigger }) => {
 
     const [stats, setStats] = useState({ completed: 0, total: 0 });
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchStats = async () => {
             if (!date) return;
 
-            setIsLoading(true);
             try {
                 const data = await getTaskStats(date);
                 setStats({
@@ -19,9 +17,7 @@ const DailyProgress = ({ date, refreshTrigger }) => {
                 });
             } catch (error) {
                 console.error("Błąd pobierania statystyk:", error);
-            } finally {
-                setIsLoading(false);
-            }
+            } 
         };
 
         fetchStats();

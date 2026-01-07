@@ -1,5 +1,3 @@
-import { getSuggestedQuery } from "@testing-library/dom";
-
 const TASKS_URL = "/api/tasks"
 const CATEGORIES_URL = "/api/categories"
 
@@ -24,8 +22,11 @@ export const fetchAllTasks = async (filters ={}) => {
     if (filters.categories && filters.categories.length > 0) {
 
         const categoryIds = filters.categories
-            .map(id => (id === null ? '%00' : id))
-            .filter(id => typeof id === 'number' || id === '%00');
+            .map(id => {
+                if (id === null || id === 'NULL_CATEGORY') return '\0';
+                return id;
+            })
+            .filter(id => id !== undefined && id !== false);
 
         if (categoryIds.length > 0) {
             params.append('category', categoryIds.join(','));
