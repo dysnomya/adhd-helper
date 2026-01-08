@@ -182,7 +182,7 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
             let hasChanged = false;
             let newTask = { ...task };
 
-            if (newTask.category && newTask.category.id == categoryId) {
+            if (newTask.category && newTask.category.id === categoryId) {
                 newTask.category = {
                     ...newTask.category,
                     ...updatedData
@@ -192,7 +192,7 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
 
             if (newTask.subtasks && newTask.subtasks.length > 0) {
                 const updatedSubtasks = newTask.subtasks.map(subtask => {
-                    if (subtask.category && subtask.category.id == categoryId) {
+                    if (subtask.category && subtask.category.id === categoryId) {
                         hasChanged = true;
                         return {
                             ...subtask,
