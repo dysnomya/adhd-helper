@@ -148,8 +148,26 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
             }
 
             return task;
-
         }));
+    };
+
+    const addTaskLocal = (newTask) => {
+        setTasks(prevTasks => {
+            if (newTask.parentId) {
+                return prevTasks.map(task => {
+                    if (task.id === newTask.parentId) {
+                        return {
+                            ...task,
+                            subtasks: [...(task.subtasks || []), newTask]
+                        };
+                    }
+
+                    return task;
+                });
+            }
+
+            return [...prevTasks, newTask];
+        });
     };
 
 
@@ -199,7 +217,8 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         deleteTaskLocal,
         updateCategoryLocal,
         deleteCategoryLocal,
-        updateTaskLocal
+        updateTaskLocal,
+        addTaskLocal
     };
 
 };

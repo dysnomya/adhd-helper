@@ -96,14 +96,14 @@ const TodoSidebar = ({
 
                     <div className='todo-sidebar-categories-list'>
 
-                        {categories.map(category => (
-                            <Category
-                                key={category.id}
-                                category={category}
-                                onClick={() => handleCategoryClick(category.id)}
-                                isActive={activeFilter.includes(category.id)}
-                            />
-                        ))}
+                    {categories.map(category => (
+                        <Category
+                            key={category.id}
+                            category={category}
+                            onClick={() => handleCategoryClick(category.id)}
+                            isActive={activeFilter.includes(category.id)}
+                        />
+                    ))}
 
                         <Category
                             category={noCategoryOption}

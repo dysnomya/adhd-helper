@@ -14,6 +14,8 @@ import DailyProgress from "../components/Todo/DailyProgress";
 
 import pimpus from "../assets/pimpus_happy_anim.webp";
 
+import AddTaskComponent from "../components/Todo/AddTaskComponent";
+
 import EditCategoryModal from "../components/Todo/EditCategoryModal";
 
 // import { updateCategory, deleteCategory } from "../api/TaskApi";
@@ -68,7 +70,8 @@ const Todo = () => {
         deleteTaskLocal,
         updateCategoryLocal,
         deleteCategoryLocal,
-        updateTaskLocal
+        updateTaskLocal,
+        addTaskLocal
     } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
 
 
@@ -174,6 +177,36 @@ const Todo = () => {
         }
     };
 
+    const handleUpdateTask = async (taskId, updatedData) => {
+        try {
+            // API CALL
+            updateTaskLocal(taskId, updatedData);
+        } catch (e) {
+            console.error("Błąd edycji zadania", e);
+            alert("Nie udało się zedytować zadania.");
+        }
+    };
+
+
+    const [isAddingTask, setIsAddingTask] = useState(false);
+
+    const handleAddNewTask = async (newTaskData) => {
+
+        try {
+            // API CALL
+            // const createdTask = await createTask(newTaskData);
+
+            addTaskLocal(newTaskData);
+            setIsAddingTask(false);
+        } catch (e) {
+            console.error("Błąd dodawania zadania", e);
+        }
+    };
+
+    const handleAddTaskClick = () => {
+        setIsAddingTask(true);
+    };
+
     const handleUpdateCategory = async (id, data) => {
         try {
             // await updateCategory(id, data);
@@ -191,16 +224,6 @@ const Todo = () => {
         } catch (e) {
             console.error("Błąd usuwania kategorii", e);
             alert("Nie udało się usunąć kategorii");
-        }
-    };
-
-    const handleUpdateTask = async (taskId, updatedData) => {
-        try {
-            // API CALL
-            updateTaskLocal(taskId, updatedData);
-        } catch (e) {
-            console.error("Błąd edycji zadania", e);
-            alert("Nie udało się zedytować zadania.");
         }
     };
 
@@ -226,7 +249,9 @@ const Todo = () => {
     );
 
     return (
-        <div className="todo-main">
+        <div 
+            className="todo-main"
+        >
 
             {isLoading && (
                 <div className={`loading-overlay ${isFirstLoad ? 'initial-load' : ''}`}>
@@ -279,7 +304,10 @@ const Todo = () => {
                     <DailyProgress
                     />
                     <div className="add-task-btn-container">
-                        <button className="add-task-btn">
+                        <button
+                            className="add-task-btn"
+                            onClick={handleAddTaskClick}
+                        >
                         + Nowe zadanie
                     </button>
                     </div>
@@ -298,6 +326,18 @@ const Todo = () => {
                         <div className="no-data-yet">
                             <p>Nie stworzyłeś jeszcze tasków, zrób je dla Pimpusia!</p>
                         </div>
+                    )}
+
+                    {isAddingTask && (
+                        
+                        <AddTaskComponent
+                            categories={categories}
+                            onConfirm={handleAddNewTask}
+                            onCancel={() => setIsAddingTask(false)}
+                            initialDate={selectedDateFilter}
+                            whereComponent={"todo"}
+                        />
+                     
                     )}
 
 
