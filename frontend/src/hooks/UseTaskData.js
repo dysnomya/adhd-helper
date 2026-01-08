@@ -179,16 +179,38 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         ));
 
         setTasks(prevTasks => prevTasks.map(task => {
-            if (task.category && task.category.id === categoryId) {
-                return {
-                    ...task,
-                    category: {
-                        ...task.category,
-                        ...updatedData
-                    }
+            let hasChanged = false;
+            let newTask = { ...task };
+
+            if (newTask.category && newTask.category.id == categoryId) {
+                newTask.category = {
+                    ...newTask.category,
+                    ...updatedData
                 };
+                hasChanged = true;
             }
-            return task;
+
+            if (newTask.subtasks && newTask.subtasks.length > 0) {
+                const updatedSubtasks = newTask.subtasks.map(subtask => {
+                    if (subtask.category && subtask.category.id == categoryId) {
+                        hasChanged = true;
+                        return {
+                            ...subtask,
+                            category: {
+                                ...subtask.category,
+                                ...updatedData
+                            }
+                        };
+                    }
+                    return subtask;
+                });
+
+                if (hasChanged) {
+                    newTask.subtasks = updatedSubtasks;
+                }
+            }
+
+            return hasChanged ? newTask : task;
         }));
     }
 

@@ -73,9 +73,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
         
         setIsCompleted(newStatus);
 
-        if (onStatusChange) {
-            onStatusChange(task.id, newStatus);
-        }
+        
 
         if (debounceTimer.current) {
             clearTimeout(debounceTimer.current);
@@ -85,6 +83,9 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
             try {
             
                 // API CALL
+                if (onStatusChange) {
+                    onStatusChange(task.id, newStatus);
+                }
 
                 console.log(`${task.id}: ${newStatus}`);
             } catch (e) {
