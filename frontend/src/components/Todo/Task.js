@@ -205,14 +205,23 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
         setEditDate(newDate);
     };
 
+    console.log(`------------------ TASK ${task.name}  ------------------`)
+
+    console.log("edit category")
+    console.log(editCategory)
 
     let selectedCategory = null;
     if (editCategory !== null) {
         selectedCategory = categories?.find(c => c.id === editCategory.id);
     }
 
-    const currentCatName = selectedCategory ? selectedCategory.name : "Wybierz kategorię";
-    const currentCatColor = selectedCategory ? selectedCategory.color : "#828282ff";
+    console.log("selected category")
+    console.log(selectedCategory)
+    // const currentCatName = selectedCategory ? selectedCategory.name : "Wybierz kategorię";
+    // const currentCatColor = selectedCategory ? selectedCategory.color : "#828282ff";
+
+    const currentCatName = editCategory ? editCategory.name : "Wybierz kategorię";
+    const currentCatColor = editCategory ? editCategory.color : "#828282ff";
 
     return (
 

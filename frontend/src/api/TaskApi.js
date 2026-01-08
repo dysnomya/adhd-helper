@@ -13,7 +13,11 @@ const getHeaders = () => {
 // GET
 export const fetchAllTasks = async (filters ={}) => {
 
+    console.log("### FETCH ALL TASKS TaskApi ###");
+
     const params = new URLSearchParams();
+
+    console.log(filters);
 
     if (filters.day) {
         params.append('day', filters.day);
