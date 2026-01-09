@@ -35,6 +35,58 @@ $level-font: "Space Mono", monospace;
     }
 }
 
+.game-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(2px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+
+    opacity: 0;
+    animation: gameFadeIn 0.3s ease-in 0.3s forwards;
+
+    background-color: var(--content-bg);
+    animation: none;
+    opacity: 1;
+}
+
+@keyframes gameFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.game-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--color-accent);
+    border-radius: 50%;
+    animation: gameSpin 1s linear infinite;
+}
+
+@keyframes gameSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .game-card {
     background-color: var(--secondary-container-bg);
     border-radius: $game-border-radius;
@@ -78,7 +130,7 @@ $level-font: "Space Mono", monospace;
     border: 5px solid $boss-color-temp;
     box-shadow: inset 0 0 20px 5px $boss-color-temp;
     color: $boss-color-temp;
-    filter: hue-rotate(40deg) contrast(0.9); // hardcoded for now
+    filter: contrast(0.9);
 }
 
 .game-level-bar {
@@ -115,6 +167,13 @@ $level-font: "Space Mono", monospace;
         inset 0 2px 2px rgba(255, 255, 255, 0.4),
         inset 0 -2px 2px rgba(0, 0, 0, 0.1),
         2px 0 5px rgba(0, 0, 0, 0.2);
+    color: var(--color-on-accent);
+    text-align: end;
+    padding-right: 1em;
+    font-size: 2em;
+    display: flex;
+    justify-content: end;
+    align-items: center;
 }
 
 .game-level-bar-scale {
@@ -284,5 +343,11 @@ $level-font: "Space Mono", monospace;
 
     .game-pet-name {
         font-size: 2rem;
+    }
+
+    .game-level-bar-fill {
+        padding-right: 1em;
+        font-size: 1em;
+        align-items: center;
     }
 }
