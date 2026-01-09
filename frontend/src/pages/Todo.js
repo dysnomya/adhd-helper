@@ -5,7 +5,6 @@ import TodoSidebar from "../components/Todo/TodoSidebar";
 import TaskListContainer from "../components/Todo/TaskListContainer";
 import { getTaskDateName, parseEuropeanDate } from "../functions/TasksHelpers"
 import AddCategoryModal from "../components/Todo/AddCategoryModal";
-import { createCategory } from "../api/TaskApi";
 import { ReactComponent as Dynks} from "../assets/dynks.svg";
 import { ReactComponent as Filter} from "../assets/Filter_icon.svg";
 import { useLocation } from "react-router-dom";

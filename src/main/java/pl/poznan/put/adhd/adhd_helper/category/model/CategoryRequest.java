@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record CategoryRequest(
+        @Schema(description = "Category id", example = "1")
+            Long id,
         @Schema(description = "Category name", example = "Work")
                 @NotEmpty(message = "Category name should not be empty")
                 String name,

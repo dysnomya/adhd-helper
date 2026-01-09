@@ -172,6 +172,10 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
 
 
     const updateCategoryLocal = (categoryId, updatedData) => {
+
+        console.log(`category id: ${categoryId}`)
+        console.log(`updatedData: ${updatedData}`)
+
         setCategories(prevCategories => prevCategories.map(cat =>
             cat.id === categoryId
                 ? { ...cat, ...updatedData }
@@ -182,7 +186,19 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
             let hasChanged = false;
             let newTask = { ...task };
 
+            console.log("set tasks update category")
+
+            console.log("task")
+            console.log(newTask)
+
+            console.log(`task category: ${newTask.category}`)
+            if (newTask.category) {
+                console.log(`task category id: ${newTask.category.id}`)
+            }
+            
+
             if (newTask.category && newTask.category.id === categoryId) {
+                console.log("if się robi")
                 newTask.category = {
                     ...newTask.category,
                     ...updatedData
