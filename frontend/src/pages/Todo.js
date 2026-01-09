@@ -5,6 +5,7 @@ import TodoSidebar from "../components/Todo/TodoSidebar";
 import TaskListContainer from "../components/Todo/TaskListContainer";
 import { getTaskDateName, parseEuropeanDate } from "../functions/TasksHelpers"
 import AddCategoryModal from "../components/Todo/AddCategoryModal";
+import { createCategory } from "../api/TaskApi";
 import { ReactComponent as Dynks} from "../assets/dynks.svg";
 import { ReactComponent as Filter} from "../assets/Filter_icon.svg";
 import { useLocation } from "react-router-dom";
@@ -175,7 +176,7 @@ const Todo = () => {
         try {
             // API CALL
             await deleteTask(taskId);
-            
+
             deleteTaskLocal(taskId);
         } catch (e) {
             console.error("Błąd usuwania zadania", e);
@@ -268,7 +269,7 @@ const Todo = () => {
         } catch (e) {
             console.error("Błąd zmiany statusu taska ", e);
             toggleTaskLocal(taskId, !completion);
-        
+
             alert(`Nie udało się zmienić statusu taska ${e.message}`);
         }
 
@@ -296,7 +297,7 @@ const Todo = () => {
     );
 
     return (
-        <div 
+        <div
             className="todo-main"
         >
 
@@ -378,7 +379,7 @@ const Todo = () => {
                     )}
 
                     {isAddingTask && (
-                        
+
                         <AddTaskComponent
                             categories={categories}
                             onConfirm={handleAddNewTask}
@@ -386,13 +387,13 @@ const Todo = () => {
                             initialDate={selectedDateFilter}
                             whereComponent={"todo"}
                         />
-                     
+
                     )}
 
 
                     <TaskListContainer 
-                    
-                        datedTasks={datedTasks} 
+
+                        datedTasks={datedTasks}
                         onTaskStatusChange={handleTaskStatusChange}
                         onDeleteTask={handleDeleteTask}
                         onUpdateTask={handleUpdateTask}
