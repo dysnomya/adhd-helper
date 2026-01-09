@@ -383,7 +383,7 @@ const Todo = () => {
                             categories={categories}
                             onConfirm={handleAddNewTask}
                             onCancel={() => setIsAddingTask(false)}
-                            initialDate={selectedDateFilter}
+                            initialDate={statsDate}
                             whereComponent={"todo"}
                         />
 

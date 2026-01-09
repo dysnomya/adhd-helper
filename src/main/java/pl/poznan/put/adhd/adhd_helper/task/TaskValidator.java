@@ -25,7 +25,14 @@ public class TaskValidator {
 
     public void validateTask(TaskRequest taskRequest) {
         Set<Long> requestedCategoryIds = getIds(taskRequest.subtasks(), SubtaskRequest::categoryId);
-        requestedCategoryIds.add(taskRequest.categoryId());
+
+        if (taskRequest.categoryId() != null) {
+            requestedCategoryIds.add(taskRequest.categoryId());
+        }
+
+        if (requestedCategoryIds.isEmpty()) {
+            return;
+        }
 
         Set<Long> foundCategories = categoryService.findAllById(requestedCategoryIds);
         validateIds(requestedCategoryIds, foundCategories);
