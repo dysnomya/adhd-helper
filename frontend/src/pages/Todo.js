@@ -210,6 +210,7 @@ const Todo = () => {
         const apiPayload = {
             ...newTaskData,
             categoryId: newTaskData.category ? newTaskData.category.id : null,
+            priority: newTaskData.priority ? newTaskData.priority : null,
             category: undefined,
             subtasks: newTaskData.subtasks || []
         };
