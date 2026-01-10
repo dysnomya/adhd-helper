@@ -8,7 +8,7 @@ import { useProfileData } from "../hooks/UseProfileData";
 
 export default function Game() {
     const {
-        profileData, isLoading, error, updateProfileData
+        profileData, userData, isLoading, error, updateProfileData
     } = useProfileData();
 
     const [lvlUpAnim, setLvlUpAnim] = useState(false)
@@ -34,7 +34,7 @@ export default function Game() {
                 <LevelBar profile={profileData} />
             </div>
             <div className="game-card game-name-title">
-                <h1>Imię nazwisko</h1>
+                <h1>{userData?.name + ' ' + userData?.lastName}</h1>
                 <h3 className="game-title">{profileData?.currentTitle ? profileData.currentTitle : "Jeszcze bez specjalnych zasług"}</h3>
             </div>
             <div className="game-card">
