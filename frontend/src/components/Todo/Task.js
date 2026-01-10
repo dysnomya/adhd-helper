@@ -34,7 +34,7 @@ const getPriorityName = (priority) => {
     }
 };
 
-const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onDeleteTask, onUpdateTask, categories }) => {
+const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onDeleteTask, onUpdateTask, categories, parentId = null }) => {
 
     const [isCompleted, setIsCompleted] = useState(task.completed);              // checkbox
     const [isExpanded, setIsExpanded] = useState(false);                         // subtasks
@@ -69,11 +69,9 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
     }, [task.completed]);
 
     const handleCheckedTask = () => {
-        const newStatus = !isCompleted;
-        
-        setIsCompleted(newStatus);
 
-        
+        const newStatus = !isCompleted;
+        setIsCompleted(newStatus);
 
         if (debounceTimer.current) {
             clearTimeout(debounceTimer.current);
@@ -81,11 +79,8 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
 
         debounceTimer.current = setTimeout(async () => {
             try {
-            
                 // API CALL
-                if (onStatusChange) {
-                    onStatusChange(task.id, newStatus);
-                }
+                onStatusChange(task.id, newStatus, parentId);
 
                 console.log(`${task.id}: ${newStatus}`);
             } catch (e) {
@@ -204,23 +199,6 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
         const newDate = e.target.value;
         setEditDate(newDate);
     };
-
-    // DEBUGGING
-    // console.log(`------------------ TASK ${task.name}  ------------------`)
-
-    // console.log("edit category")
-    // console.log(editCategory)
-
-    // let selectedCategory = null;
-    // if (editCategory !== null) {
-    //     selectedCategory = categories?.find(c => c.id === editCategory.id);
-    // }
-
-    // console.log("selected category")
-    // console.log(selectedCategory)
-    // --------------------
-    // const currentCatName = selectedCategory ? selectedCategory.name : "Wybierz kategorię";
-    // const currentCatColor = selectedCategory ? selectedCategory.color : "#828282ff";
 
     const currentCatName = editCategory ? editCategory.name : "Wybierz kategorię";
     const currentCatColor = editCategory ? editCategory.color : "#828282ff";
@@ -478,6 +456,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                                 onDeleteTask={onDeleteTask}
                                 onUpdateTask={onUpdateTask}
                                 categories={categories}
+                                parentId={task.id}
                             />
                         ))}
                     </div>

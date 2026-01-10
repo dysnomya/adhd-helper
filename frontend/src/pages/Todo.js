@@ -252,26 +252,64 @@ const Todo = () => {
         }
     };
 
-    const handleTaskStatusChange = async (taskId) => {
-        const task = tasks.find(t => t.id === taskId);
-        if (!task) return;
-
-        const completion = task.completed;
-
-        toggleTaskLocal(taskId, !completion);
+    const handleTaskStatusChangeAPI = async (taskId, taskStatus) => {
+        toggleTaskLocal(taskId, taskStatus);
 
         try {
-            if (completion) {
+            if (!taskStatus) {
+                console.log(`ODZNACZ ${taskId}`)
                 await uncompleteTask(taskId);
             } else {
+                console.log(`ZAZNACZ ${taskId}`)
                 await completeTask(taskId);
             }
         } catch (e) {
             console.error("Błąd zmiany statusu taska ", e);
-            toggleTaskLocal(taskId, !completion);
+            toggleTaskLocal(taskId, !taskStatus);
 
             alert(`Nie udało się zmienić statusu taska ${e.message}`);
         }
+    };
+
+    const handleTaskStatusChange = async (taskId, status, parentId) => {
+
+        const task = tasks.find(t => t.id === taskId);
+
+        if (!task) {
+
+            // subtask
+            const parent = tasks.find(t => t.id === parentId);
+
+            if (parent && parent.subtasks) {
+
+                if (!status) {
+                    handleTaskStatusChangeAPI(parent.id, false);
+                }
+
+                if (status) {
+                    const areOtherSubtasksCompleted = parent.subtasks
+                        .filter(sub => sub.id !== taskId)
+                        .every(sub => sub.completed === true);
+
+                    if (areOtherSubtasksCompleted) {
+                        handleTaskStatusChangeAPI(parent.id, true);
+                    }
+                }
+
+            }
+
+        }
+
+
+        if (task && task.subtasks && task.subtasks.length > 0) {
+            task.subtasks.forEach(subtask => {
+                if (subtask.completed !== status) {
+                    handleTaskStatusChangeAPI(subtask.id, status);
+                }
+            });
+        }
+        
+        handleTaskStatusChangeAPI(taskId, status);
 
     };
 

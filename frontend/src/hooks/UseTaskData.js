@@ -69,14 +69,13 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
     };
 
     const toggleTaskLocal = (taskId, isCompleted) => {
+
         setTasks(prevTasks => prevTasks.map(task => {
             if (task.id === taskId) {
-                const updatedSubtasks = task.subtasks ? task.subtasks.map(sub => ({
-                    ...sub,
+                return { 
+                    ...task, 
                     completed: isCompleted
-                })) : [];
-
-                return { ...task, completed: isCompleted, subtasks: updatedSubtasks };
+                };
             }
 
             if (task.subtasks && task.subtasks.length > 0) {
@@ -173,8 +172,8 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
 
     const updateCategoryLocal = (categoryId, updatedData) => {
 
-        console.log(`category id: ${categoryId}`)
-        console.log(`updatedData: ${updatedData}`)
+        // console.log(`category id: ${categoryId}`)
+        // console.log(`updatedData: ${updatedData}`)
 
         setCategories(prevCategories => prevCategories.map(cat =>
             cat.id === categoryId
@@ -186,19 +185,19 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
             let hasChanged = false;
             let newTask = { ...task };
 
-            console.log("set tasks update category")
+            // console.log("set tasks update category")
 
-            console.log("task")
-            console.log(newTask)
+            // console.log("task")
+            // console.log(newTask)
 
-            console.log(`task category: ${newTask.category}`)
-            if (newTask.category) {
-                console.log(`task category id: ${newTask.category.id}`)
-            }
+            // console.log(`task category: ${newTask.category}`)
+            // if (newTask.category) {
+            //     console.log(`task category id: ${newTask.category.id}`)
+            // }
             
 
             if (newTask.category && newTask.category.id === categoryId) {
-                console.log("if się robi")
+                // console.log("if się robi")
                 newTask.category = {
                     ...newTask.category,
                     ...updatedData
