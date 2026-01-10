@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { feedPimpus, fetchProfileInfo } from "../api/GameApi";
+import { fetchUserInfo } from "../api/UserApi";
 
 export const useProfileData = () => {
     const [profileData, setProfileData] = useState(null);
+    const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -17,10 +19,12 @@ export const useProfileData = () => {
 
         try {
             const data = await Promise.all([
-                fetchProfileInfo()
+                fetchProfileInfo(),
+                fetchUserInfo()
             ]);
 
             setProfileData(data[0]);
+            setUserData(data[1]);
         } catch (e) {
             if (e.message === '401 Unauthorized') {
                 localStorage.removeItem("token");
@@ -56,5 +60,5 @@ export const useProfileData = () => {
         loadData();
     }, [loadData]);
 
-    return { profileData, isLoading, error, updateProfileData };
+    return { profileData, userData, isLoading, error, updateProfileData };
 };
