@@ -8,17 +8,10 @@ import { useProfileData } from "../hooks/UseProfileData";
 
 export default function Game() {
     const {
-        profileData, userData, isLoading, error, updateProfileData
+        profileData, isLevelUp, userData, isLoading, error, updateProfileData
     } = useProfileData();
 
-    const [lvlUpAnim, setLvlUpAnim] = useState(false)
-
     const feed = (amount) => {
-        if (amount >= profileData.expToNextLevel - profileData.currentExp) {
-            console.log("AAAA");
-            setLvlUpAnim(true);
-            setTimeout(() => setLvlUpAnim(false), 1000);
-        }
         updateProfileData(amount);
     };
 
@@ -30,7 +23,7 @@ export default function Game() {
                 </div>
             )}
 
-            <div className={`game-card ${lvlUpAnim ? 'game-highlight' : ''}`}>
+            <div className={`game-card ${isLevelUp ? 'game-highlight' : ''}`}>
                 <LevelBar profile={profileData} />
             </div>
             <div className="game-card game-name-title">
@@ -38,7 +31,7 @@ export default function Game() {
                 <h3 className="game-title">{profileData?.currentTitle ? profileData.currentTitle : "Jeszcze bez specjalnych zasług"}</h3>
             </div>
             <div className="game-card">
-                <PetView profile={profileData} feedFunction={feed} animation={lvlUpAnim} />
+                <PetView profile={profileData} feedFunction={feed} animation={isLevelUp} />
             </div>
             <div className="game-card">
                 <BossView profile={profileData} />

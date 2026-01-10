@@ -4,6 +4,7 @@ import { fetchUserInfo } from "../api/UserApi";
 
 export const useProfileData = () => {
     const [profileData, setProfileData] = useState(null);
+    const [isLevelUp, setIsLevelUp] = useState(false);
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -45,6 +46,11 @@ export const useProfileData = () => {
                 feedPimpus(amount)
             ]);
 
+            if (profileData != null && data[0].level > profileData.level) {
+                setIsLevelUp(true);
+                setTimeout(() => setIsLevelUp(false), 1000);
+            }
+
             setProfileData(data[0]);
         } catch (e) {
             if (e.message === '401 Unauthorized') {
@@ -60,5 +66,5 @@ export const useProfileData = () => {
         loadData();
     }, [loadData]);
 
-    return { profileData, userData, isLoading, error, updateProfileData };
+    return { profileData, isLevelUp, userData, isLoading, error, updateProfileData };
 };
