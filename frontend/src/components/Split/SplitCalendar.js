@@ -3,7 +3,7 @@ import "../../styles/calendar.scss";
 import "../../styles/split.scss";
 import SplitCalendarCell from "../Split/SplitCalendarCell";
 import CalendarSidePanel from "../Calendar/CalendarSidePanel.js";
-import capitalizeFirstLetter from "../../functions/TextFunctions.js";
+import {capitalizeFirstLetter} from "../../functions/TextFunctions.js";
 import { ReactComponent as Arrow } from "../../assets/arrow-right.svg";
 
 export default function SplitCalendar({setOutSelectedDate, tasks, onClickDay, selectedCategory}) {
@@ -95,17 +95,12 @@ export default function SplitCalendar({setOutSelectedDate, tasks, onClickDay, se
                             day={day}
                             openPanel={openPanel}
                             onClick={() => selectDate(day)}
-                            tasks={tasks.filter(task => isSameDay(task.date, new Date(year, month, day)))}
+                            tasks={tasks.filter(task => (isSameDay(task.date, new Date(year, month, day) )))}
                             selectedCategory={selectedCategory}
                         />
                     ))}
                 </div>
             </div>
-            <CalendarSidePanel openPanel={openPanel} onClick={() => setOpenPanel(false)} date={selectedDate?.toLocaleString("default", {
-                day: "numeric",
-                month: "long",
-                year: "numeric"
-            })} />
         </div>
     );
 }

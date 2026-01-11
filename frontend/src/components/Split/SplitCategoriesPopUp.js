@@ -3,7 +3,7 @@ import "../../styles/split.scss";
 import "../../styles/todo.scss";
 import Category from '../Split/SplitCategory';
 
-const SplitCategoriesPopUp = ({splitAccepted, setSplitAccepted, categories, onAddCategoryClick, setCalendarVisible, setSelectedCategory}) => {
+const SplitCategoriesPopUp = ({splitAccepted, setSplitAccepted, categories, onAddCategoryClick, setCalendarVisible, setSelectedCategory, selectedPriority, setSelectedPriority}) => {
 
     const noCategoryId = "NULL_CATEGORY";
 
@@ -15,8 +15,16 @@ const SplitCategoriesPopUp = ({splitAccepted, setSplitAccepted, categories, onAd
         color: "#828282ff"
     }
 
+    const noPriorityOption = {
+        color: "transparent"
+    }
+
     const handleCategoryClick = (categoryId) => {
         setActiveCategory(categoryId);
+    };
+
+    const handlePriorityClick = (priority) => {
+        setSelectedPriority(priority);
     };
     
     return (
@@ -45,6 +53,32 @@ const SplitCategoriesPopUp = ({splitAccepted, setSplitAccepted, categories, onAd
                     <p>+</p>
                 </div>
 
+                <div className='todo-sidebar-priorytet'>
+                        <p className='todo-sidebar-text-titles'>Priorytet</p>
+
+                        <div
+                            className={`priority high ${selectedPriority === 'HIGH' ? 'active-priority' : ''}`}
+                            style={{ '--prio-color': '#D22727' }}
+                            onClick={() => handlePriorityClick('HIGH')}
+                            > Wysoki
+                        </div>
+
+                        <div
+                            className={`priority medium ${selectedPriority === 'MEDIUM' ? 'active-priority' : ''}`}
+                            style={{ '--prio-color': '#E9BD2B' }}
+                            onClick={() => handlePriorityClick('MEDIUM')}
+                            > Średni
+                        </div>
+
+                        <div
+                            className={`priority low ${selectedPriority === 'LOW' ? 'active-priority' : ''}`}
+                            style={{ '--prio-color': '#A5DD3C' }}
+                            onClick={() => handlePriorityClick('LOW')}
+                            > Niski
+                        </div>
+
+                    </div>
+
                 <div className="add-category-modal-actions split-actions">
                     <button className="add-category-btn-cancel" onClick={() => setSplitAccepted(false)}>Anuluj</button>
                     <button className="add-category-btn-confirm" 
@@ -56,6 +90,8 @@ const SplitCategoriesPopUp = ({splitAccepted, setSplitAccepted, categories, onAd
                         Potwierdź
                     </button>
                 </div>
+
+                
             </div>
         </div>
         : 

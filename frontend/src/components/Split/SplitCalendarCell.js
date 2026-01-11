@@ -21,7 +21,7 @@ export default function SplitCalendarCell(props) {
             </div>
             <div className="split-calendar-cell-content">
                 {props.tasks.map((task, index) => (
-                        <div className="calendar-added-task" style={{ '--cat-color': props.selectedCategory.color }}><span className="calendar-added-task-text">{task.id}</span></div>
+                        <div className="calendar-added-task" style={task.parentId != null ?{ '--cat-color': '#828282ff' }: { '--cat-color': props.selectedCategory.color }}><span className="calendar-added-task-text">{task.id}</span></div>
                     ))}
             </div>
         </div>

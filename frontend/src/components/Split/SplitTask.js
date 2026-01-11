@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { timeDisplay } from "../../functions/TasksHelpers";
 import { ReactComponent as Clock} from "../../assets/clock_icon.svg";
 import { ReactComponent as SplitIcon} from "../../assets/Git merge.svg";
@@ -12,7 +12,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // import { fetchSubtasks } from "../../api/TaskApi"
 
-const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
+const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks, setSubtasks, setGeminiResult, geminiResult, onSubtaskDelete }) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [isEdited, setIsEdited] = useState(false);
@@ -21,38 +21,53 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
     const [taskTime, setTaskTime] = useState(task.timeNeeded);
     const [taskTimeMetric, setTaskTimeMetric] = useState('min');
     const [oldTaskTimeMetric, setOldTaskTimeMetric] = useState('min');
-    const [subtasks, setSubtasks] = useState([]);
     
-    const genAI = new GoogleGenerativeAI("AIzaSyA1UoiLF7bVwrKgw1sgx-fo_E7KDmbakgA");
+    const genAI = new GoogleGenerativeAI("AIzaSyASUp9UVlusUXn-_wL_K9Fk_NkST9UZbSg");
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+    const [localSubtasks, setLocalSubtasks] = useState(subtasks);
+
+    useEffect( () => {
+        setLocalSubtasks(subtasks);
+    });
 
     const categoryColor = task.category ? task.category.color : "#828282ff";
 
     const handleToggleSubtask = async () => {
-        
-        if((subtasks.length <= 0)) return;
+        if(localSubtasks === undefined) return;
+        // if((localSubtasks.length <= 0)) return;
         const newState = !isExpanded;
         setIsExpanded(!isExpanded);
         console.log(isExpanded)
     };
 
+    console.log(`localsubtassk ${task.id}`)
+    console.log(localSubtasks);
+
+
+   
+
     const splitSubTask = async () => {
-        // setGeminiAsked(true);
+        setGeminiAsked(true);
         try{
             const prompt = `
                 Rozbij zadanie "${task.name}" na kilka (do 8) mniejszych kroków.
                 Zwróć odpowiedź WYŁĄCZNIE jako czysty tablicowy format JSON.
                 Każdy obiekt w tablicy musi mieć pola:
+
                 - "id": numer kroku
                 - "name": krótka nazwa kroku
                 - "day": użyj dzisiejszej daty (${new Date().toISOString().split('T')[0]})
+                - "priority": wybierz jedną z wartości: 'VERY_LOW', 'LOW', 'MEDIUM', 'HIGH', 'VERY_HIGH'
                 - "timeNeeded": wyestymuj czas wykonywania zadania w minutach
-                
+                - "date": data wykonania zadania ZOSTAW PUSTE
+                - "parentId" : ${task.id}
+        
                 Format wyjściowy:
                 [
-                {"id": ..., "name": "...", "day": "...", "timeNeeded": ...},
+                {"id": ..., "name": "...", "day": "...", "priority": "...", "timeNeeded": ..., "date": null, "parentId": ${task.id}},
                 ...
-                ]
+                ]}          
             `;
             setGeminiAsked(true);
 
@@ -64,8 +79,13 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
             const newSubTasks = JSON.parse(cleanedJson);
             
             setGeminiAsked(false);
-            setSubtasks(newSubTasks);
-            console.log("Wygenerowane podzadania:", newSubTasks, "has", newSubTasks.length);
+            setGeminiResult([...geminiResult,...newSubTasks]);
+            // setSubtasks([...subtasks,newSubTasks]);
+            console.log("Wygenerowane podzadania:", newSubTasks, "has", newSubTasks.subtaskList.length);
+
+            onSubtaskDelete(task.id);
+
+            setLocalSubtasks(newSubTasks);
 
         // setGeminiAsked(false);
         }
@@ -107,7 +127,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
                                     <div className="dot"></div>
                                 </div>
 
-                                {(subtasks.length > 0) && (
+                                {(!isSubtask && localSubtasks.length > 0 ) && (
                                     <div 
                                         className={`split-expand-arrow ${isExpanded ? 'expanded' : ''}`}
                                         onClick={handleToggleSubtask}
@@ -153,7 +173,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
                         </div>
                     </div>
                     <div className="split-task-chevron">
-                        <Chevron className={`split-task-chevron-icon ${isActionsShown ? 'expanded' : ''}`} onClick={() => {setIsActionsShown(!isActionsShown); if(isActionsShown) setIsEdited(false); console.log(isActionsShown)}}></Chevron> 
+                        <Chevron className={`split-task-chevron-icon ${isActionsShown ? 'expanded' : ''}`} onClick={() => {setIsActionsShown(!isActionsShown); if(isActionsShown) setIsEdited(false); console.log(isActionsShown); /*matchSubtasks(task)*/}}></Chevron> 
                     </div>
                 </div>
 
@@ -188,11 +208,11 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
                     <div className="split-task-bg-icons">
                         <Edit className="split-task-bg-icon" onClick={() => setIsEdited(true)}></Edit>
                         { !isSubtask ?
-                            <SplitIcon className="split-task-bg-icon"onClick={splitSubTask}></SplitIcon>
+                            <SplitIcon className="split-task-bg-icon"onClick={() => {splitSubTask(); setLocalSubtasks(subtasks)}}></SplitIcon>
                             :
                             <></>
                         }
-                        <Delete className="split-task-bg-icon" onClick={() => {setSubtasks([]);onDelete(); }}></Delete>
+                        <Delete className="split-task-bg-icon" onClick={() => {setLocalSubtasks([]);onDelete(); setLocalSubtasks(subtasks) }}></Delete>
                     </div>
                 )}
             </div>
@@ -214,7 +234,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
                                         <div className="dot"></div>
                                     </div>
 
-                                    {(subtasks.length > 0) && (
+                                    {(!isSubtask && localSubtasks.length > 0 ) && (
                                         <div 
                                             className={`split-expand-arrow ${isExpanded ? 'expanded' : ''}`}
                                             onClick={handleToggleSubtask}
@@ -258,9 +278,9 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked }) => {
                                     )}               
                                 </div>     
                             </div>
-                            {(subtasks.length > 0) && isExpanded && (
+                            {(!isSubtask && localSubtasks.length > 0 ) && isExpanded && (
                             <div className="split-subtasks-container">
-                                {subtasks.map(subtask => (
+                                {localSubtasks.map(subtask => (
                                     <SplitTask 
                                         key={subtask.id} 
                                         task={{ ...subtask, parentId: task.id }} 

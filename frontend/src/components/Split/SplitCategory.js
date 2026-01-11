@@ -4,7 +4,7 @@ const SplitCategory =({ category, onClick, isActive }) => {
 
     return (
         <div 
-            className={`split-category-item ${isActive ? 'active' : ''}`}
+            className={`split-category-item ${isActive ? 'active-category' : ''}`}
             onClick={onClick} 
             style={{ '--cat-color': category.color }}
         >

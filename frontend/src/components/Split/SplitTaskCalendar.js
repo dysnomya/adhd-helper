@@ -1,13 +1,23 @@
 
 import React, { useState } from "react";
 
-const SplitTaskCalendar = ({ task, isSubtask = false, onClick, isSelected, selectedCategory, selectAllTasks}) => {
+const getPriorityColor = (priority) => {
+    switch (priority) {
+        case 'HIGH': return '#D22727';
+        case 'MEDIUM': return '#E9BD2B';
+        case 'LOW': return '#A5DD3C';
+        default: return 'transparent';
+    }
+};
+
+const SplitTaskCalendar = ({ task, isSubtask = false, onClick, isSelected, selectedCategory, selectAllTasks, selectedPriority}) => {
     const [taskName, setTaskName] = useState(task.name);
     const categoryColor = selectedCategory ? selectedCategory.color : "#828282ff";
     const categoryName = task.category ? task.category.name : 'Ogólne';
+    const priorityColor = getPriorityColor(selectedPriority);
 
     return (
-        <div className={`split-task-container-calendar ${isSelected && !selectAllTasks ? 'selected-calendar-task' : ''}  ${selectAllTasks ? 'disabled-task' : ''}` } onClick={() => {if(!selectAllTasks) onClick();}} style={{ '--cat-color': categoryColor }}>   
+        <div className={`split-task-container-calendar ${isSelected && !selectAllTasks ? 'selected-calendar-task' : ''}  ${selectAllTasks ? 'disabled-task' : ''}` } onClick={() => {if(!selectAllTasks) onClick();}} style={{ '--cat-color': categoryColor, '--prio-color': priorityColor }}>   
             <div className="split-task-calendar-up">
                 <div className="split-task-card-calendar">         
                     <div className="split-task-header">
