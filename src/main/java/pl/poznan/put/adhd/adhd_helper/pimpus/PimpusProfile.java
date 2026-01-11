@@ -43,4 +43,8 @@ public class PimpusProfile {
     @ManyToOne
     @JoinColumn(name = "current_boss_id")
     private Boss currentBoss;
+
+    private Long currentBossHp;
+
+    private Long bossfightAttempts;
 }

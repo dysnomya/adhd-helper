@@ -6,4 +6,6 @@ public record ProfileDto(
         Integer expToNextLevel,
         Integer inventoryPoints,
         String currentTitle,
-        BossDto currentBoss) {}
+        BossDto currentBoss,
+        Long currentBossHp,
+        Long bossfightAttempts) {}
