@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
 
+import pl.poznan.put.adhd.adhd_helper.pimpus.model.BossfightDto;
 import pl.poznan.put.adhd.adhd_helper.pimpus.model.ProfileDto;
 
 @RestController
@@ -50,5 +51,19 @@ public class ProfileController {
     public ProfileDto feedPimpus(
             @PathVariable @Min(value = 1, message = "Cannot give less than 1 food") int amount) {
         return profileService.feed(amount);
+    }
+
+    @PostMapping("/fight")
+    @Operation(
+            summary = "Fight the current boss",
+            description =
+                    """
+            Performs a boss fight attempt.
+            Each attempt consumes one boss fight attempt.
+            The fight always deals damage and cannot fail.
+            Bosses are defeated progressively over multiple attempts.
+            """)
+    public BossfightDto fightBoss() {
+        return profileService.fightBoss();
     }
 }

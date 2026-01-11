@@ -20,7 +20,9 @@ public class Boss {
 
     private String name;
 
-    private Integer requiredLevel;
+    private Integer bossLevel;
+
+    private Long maxHp;
 
     private Integer colorHueRotate;
 
