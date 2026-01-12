@@ -7,10 +7,15 @@ export default function BossView(props) {
     const percentage = Math.round((currentBossHp / totalBossHp) * 100);
 
     return (
-        <div className="game-boss-bg" style={{ filter: 'hue-rotate(' + props.profile?.currentBoss.colorHueRotate + 'deg)' }}>
+        <div
+            className={`game-boss-bg ${props.animation ? 'game-boss-die-shake' : ''}`}
+            style={{ filter: 'hue-rotate(' + props.profile?.currentBoss.colorHueRotate + 'deg)' }}
+        >
             <h1>{props.profile?.currentBoss.name}</h1>
             <h3>Poziom {props.profile?.currentBoss.bossLevel}</h3>
-            <img src={boss} alt="Boss" className="game-boss" />
+            <div className={`${props.animation ? 'game-boss-die' : ''}`}>
+                <img src={boss} alt="Boss" className="game-boss" />
+            </div>
             <div className="game-boss-hp-bar-container">
                 <div className="game-boss-hp-bar-track">
                     <div
@@ -26,7 +31,12 @@ export default function BossView(props) {
                 </div>
             </div>
             <div className="boss-button-container">
-                <button className="boss-button">Walcz</button>
+                <button
+                    className="boss-button"
+                    onClick={() => props.fightFunction()}
+                >
+                    Walcz ({props.profile?.bossfightAttempts || 0})
+                </button>
             </div>
         </div>
     );

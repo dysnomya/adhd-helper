@@ -1,19 +1,21 @@
-import { useState, useEffect } from "react";
 import BossView from "../components/Game/BossView";
 import LevelBar from "../components/Game/LevelBar";
 import PetView from "../components/Game/PetView";
-import { fetchProfileInfo, feedPimpus } from "../api/GameApi";
 import "../styles/game.scss";
 import { useProfileData } from "../hooks/UseProfileData";
 
 export default function Game() {
     const {
-        profileData, isLevelUp, userData, isLoading, error, updateProfileData
+        profileData, isLevelUp, isBossDefeated, userData, isLoading, error, updateProfileData, updateBossData
     } = useProfileData();
 
     const feed = (amount) => {
         updateProfileData(amount);
     };
+
+    const fight = () => {
+        updateBossData();
+    }
 
     return (
         <div className="game-layout">
@@ -34,7 +36,7 @@ export default function Game() {
                 <PetView profile={profileData} feedFunction={feed} animation={isLevelUp} />
             </div>
             <div className="game-card">
-                <BossView profile={profileData} />
+                <BossView profile={profileData} fightFunction={fight} animation={isBossDefeated} />
             </div>
         </div>
     );

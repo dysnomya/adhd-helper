@@ -3,6 +3,7 @@
 
 $game-border-radius: 2rem;
 $boss-color-temp: #ff0080;
+$boss-color-temp-light: #ff58ac;
 $level-font: "Space Mono", monospace;
 
 .game-layout {
@@ -68,6 +69,74 @@ $level-font: "Space Mono", monospace;
 
     100% {
         transform: translateY(0);
+    }
+}
+
+.game-boss-die {
+    animation: death 1000ms linear;
+}
+
+@keyframes death {
+    0% {
+        opacity: 0.0;
+    }
+
+    50% {
+        opacity: 0.5
+    }
+
+    100% {
+        opacity: 1.0;
+    }
+}
+
+.game-boss-die-shake {
+    animation: shake 1000ms linear;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    10% {
+        transform: translateX(-5px);
+    }
+
+    20% {
+        transform: translateX(5px);
+    }
+
+    30% {
+        transform: translateX(-5px);
+    }
+
+    40% {
+        transform: translateX(5px);
+    }
+
+    50% {
+        transform: translateX(-5px);
+    }
+
+    60% {
+        transform: translateX(5px);
+    }
+
+    70% {
+        transform: translateX(-5px);
+    }
+
+    80% {
+        transform: translateX(5px);
+    }
+
+    90% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
     }
 }
 
@@ -176,7 +245,10 @@ $level-font: "Space Mono", monospace;
     border-radius: 30px;
     overflow: hidden;
     position: relative;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1)
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow:
+        0 0 18px white,
+        inset 0 0 10px $boss-color-temp;
 }
 
 .game-boss-hp-bar-fill {
@@ -233,7 +305,7 @@ $level-font: "Space Mono", monospace;
     border-radius: 30px;
     overflow: hidden;
     position: relative;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1)
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .game-level-bar-fill {
@@ -297,7 +369,8 @@ $level-font: "Space Mono", monospace;
 }
 
 .game-title {
-    font-size: 20px;
+    font-size: 24px;
+    color: var(--color-accent);
 }
 
 .boss-button-container {
@@ -404,6 +477,7 @@ $level-font: "Space Mono", monospace;
 }
 
 @media (max-width: 768px) {
+
     .game-level-bar-container,
     .game-boss-hp-bar-container {
         padding-inline: 0;
@@ -433,5 +507,9 @@ $level-font: "Space Mono", monospace;
         padding-right: 1em;
         font-size: 1em;
         align-items: center;
+    }
+
+    .game-title {
+        font-size: 18px;
     }
 }

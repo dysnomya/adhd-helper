@@ -1,5 +1,6 @@
 const GET_URL = "/api/profile";
 const FEED_URL = "/api/profile/feed"; // + amount
+const BOSS_URL = "/api/profile/fight";
 
 const getHeaders = () => {
     const token = localStorage.getItem("token");
@@ -30,5 +31,17 @@ export const feedPimpus = async (amount) => {
 
     if (response.status === 401) throw new Error('401 Unauthorized');
     if (!response.ok) throw new Error('Błąd karmienia Pimpusia.');
+    return response.json();
+};
+
+export const fightBoss = async () => {
+
+    const response = await fetch(BOSS_URL, {
+        method: 'POST',
+        headers: getHeaders()
+    });
+
+    if (response.status === 401) throw new Error('401 Unauthorized');
+    if (!response.ok) throw new Error('Błąd walczenia z bossem.');
     return response.json();
 };

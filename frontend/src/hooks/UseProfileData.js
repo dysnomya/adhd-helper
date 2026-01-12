@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { feedPimpus, fetchProfileInfo } from "../api/GameApi";
+import { feedPimpus, fetchProfileInfo, fightBoss } from "../api/GameApi";
 import { fetchUserInfo } from "../api/UserApi";
 
 export const useProfileData = () => {
     const [profileData, setProfileData] = useState(null);
     const [isLevelUp, setIsLevelUp] = useState(false);
+    const [isBossDefeated, setIsBossDefeated] = useState(false);
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -62,9 +63,31 @@ export const useProfileData = () => {
         }
     };
 
+    const updateBossData = async () => {
+        try {
+            const data = await Promise.all([
+                fightBoss()
+            ]);
+
+            if (profileData != null && data[0].profile.currentBoss.bossLevel > profileData.currentBoss.bossLevel) {
+                setIsBossDefeated(true);
+                setTimeout(() => setIsBossDefeated(false), 1000);
+            }
+
+            setProfileData(data[0].profile);
+        } catch (e) {
+            if (e.message === '401 Unauthorized') {
+                localStorage.removeItem("token");
+            } else {
+                console.error("Błąd pobierania danych:", e);
+                setError(e);
+            }
+        }
+    };
+
     useEffect(() => {
         loadData();
     }, [loadData]);
 
-    return { profileData, isLevelUp, userData, isLoading, error, updateProfileData };
+    return { profileData, isLevelUp, isBossDefeated, userData, isLoading, error, updateProfileData, updateBossData };
 };
