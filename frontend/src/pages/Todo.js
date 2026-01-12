@@ -68,7 +68,7 @@ const Todo = () => {
         categories,
         isLoading,
         error,
-        addCategoryLocal
+        addCategoryLocal,
         deleteTaskLocal,
         updateCategoryLocal,
         deleteCategoryLocal,
