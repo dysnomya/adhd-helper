@@ -18,7 +18,7 @@ import AddTaskComponent from "../components/Todo/AddTaskComponent";
 import EditCategoryModal from "../components/Todo/EditCategoryModal";
 
 import { createCategory, updateCategory, deleteCategory } from "../api/TaskApi";
-import { createTask, updateTask, deleteTask, completeTask, uncompleteTask } from "../api/TaskApi";
+import { createTask, updateTask, deleteTask } from "../api/TaskApi";
 
 //  todo?date=2025-12-06
 const Todo = () => {
@@ -68,8 +68,7 @@ const Todo = () => {
         categories,
         isLoading,
         error,
-        addCategoryLocal,
-        toggleTaskLocal,
+        addCategoryLocal
         deleteTaskLocal,
         updateCategoryLocal,
         deleteCategoryLocal,
