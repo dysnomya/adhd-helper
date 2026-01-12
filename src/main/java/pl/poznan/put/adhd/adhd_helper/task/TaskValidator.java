@@ -11,6 +11,7 @@ import pl.poznan.put.adhd.adhd_helper.exceptions.ResourceNotFoundException;
 import pl.poznan.put.adhd.adhd_helper.task.model.SubtaskRequest;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskRequest;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -24,7 +25,14 @@ public class TaskValidator {
 
     public void validateTask(TaskRequest taskRequest) {
         Set<Long> requestedCategoryIds = getIds(taskRequest.subtasks(), SubtaskRequest::categoryId);
-        requestedCategoryIds.add(taskRequest.categoryId());
+
+        if (taskRequest.categoryId() != null) {
+            requestedCategoryIds.add(taskRequest.categoryId());
+        }
+
+        if (requestedCategoryIds.isEmpty()) {
+            return;
+        }
 
         Set<Long> foundCategories = categoryService.findAllById(requestedCategoryIds);
         validateIds(requestedCategoryIds, foundCategories);
@@ -42,6 +50,9 @@ public class TaskValidator {
     }
 
     private <T> Set<Long> getIds(List<T> items, Function<T, Long> idGetter) {
+        if (items == null) {
+            return new HashSet<>();
+        }
         return items.stream().map(idGetter).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 }

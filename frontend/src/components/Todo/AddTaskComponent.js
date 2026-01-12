@@ -35,7 +35,7 @@ const AddTaskComponent = ({
 }) => {
 
     const [name, setName] = useState("");
-    const [time, setTime] = useState(0);
+    const [time, setTime] = useState(5);
     const [timeUnit, setTimeUnit] = useState('min');
     const [category, setCategory] = useState(null);
     const [priority, setPriority] = useState(null);

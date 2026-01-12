@@ -5,7 +5,6 @@ import TodoSidebar from "../components/Todo/TodoSidebar";
 import TaskListContainer from "../components/Todo/TaskListContainer";
 import { getTaskDateName, parseEuropeanDate } from "../functions/TasksHelpers"
 import AddCategoryModal from "../components/Todo/AddCategoryModal";
-import { createCategory } from "../api/TaskApi";
 import { ReactComponent as Dynks} from "../assets/dynks.svg";
 import { ReactComponent as Filter} from "../assets/Filter_icon.svg";
 import { useLocation } from "react-router-dom";
@@ -18,7 +17,8 @@ import AddTaskComponent from "../components/Todo/AddTaskComponent";
 
 import EditCategoryModal from "../components/Todo/EditCategoryModal";
 
-// import { updateCategory, deleteCategory } from "../api/TaskApi";
+import { createCategory, updateCategory, deleteCategory } from "../api/TaskApi";
+import { createTask, updateTask, deleteTask, completeTask, uncompleteTask } from "../api/TaskApi";
 
 //  todo?date=2025-12-06
 const Todo = () => {
@@ -46,6 +46,9 @@ const Todo = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     const [selectedPriority, setSelectedPriority] = useState(null);
+
+    const getTodayDateString = () => new Date().toISOString().split('T')[0];
+    const statsDate = selectedDateFilter || getTodayDateString();
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -95,10 +98,11 @@ const Todo = () => {
             addCategoryLocal(newCategoryFromBackend);
 
             //TEMP
-            alert("Dodano grupę");
+            // alert("Dodano grupę");
 
         } catch (e) {
             console.error(e);
+            alert(`Błąd tworzenia kategorii: ${e.message}`);
         }
 
         setIsModalOpen(false);
@@ -170,6 +174,8 @@ const Todo = () => {
     const handleDeleteTask = async (taskId) => {
         try {
             // API CALL
+            await deleteTask(taskId);
+
             deleteTaskLocal(taskId);
         } catch (e) {
             console.error("Błąd usuwania zadania", e);
@@ -178,12 +184,21 @@ const Todo = () => {
     };
 
     const handleUpdateTask = async (taskId, updatedData) => {
+
+        const apiPayload = {
+            ...updatedData,
+            categoryId: updatedData.category ? updatedData.category.id : (updatedData.categoryId || null),
+            category: undefined,
+            subtasks: updatedData.subtasks || []
+        };
+
         try {
-            // API CALL
+            // const updatedTaskFromBackend = await updateTask(taskId, apiPayload);
+            await updateTask(taskId, apiPayload);
             updateTaskLocal(taskId, updatedData);
         } catch (e) {
             console.error("Błąd edycji zadania", e);
-            alert("Nie udało się zedytować zadania.");
+            alert(`Nie udało się zedytować zadania. ${e.message}`);
         }
     };
 
@@ -192,14 +207,24 @@ const Todo = () => {
 
     const handleAddNewTask = async (newTaskData) => {
 
+        const apiPayload = {
+            ...newTaskData,
+            categoryId: newTaskData.category ? newTaskData.category.id : null,
+            priority: newTaskData.priority ? newTaskData.priority : null,
+            category: undefined,
+            subtasks: newTaskData.subtasks || []
+        };
+
         try {
             // API CALL
-            // const createdTask = await createTask(newTaskData);
-
+            // const createdTaskFromBackend = await createTask(apiPayload);
+            await createTask(apiPayload);
+            // addTaskLocal(createdTaskFromBackend);
             addTaskLocal(newTaskData);
             setIsAddingTask(false);
         } catch (e) {
             console.error("Błąd dodawania zadania", e);
+            alert(`Nie udało się dodać zadania.\n${e.message}`);
         }
     };
 
@@ -207,24 +232,85 @@ const Todo = () => {
         setIsAddingTask(true);
     };
 
-    const handleUpdateCategory = async (id, data) => {
+    const handleUpdateCategory = async (id, updatedData) => {
         try {
-            // await updateCategory(id, data);
-            updateCategoryLocal(id, data);
+            const updatedCategoryFromBackend = await updateCategory(id, updatedData);
+            updateCategoryLocal(id, updatedCategoryFromBackend);
         } catch (e) {
             console.error("Błąd edycji kategorii", e);
-            alert("Nie udało się edytować kategorii");
+            alert(`Nie udało się edytować kategorii ${e.message}`);
         }
     };
 
     const handleDeleteCategory = async (id) => {
         try {
-            // await deleteCategory(id);
+            await deleteCategory(id);
             deleteCategoryLocal(id);
         } catch (e) {
             console.error("Błąd usuwania kategorii", e);
-            alert("Nie udało się usunąć kategorii");
+            alert(`Nie udało się usunąć kategorii.  ${e.message}`);
         }
+    };
+
+    const handleTaskStatusChangeAPI = async (taskId, taskStatus) => {
+        toggleTaskLocal(taskId, taskStatus);
+
+        try {
+            if (!taskStatus) {
+                console.log(`ODZNACZ ${taskId}`)
+                await uncompleteTask(taskId);
+            } else {
+                console.log(`ZAZNACZ ${taskId}`)
+                await completeTask(taskId);
+            }
+        } catch (e) {
+            console.error("Błąd zmiany statusu taska ", e);
+            toggleTaskLocal(taskId, !taskStatus);
+
+            alert(`Nie udało się zmienić statusu taska ${e.message}`);
+        }
+    };
+
+    const handleTaskStatusChange = async (taskId, status, parentId) => {
+
+        const task = tasks.find(t => t.id === taskId);
+
+        if (!task) {
+
+            // subtask
+            const parent = tasks.find(t => t.id === parentId);
+
+            if (parent && parent.subtasks) {
+
+                if (!status) {
+                    handleTaskStatusChangeAPI(parent.id, false);
+                }
+
+                if (status) {
+                    const areOtherSubtasksCompleted = parent.subtasks
+                        .filter(sub => sub.id !== taskId)
+                        .every(sub => sub.completed === true);
+
+                    if (areOtherSubtasksCompleted) {
+                        handleTaskStatusChangeAPI(parent.id, true);
+                    }
+                }
+
+            }
+
+        }
+
+
+        if (task && task.subtasks && task.subtasks.length > 0) {
+            task.subtasks.forEach(subtask => {
+                if (subtask.completed !== status) {
+                    handleTaskStatusChangeAPI(subtask.id, status);
+                }
+            });
+        }
+        
+        handleTaskStatusChangeAPI(taskId, status);
+
     };
 
     // Debugging - Do usunięcia później
@@ -249,7 +335,7 @@ const Todo = () => {
     );
 
     return (
-        <div 
+        <div
             className="todo-main"
         >
 
@@ -302,6 +388,8 @@ const Todo = () => {
 
                 <div className="todo-daily-wrapper">
                     <DailyProgress
+                        date={statsDate}
+                        refreshTrigger={tasks}
                     />
                     <div className="add-task-btn-container">
                         <button
@@ -329,21 +417,22 @@ const Todo = () => {
                     )}
 
                     {isAddingTask && (
-                        
+
                         <AddTaskComponent
                             categories={categories}
                             onConfirm={handleAddNewTask}
                             onCancel={() => setIsAddingTask(false)}
-                            initialDate={selectedDateFilter}
+                            initialDate={statsDate}
                             whereComponent={"todo"}
                         />
-                     
+
                     )}
 
 
                     <TaskListContainer 
-                        datedTasks={datedTasks} 
-                        onTaskStatusChange={toggleTaskLocal}
+
+                        datedTasks={datedTasks}
+                        onTaskStatusChange={handleTaskStatusChange}
                         onDeleteTask={handleDeleteTask}
                         onUpdateTask={handleUpdateTask}
                         categories={categories}

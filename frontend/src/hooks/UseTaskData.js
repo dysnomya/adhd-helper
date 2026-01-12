@@ -69,14 +69,13 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
     };
 
     const toggleTaskLocal = (taskId, isCompleted) => {
+
         setTasks(prevTasks => prevTasks.map(task => {
             if (task.id === taskId) {
-                const updatedSubtasks = task.subtasks ? task.subtasks.map(sub => ({
-                    ...sub,
+                return { 
+                    ...task, 
                     completed: isCompleted
-                })) : [];
-
-                return { ...task, completed: isCompleted, subtasks: updatedSubtasks };
+                };
             }
 
             if (task.subtasks && task.subtasks.length > 0) {
@@ -172,6 +171,10 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
 
 
     const updateCategoryLocal = (categoryId, updatedData) => {
+
+        // console.log(`category id: ${categoryId}`)
+        // console.log(`updatedData: ${updatedData}`)
+
         setCategories(prevCategories => prevCategories.map(cat =>
             cat.id === categoryId
                 ? { ...cat, ...updatedData }
@@ -179,16 +182,50 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         ));
 
         setTasks(prevTasks => prevTasks.map(task => {
-            if (task.category && task.category.id === categoryId) {
-                return {
-                    ...task,
-                    category: {
-                        ...task.category,
-                        ...updatedData
-                    }
+            let hasChanged = false;
+            let newTask = { ...task };
+
+            // console.log("set tasks update category")
+
+            // console.log("task")
+            // console.log(newTask)
+
+            // console.log(`task category: ${newTask.category}`)
+            // if (newTask.category) {
+            //     console.log(`task category id: ${newTask.category.id}`)
+            // }
+            
+
+            if (newTask.category && newTask.category.id === categoryId) {
+                // console.log("if się robi")
+                newTask.category = {
+                    ...newTask.category,
+                    ...updatedData
                 };
+                hasChanged = true;
             }
-            return task;
+
+            if (newTask.subtasks && newTask.subtasks.length > 0) {
+                const updatedSubtasks = newTask.subtasks.map(subtask => {
+                    if (subtask.category && subtask.category.id === categoryId) {
+                        hasChanged = true;
+                        return {
+                            ...subtask,
+                            category: {
+                                ...subtask.category,
+                                ...updatedData
+                            }
+                        };
+                    }
+                    return subtask;
+                });
+
+                if (hasChanged) {
+                    newTask.subtasks = updatedSubtasks;
+                }
+            }
+
+            return hasChanged ? newTask : task;
         }));
     }
 

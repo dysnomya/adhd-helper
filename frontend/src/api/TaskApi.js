@@ -13,7 +13,11 @@ const getHeaders = () => {
 // GET
 export const fetchAllTasks = async (filters ={}) => {
 
+    console.log("### FETCH ALL TASKS TaskApi ###");
+
     const params = new URLSearchParams();
+
+    console.log(filters);
 
     if (filters.day) {
         params.append('day', filters.day);
@@ -21,8 +25,12 @@ export const fetchAllTasks = async (filters ={}) => {
 
     if (filters.categories && filters.categories.length > 0) {
 
-        // ominięcie NULL_CATEGORY na razie
-        const categoryIds = filters.categories.filter(id => typeof id === 'number');
+        const categoryIds = filters.categories
+            .map(id => {
+                if (id === null || id === 'NULL_CATEGORY') return '\0';
+                return id;
+            })
+            .filter(id => id !== undefined && id !== false);
 
         if (categoryIds.length > 0) {
             params.append('category', categoryIds.join(','));
@@ -42,6 +50,7 @@ export const fetchAllTasks = async (filters ={}) => {
 
 };
 
+
 export const fetchAllCategories = async () => {
 
     const response = await fetch(CATEGORIES_URL, {
@@ -54,21 +63,6 @@ export const fetchAllCategories = async () => {
 
 };
 
-// POST
-export const createCategory = async (categoryData) => {
-
-    const response = await fetch(CATEGORIES_URL, {
-        method: 'POST',
-        headers: getHeaders(),
-        body: JSON.stringify(categoryData)
-    });
-
-    if (response.status === 401) throw new Error('401 Unauthorized');
-    if (!response.ok) throw new Error('Błąd tworzenia kategorii.');
-
-    return response.json();
-
-};
 
 export const fetchTaskDataForTimePeriod = async (dayFrom, dayTo) => {
 
@@ -84,4 +78,234 @@ export const fetchTaskDataForTimePeriod = async (dayFrom, dayTo) => {
     });
 
     return await taskRes.json();
+};
+
+export const getTaskStats = async (date) => {
+    const url = `${TASKS_URL}/stats?day=${date}`;
+
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: getHeaders()
+    });
+
+    // 200
+    if (response.ok) {
+        return await response.json();
+    }
+
+    // 400, 404, 500
+    try {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Nie udało się pobrać statystyk dla taska.");
+    } catch (e) {
+        throw new Error(`Błąd serwera: ${response.status}`);
+    }
+};
+
+// POST
+export const createCategory = async (categoryData) => {
+
+    const response = await fetch(CATEGORIES_URL, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify(categoryData)
+    });
+
+    // 200
+    if (response.ok) {
+        return await response.json();
+    }
+
+    // 400, 404, 500
+    try {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Nie udało się utworzyć kategorii.");
+    } catch (parsingError) {
+        if (parsingError.message && parsingError.message !== "Unexpected end of JSON input") {
+             throw parsingError; 
+        }
+        throw new Error(`Błąd serwera: ${response.status}`);
+    }
+
+};
+
+
+export const createTask = async (taskData) => {
+
+    const response = await fetch(TASKS_URL, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify(taskData)
+    });
+
+    // 200
+    if (response.ok) {
+        return await response.json();
+    }
+
+    // 400, 404, 500
+    try {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Nie udało się utworzyć taska.");
+    } catch (parsingError) {
+        if (parsingError.message && parsingError.message !== "Unexpected end of JSON input") {
+             throw parsingError; 
+        }
+        throw new Error(`Błąd serwera: ${response.status}`);
+    }
+
+};
+
+
+// DELETE
+export const deleteTask = async (id) => {
+
+    const response = await fetch(`${TASKS_URL}/${id}`, {
+        method: 'DELETE',
+        headers: getHeaders(),
+    });
+
+    // 200
+    if (response.ok) {
+        return true; 
+    }
+
+    // 400, 404, 500
+    try {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Wystąpił nieznany błąd podczas usuwania taska.");
+    } catch (parsingError) {
+        if (parsingError.message && parsingError.message !== "Unexpected end of JSON input") {
+             throw parsingError; 
+        }
+        throw new Error(`Błąd serwera: ${response.status} ${response.statusText}`);
+    }
+};
+
+
+export const deleteCategory = async (id) => {
+
+    const response = await fetch(`${CATEGORIES_URL}/categories/${id}`, {
+        method: 'DELETE',
+        headers: getHeaders(),
+    });
+
+    // 200
+    if (response.ok) {
+        return true; 
+    }
+
+    // 400, 404, 500
+    try {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Nie udało się usunąć kategorii.");
+    } catch (parsingError) {
+        if (parsingError.message && parsingError.message !== "Unexpected end of JSON input") {
+             throw parsingError; 
+        }
+        throw new Error(`Błąd serwera: ${response.status}`);
+    }
+};
+
+// PUT
+export const updateCategory = async (id, categoryData) => {
+
+    const response = await fetch(`${CATEGORIES_URL}/categories/${id}`, {
+        method: 'PUT',
+        headers: getHeaders(),
+        body: JSON.stringify(categoryData)
+    });
+
+    // 200
+    if (response.ok) {
+        return await response.json();
+    }
+
+    // 400, 404, 500
+    try {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Nie udało się zedytować kategorii.");
+    } catch (parsingError) {
+        if (parsingError.message && parsingError.message !== "Unexpected end of JSON input") {
+             throw parsingError; 
+        }
+        throw new Error(`Błąd serwera: ${response.status}`);
+    }
+
+};
+
+
+export const updateTask = async (id, taskData) => {
+
+    const response = await fetch(`${TASKS_URL}/${id}`, {
+        method: 'PUT',
+        headers: getHeaders(),
+        body: JSON.stringify(taskData)
+    });
+
+    // 200
+    if (response.ok) {
+        return await response.json();
+    }
+
+    // 400, 404, 500
+    try {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Nieudało się zaktualizować taska.");
+    } catch (parsingError) {
+        if (parsingError.message && parsingError.message !== "Unexpected end of JSON input") {
+             throw parsingError; 
+        }
+        throw new Error(`Błąd serwera: ${response.status}`);
+    }
+};
+
+// PATCH
+
+export const completeTask = async (id) => {
+
+    const response = await fetch(`${TASKS_URL}/${id}/complete`, {
+        method: 'PATCH',
+        headers: getHeaders()
+    });
+
+    // 200
+    if (response.ok) {
+        return true;
+    }
+
+    // 400, 404, 500
+    try {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Nieudało się zaznaczyć taska.");
+    } catch (parsingError) {
+        if (parsingError.message && parsingError.message !== "Unexpected end of JSON input") {
+             throw parsingError; 
+        }
+        throw new Error(`Błąd serwera: ${response.status}`);
+    }
+};
+
+export const uncompleteTask = async (id) => {
+
+    const response = await fetch(`${TASKS_URL}/${id}/uncomplete`, {
+        method: 'PATCH',
+        headers: getHeaders()
+    });
+
+    // 200
+    if (response.ok) {
+        return true;
+    }
+
+    // 400, 404, 500
+    try {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Nieudało się odznaczyć taska.");
+    } catch (parsingError) {
+        if (parsingError.message && parsingError.message !== "Unexpected end of JSON input") {
+             throw parsingError; 
+        }
+        throw new Error(`Błąd serwera: ${response.status}`);
+    }
 };

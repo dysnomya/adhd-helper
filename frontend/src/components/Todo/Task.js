@@ -34,7 +34,7 @@ const getPriorityName = (priority) => {
     }
 };
 
-const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onDeleteTask, onUpdateTask, categories }) => {
+const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onDeleteTask, onUpdateTask, categories, parentId = null }) => {
 
     const [isCompleted, setIsCompleted] = useState(task.completed);              // checkbox
     const [isExpanded, setIsExpanded] = useState(false);                         // subtasks
@@ -69,13 +69,9 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
     }, [task.completed]);
 
     const handleCheckedTask = () => {
-        const newStatus = !isCompleted;
-        
-        setIsCompleted(newStatus);
 
-        if (onStatusChange) {
-            onStatusChange(task.id, newStatus);
-        }
+        const newStatus = !isCompleted;
+        setIsCompleted(newStatus);
 
         if (debounceTimer.current) {
             clearTimeout(debounceTimer.current);
@@ -83,8 +79,8 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
 
         debounceTimer.current = setTimeout(async () => {
             try {
-            
                 // API CALL
+                onStatusChange(task.id, newStatus, parentId);
 
                 console.log(`${task.id}: ${newStatus}`);
             } catch (e) {
@@ -204,14 +200,8 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
         setEditDate(newDate);
     };
 
-
-    let selectedCategory = null;
-    if (editCategory !== null) {
-        selectedCategory = categories?.find(c => c.id === editCategory.id);
-    }
-
-    const currentCatName = selectedCategory ? selectedCategory.name : "Wybierz kategorię";
-    const currentCatColor = selectedCategory ? selectedCategory.color : "#828282ff";
+    const currentCatName = editCategory ? editCategory.name : "Wybierz kategorię";
+    const currentCatColor = editCategory ? editCategory.color : "#828282ff";
 
     return (
 
@@ -466,6 +456,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                                 onDeleteTask={onDeleteTask}
                                 onUpdateTask={onUpdateTask}
                                 categories={categories}
+                                parentId={task.id}
                             />
                         ))}
                     </div>
