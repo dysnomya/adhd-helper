@@ -38,7 +38,7 @@ const AddTaskComponent = ({
     const [time, setTime] = useState(5);
     const [timeUnit, setTimeUnit] = useState('min');
     const [category, setCategory] = useState(null);
-    const [priority, setPriority] = useState(null);
+    const [priority, setPriority] = useState("LOW");
     const [date, setDate] = useState(initialDate);
 
     const [isCatPopupOpen, setIsCatPopupOpen] = useState(null);

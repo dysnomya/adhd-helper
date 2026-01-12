@@ -74,7 +74,8 @@ const Todo = () => {
         updateCategoryLocal,
         deleteCategoryLocal,
         updateTaskLocal,
-        addTaskLocal
+        addTaskLocal,
+        changeTaskStatus
     } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
 
 
@@ -252,66 +253,7 @@ const Todo = () => {
         }
     };
 
-    const handleTaskStatusChangeAPI = async (taskId, taskStatus) => {
-        toggleTaskLocal(taskId, taskStatus);
-
-        try {
-            if (!taskStatus) {
-                console.log(`ODZNACZ ${taskId}`)
-                await uncompleteTask(taskId);
-            } else {
-                console.log(`ZAZNACZ ${taskId}`)
-                await completeTask(taskId);
-            }
-        } catch (e) {
-            console.error("Błąd zmiany statusu taska ", e);
-            toggleTaskLocal(taskId, !taskStatus);
-
-            alert(`Nie udało się zmienić statusu taska ${e.message}`);
-        }
-    };
-
-    const handleTaskStatusChange = async (taskId, status, parentId) => {
-
-        const task = tasks.find(t => t.id === taskId);
-
-        if (!task) {
-
-            // subtask
-            const parent = tasks.find(t => t.id === parentId);
-
-            if (parent && parent.subtasks) {
-
-                if (!status) {
-                    handleTaskStatusChangeAPI(parent.id, false);
-                }
-
-                if (status) {
-                    const areOtherSubtasksCompleted = parent.subtasks
-                        .filter(sub => sub.id !== taskId)
-                        .every(sub => sub.completed === true);
-
-                    if (areOtherSubtasksCompleted) {
-                        handleTaskStatusChangeAPI(parent.id, true);
-                    }
-                }
-
-            }
-
-        }
-
-
-        if (task && task.subtasks && task.subtasks.length > 0) {
-            task.subtasks.forEach(subtask => {
-                if (subtask.completed !== status) {
-                    handleTaskStatusChangeAPI(subtask.id, status);
-                }
-            });
-        }
-        
-        handleTaskStatusChangeAPI(taskId, status);
-
-    };
+    
 
     // Debugging - Do usunięcia później
     useEffect(() => {
@@ -432,7 +374,7 @@ const Todo = () => {
                     <TaskListContainer 
 
                         datedTasks={datedTasks}
-                        onTaskStatusChange={handleTaskStatusChange}
+                        onTaskStatusChange={changeTaskStatus}
                         onDeleteTask={handleDeleteTask}
                         onUpdateTask={handleUpdateTask}
                         categories={categories}
