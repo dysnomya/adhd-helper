@@ -5,8 +5,10 @@ import "../styles/game.scss";
 import { useProfileData } from "../hooks/UseProfileData";
 
 export default function Game() {
+    //const [isDmgDealt, setIsDmgDealt] = useState(false);
+
     const {
-        profileData, isLevelUp, isBossDefeated, userData, isLoading, error, updateProfileData, updateBossData
+        profileData, dmgDealt, isDmgDealt, isLevelUp, isBossDefeated, userData, isLoading, updateProfileData, updateBossData
     } = useProfileData();
 
     const feed = (amount) => {
@@ -36,7 +38,7 @@ export default function Game() {
                 <PetView profile={profileData} feedFunction={feed} animation={isLevelUp} />
             </div>
             <div className="game-card">
-                <BossView profile={profileData} fightFunction={fight} animation={isBossDefeated} />
+                <BossView profile={profileData} dmg={dmgDealt} fightFunction={fight} animation={isBossDefeated} dmgAnimation={isDmgDealt} />
             </div>
         </div>
     );

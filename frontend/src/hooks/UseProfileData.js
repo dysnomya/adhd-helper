@@ -4,6 +4,8 @@ import { fetchUserInfo } from "../api/UserApi";
 
 export const useProfileData = () => {
     const [profileData, setProfileData] = useState(null);
+    const [dmgDealt, setDmgDealt] = useState(0);
+    const [isDmgDealt, setIsDmgDealt] = useState(false);
     const [isLevelUp, setIsLevelUp] = useState(false);
     const [isBossDefeated, setIsBossDefeated] = useState(false);
     const [userData, setUserData] = useState(null);
@@ -73,8 +75,13 @@ export const useProfileData = () => {
                 setIsBossDefeated(true);
                 setTimeout(() => setIsBossDefeated(false), 1000);
             }
+            else {
+                setIsDmgDealt(true);
+                setTimeout(() => setIsDmgDealt(false), 500);
+            }
 
             setProfileData(data[0].profile);
+            setDmgDealt(data[0].damageDealt);
         } catch (e) {
             if (e.message === '401 Unauthorized') {
                 localStorage.removeItem("token");
@@ -89,5 +96,5 @@ export const useProfileData = () => {
         loadData();
     }, [loadData]);
 
-    return { profileData, isLevelUp, isBossDefeated, userData, isLoading, error, updateProfileData, updateBossData };
+    return { profileData, dmgDealt, isDmgDealt, isLevelUp, isBossDefeated, userData, isLoading, error, updateProfileData, updateBossData };
 };

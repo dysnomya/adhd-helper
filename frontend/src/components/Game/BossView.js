@@ -13,7 +13,8 @@ export default function BossView(props) {
         >
             <h1>{props.profile?.currentBoss.name}</h1>
             <h3>Poziom {props.profile?.currentBoss.bossLevel}</h3>
-            <div className={`${props.animation ? 'game-boss-die' : ''}`}>
+            <div className={`game-dmg-number ${props.dmgAnimation ? 'game-dmg-show' : ''}`}>{props?.dmg || 0}</div>
+            <div className={`${props.animation ? 'game-boss-die' : ''} + ' ' + ${props.dmgAnimation ? 'squish' : ''}`}>
                 <img src={boss} alt="Boss" className="game-boss" />
             </div>
             <div className="game-boss-hp-bar-container">
@@ -33,7 +34,14 @@ export default function BossView(props) {
             <div className="boss-button-container">
                 <button
                     className="boss-button"
-                    onClick={() => props.fightFunction()}
+                    onClick={() => {
+                        if (props.profile.bossfightAttempts > 0) {
+                            props.fightFunction()
+                        }
+                        else {
+                            alert("Brak staminy do walki! Aby zdobyć więcej, dodawaj i rób zadania na stronie ToDo!");
+                        }
+                    }}
                 >
                     Walcz ({props.profile?.bossfightAttempts || 0})
                 </button>
