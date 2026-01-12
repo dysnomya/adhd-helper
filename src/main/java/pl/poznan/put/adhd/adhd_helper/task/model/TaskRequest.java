@@ -17,7 +17,7 @@ public record TaskRequest(
                 @NotBlank(message = "Task name should not be empty")
                 String name,
         @Schema(description = "Task date", example = "2026-01-29") LocalDate day,
-        @Schema(description = "Task priority")
+        @Schema(description = "Task priority") @NotNull(message = "Task should have a priority")
                 Priority priority,
         @Schema(description = "Time needed to complete the task in minutes", example = "30")
                 @NotNull(message = "Task should have needed time")

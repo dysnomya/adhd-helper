@@ -54,8 +54,7 @@ const AddTaskComponent = ({
     const priorityOptions = useMemo(() => [
         { value: 'HIGH', label: 'Wysoki', className: 'high' },
         { value: 'MEDIUM', label: 'Średni', className: 'medium' },
-        { value: 'LOW', label: 'Niski', className: 'low' },
-        { value: null, label: 'Brak', className: 'default' }
+        { value: 'LOW', label: 'Niski', className: 'low' }
     ], []);
 
     useEffect(() => {
