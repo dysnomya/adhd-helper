@@ -1130,19 +1130,22 @@ $bg-overlay-darker: rgba(0, 0, 0, 0.6);
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 
 
     min-height: 80px;
     min-width: 200px;
 }
 
-.todo-no-tasks-message {
+.todo-progress-no-tasks-message {
     text-align: center;
     color: var(--color-text-placeholder);
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
 
-    p { margin: 0; }
+    p { 
+        margin: 0;
+    }
 }
 
 .todo-progress-title {

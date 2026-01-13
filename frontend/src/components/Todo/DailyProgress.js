@@ -32,7 +32,7 @@ const DailyProgress = ({ date, refreshTrigger }) => {
                 
             {stats.total === 0 ? (
                 <div className="todo-progress-no-tasks-message">
-                    <p>Brak zaplanowanych zadań! </p>
+                    <p>Brak zaplanowanych zadań na ten dzień!</p>
                 </div>
             ) : (
                 <>
