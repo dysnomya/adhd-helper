@@ -397,7 +397,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
 
                             <div className="task-left">
                                 <div
-                                    className={`custom-checkbox ${task.completed ? 'checked' : ''}`}
+                                    className={`custom-checkbox ${task.completed ? 'checked' : ''} ${inCalendar ? 'in-calendar' : ''}`}
                                     onClick={handleCheckedTask}
                                 >
                                     {isCompleted && <CheckIcon className="dot"></CheckIcon>}

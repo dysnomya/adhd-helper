@@ -507,6 +507,11 @@ $bg-overlay-darker: rgba(0, 0, 0, 0.6);
         border-color: var(--cat-color);
     }
 
+    &.in-calendar {
+        cursor: default;
+        pointer-events: none;
+    }
+
     .dot {
 
         width: 100%;
@@ -1243,6 +1248,10 @@ $bg-overlay-darker: rgba(0, 0, 0, 0.6);
     &.options-expanded {
         transform: scaleX(1);
     }
+
+    &.in-calendar {
+        display: none;
+    }
 }
 
 .task-row-wrapper {
@@ -1282,6 +1291,10 @@ $bg-overlay-darker: rgba(0, 0, 0, 0.6);
 
         &.delete { color: #ff5555; }
         &:hover { transform: scale(1.2); }
+    }
+
+    &.in-calendar {
+        display: none;
     }
 }
 
@@ -1371,9 +1384,7 @@ $bg-overlay-darker: rgba(0, 0, 0, 0.6);
     margin: 0;
 }
 
-.in-calendar {
-    display: none;
-}
+
 
 
 // delete
