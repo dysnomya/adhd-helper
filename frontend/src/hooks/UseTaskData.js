@@ -1,5 +1,5 @@
 import {useEffect, useState, useCallback} from "react";
-import {fetchAllCategories, fetchAllTasks} from "../api/TaskApi";
+import {fetchAllCategories, fetchAllTasks, completeTask, uncompleteTask} from "../api/TaskApi";
 
 export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
 
@@ -102,6 +102,66 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         }));
     };
 
+    const handleTaskStatusChangeAPI = async (taskId, taskStatus) => {
+        toggleTaskLocal(taskId, taskStatus);
+
+        try {
+            if (!taskStatus) {
+                console.log(`ODZNACZ ${taskId}`)
+                await uncompleteTask(taskId);
+            } else {
+                console.log(`ZAZNACZ ${taskId}`)
+                await completeTask(taskId);
+            }
+        } catch (e) {
+            console.error("Błąd zmiany statusu taska ", e);
+            toggleTaskLocal(taskId, !taskStatus);
+
+            alert(`Nie udało się zmienić statusu taska ${e.message}`);
+        }
+    };
+
+    const changeTaskStatus = async (taskId, status, parentId) => {
+
+        const task = tasks.find(t => t.id === taskId);
+
+        if (!task) {
+
+            // subtask
+            const parent = tasks.find(t => t.id === parentId);
+
+            if (parent && parent.subtasks) {
+
+                if (!status) {
+                    handleTaskStatusChangeAPI(parent.id, false);
+                }
+
+                if (status) {
+                    const areOtherSubtasksCompleted = parent.subtasks
+                        .filter(sub => sub.id !== taskId)
+                        .every(sub => sub.completed === true);
+
+                    if (areOtherSubtasksCompleted) {
+                        handleTaskStatusChangeAPI(parent.id, true);
+                    }
+                }
+
+            }
+
+        }
+
+
+        if (task && task.subtasks && task.subtasks.length > 0) {
+            task.subtasks.forEach(subtask => {
+                if (subtask.completed !== status) {
+                    handleTaskStatusChangeAPI(subtask.id, status);
+                }
+            });
+        }
+        
+        handleTaskStatusChangeAPI(taskId, status);
+
+    };
 
     const deleteTaskLocal = (taskId) => {
         setTasks(prevTasks => {
@@ -255,7 +315,8 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         updateCategoryLocal,
         deleteCategoryLocal,
         updateTaskLocal,
-        addTaskLocal
+        addTaskLocal,
+        changeTaskStatus
     };
 
 };

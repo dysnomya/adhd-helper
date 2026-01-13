@@ -38,7 +38,7 @@ const AddTaskComponent = ({
     const [time, setTime] = useState(5);
     const [timeUnit, setTimeUnit] = useState('min');
     const [category, setCategory] = useState(null);
-    const [priority, setPriority] = useState(null);
+    const [priority, setPriority] = useState("LOW");
     const [date, setDate] = useState(initialDate);
 
     const [isCatPopupOpen, setIsCatPopupOpen] = useState(null);
@@ -54,8 +54,7 @@ const AddTaskComponent = ({
     const priorityOptions = useMemo(() => [
         { value: 'HIGH', label: 'Wysoki', className: 'high' },
         { value: 'MEDIUM', label: 'Średni', className: 'medium' },
-        { value: 'LOW', label: 'Niski', className: 'low' },
-        { value: null, label: 'Brak', className: 'default' }
+        { value: 'LOW', label: 'Niski', className: 'low' }
     ], []);
 
     useEffect(() => {

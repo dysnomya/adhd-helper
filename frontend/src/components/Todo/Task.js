@@ -268,7 +268,6 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                                         <div className="edit-task-priority-item high" onClick={() => { setEditPriority('HIGH'); setIsPrioPopupOpen(null); }}>Wysoki</div>
                                         <div className="edit-task-priority-item medium" onClick={() => { setEditPriority('MEDIUM'); setIsPrioPopupOpen(null); }}>Średni</div>
                                         <div className="edit-task-priority-item low" onClick={() => { setEditPriority('LOW'); setIsPrioPopupOpen(null); }}>Niski</div>
-                                        <div className="edit-task-priority-item default" onClick={() => { setEditPriority(null); setIsPrioPopupOpen(null); }}>Brak</div>
                                     </div>
                                 </DropdownPortal>
                             )}
