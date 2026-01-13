@@ -2,7 +2,7 @@ import "../styles/dashboard.scss";
 import DailyProgress from "../components/Todo/DailyProgress";
 import { useTaskData } from "../hooks/UseTaskData";
 import { ReactComponent as SadPimpus } from "../assets/pimpus_sad.svg";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import TaskProgressGaugeChart from "../components/Dashboard/TaskProgressGaugeChart";
 import TaskSplineAreaChart from "../components/Dashboard/TaskSplineAreaChart";
 import DateComponent from "../components/Dashboard/DateComponent";
@@ -11,7 +11,24 @@ import UpcomingTasks from "../components/Dashboard/UpcomingTasks";
 import { ReactComponent as Glut } from "../assets/dashboard-glut.svg";
 import pimpus from "../assets/pimpus_happy_anim.webp";
 
+import { fetchUserInfo } from "../api/UserApi";
+
 export default function Dashboard() {
+    const [userName, setUserName] = useState("");
+
+    useEffect(() => {
+        const getUserData = async () => {
+            try {
+                const data = await fetchUserInfo();
+                if (data && data.name) {
+                    setUserName(data.name);
+                }
+            } catch (error) {
+                console.error("Błąd pobierania użytkownika: ", error);
+            }
+        };
+        getUserData();
+    });
 
     const emptyFilters = useMemo(() => [], []);
     const { tasks, categories, isLoading, error } = useTaskData(emptyFilters, "", true);
@@ -109,7 +126,7 @@ export default function Dashboard() {
             <div className="dashboard-right">
                 <div className="dashboard-right-top">
                     <div className="dashboard-pimpek-text">
-                        <p>Cześć PimpekMaster3000!</p>
+                        <p>Cześć {userName}!</p>
                     </div>
                     <div className="dashboard-pimpek">
 
