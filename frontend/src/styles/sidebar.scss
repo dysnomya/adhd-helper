@@ -115,10 +115,11 @@ $sidebar-icon-size: 40px;
   color: var(--color-text);
   width: $sidebar-collapsed-width;
   transition: width 0.25s ease;
-  z-index: 100;
+  z-index: 2100;
 }
 
-.desktop-sidebar:hover {
+.desktop-sidebar:hover,
+.desktop-sidebar.expanded {
   width: $sidebar-open-width;
 }
 
@@ -132,6 +133,8 @@ $sidebar-icon-size: 40px;
   white-space: nowrap;
   transition: all 0.25s ease;
   padding: calc(($sidebar-collapsed-width - $sidebar-element-size) / 2);
+
+  box-sizing: border-box;
 
   ul {
     display: flex;

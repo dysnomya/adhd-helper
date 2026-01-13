@@ -1,3 +1,4 @@
+import { useState } from "react";
 import SidebarItem from "./SidebarItem";
 import LogoutButton from "./LogoutButton";
 import { ReactComponent as IconPlaceholder } from "../assets/home-logo.svg";
@@ -10,6 +11,9 @@ import { ReactComponent as Logo } from "../assets/planny-logo.svg";
 import "../styles/sidebar.scss";
 
 export default function Sidebar({ collapsed = false, onItemClick }) {
+  
+  const [isHovered, setIsHovered] = useState(false);
+
   const items = [
     { pageUrl: "/dashboard", pageLabel: "Dashboard", Icon: IconPlaceholder },
     { pageUrl: "/todo", pageLabel: "ToDo", Icon: TodoPlaceholder },
@@ -18,7 +22,11 @@ export default function Sidebar({ collapsed = false, onItemClick }) {
   ];
 
   return (
-    <nav className={`nav-bar ${collapsed ? "collapsed" : ""}`}>
+    <nav 
+      className={`nav-bar desktop-sidebar ${collapsed ? "collapsed" : ""} ${isHovered ? "expanded" : ""}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <ul>
         <li className="nav-item sidebar-title-item">
           <Logo className="sidebar-logo" />
