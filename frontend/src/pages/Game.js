@@ -30,7 +30,7 @@ export default function Game() {
             <div className={`game-card ${isLevelUp ? 'game-highlight' : ''}`}>
                 <LevelBar profile={profileData} />
             </div>
-            <div className="game-card game-name-title">
+            <div className={`game-card game-name-title ${isBossDefeated ? 'game-highlight-jump' : ''}`}>
                 <h1>{userData?.name + ' ' + userData?.lastName}</h1>
                 <h3 className="game-title">{profileData?.currentTitle ? profileData.currentTitle : "Jeszcze bez specjalnych zasług"}</h3>
             </div>

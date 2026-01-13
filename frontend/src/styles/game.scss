@@ -72,6 +72,27 @@ $level-font: "Space Mono", monospace;
     }
 }
 
+.game-highlight-jump {
+    animation: glowjump 500ms linear;
+}
+
+@keyframes glowjump {
+    0% {
+        box-shadow: none;
+        transform: translateY(0);
+    }
+
+    50% {
+        box-shadow: 0 0 20px 5px var(--color-accent);
+        transform: translateY(-20px);
+    }
+
+    100% {
+        box-shadow: none;
+        transform: translateY(0);
+    }
+}
+
 .game-boss-die {
     animation: death 1000ms linear;
 }
