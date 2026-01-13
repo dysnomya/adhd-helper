@@ -90,6 +90,9 @@ export default function Dashboard() {
 
     const percentage = stats ? stats.percentage : 0;
 
+    const getTodayDateString = () => new Date().toISOString().split('T')[0];
+    const statsDate = getTodayDateString();
+
     return (
         <div className='dashboard-main-container'>
 
@@ -104,6 +107,7 @@ export default function Dashboard() {
             <div className="dashboard-left">
                 <div className="dashboard-left-top">
                     <DailyProgress 
+                        date={statsDate}
                     />
                 </div>
 
