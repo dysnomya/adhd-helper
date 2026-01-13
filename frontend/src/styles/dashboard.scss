@@ -60,7 +60,7 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
 .dashboard-left-middle {
     display: flex;
     flex-direction: row;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
     gap: 20px;
     min-height: 0;
@@ -74,7 +74,6 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     .gauge-container, .chart-card {
         height: 100%;
         width: 100%;
-        max-width: none;
         box-sizing: border-box;
         justify-content: center;
     }
@@ -174,13 +173,14 @@ $shadow: 2px 2px 4px rgba(0,0,0,0.25);
     width: 100%;
     max-width: 300px;
     border-radius: 30px;
-    height: 100%;
+    height: auto;
 }
 
 .gauge-title {
     font-size: 1rem;
     color: var(--text-color);
-    margin-bottom: 10px;
+    margin-bottom: 40px;
+    margin-top: 40px;
     font-weight: 600;
     text-align: center;
 }
