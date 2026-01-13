@@ -1,13 +1,13 @@
-export default function LevelBar() {
+export default function LevelBar(props) {
 
-    const currentExp = 80;
-    const totalExp = 100;
+    const currentExp = props.profile?.currentExp;
+    const totalExp = props.profile?.expToNextLevel;
 
     const percentage = Math.round((currentExp / totalExp) * 100);
 
     return (
         <div className="game-level-bar">
-                <p className="game-level-number game-current-level">0</p>
+                <p className="game-level-number game-current-level">{props.profile?.level || 0}</p>
                 <div className="game-level-bar-container">
                     <h3>Poziom</h3>
                     <div className="game-level-bar-track">
@@ -15,14 +15,15 @@ export default function LevelBar() {
                             className="game-level-bar-fill"
                             style={{ width: `${percentage}%` }}
                         >
+                            <span>{currentExp}</span>
                         </div>
                     </div>
                     <div className="game-level-bar-scale">
                         <p>0</p>
-                        <p>100</p>
+                        <p>{totalExp || 0}</p>
                     </div>
                 </div>
-                <p className="game-level-number game-next-level">1</p>
+                <p className="game-level-number game-next-level">{props.profile?.level ? props.profile.level + 1 : 1}</p>
             </div>
     );
 

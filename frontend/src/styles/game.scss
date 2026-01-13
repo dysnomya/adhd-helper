@@ -3,6 +3,7 @@
 
 $game-border-radius: 2rem;
 $boss-color-temp: #ff0080;
+$boss-color-temp-light: #ff58ac;
 $level-font: "Space Mono", monospace;
 
 .game-layout {
@@ -32,6 +33,180 @@ $level-font: "Space Mono", monospace;
 
     &::-webkit-scrollbar-thumb:hover {
         cursor: grab;
+    }
+}
+
+.game-highlight {
+    animation: glow 1s ease-in-out;
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: none;
+    }
+
+    50% {
+        box-shadow: 0 0 20px 5px var(--color-accent);
+    }
+
+    100% {
+        box-shadow: none;
+    }
+}
+
+.pimpus-jump {
+    animation: jump 300ms linear;
+}
+
+@keyframes jump {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-50px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.game-highlight-jump {
+    animation: glowjump 500ms linear;
+}
+
+@keyframes glowjump {
+    0% {
+        box-shadow: none;
+        transform: translateY(0);
+    }
+
+    50% {
+        box-shadow: 0 0 20px 5px var(--color-accent);
+        transform: translateY(-20px);
+    }
+
+    100% {
+        box-shadow: none;
+        transform: translateY(0);
+    }
+}
+
+.game-boss-die {
+    animation: death 1000ms linear;
+}
+
+@keyframes death {
+    0% {
+        opacity: 0.0;
+    }
+
+    50% {
+        opacity: 0.5
+    }
+
+    100% {
+        opacity: 1.0;
+    }
+}
+
+.game-boss-die-shake {
+    animation: shake 1000ms linear;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    10% {
+        transform: translateX(-5px);
+    }
+
+    20% {
+        transform: translateX(5px);
+    }
+
+    30% {
+        transform: translateX(-5px);
+    }
+
+    40% {
+        transform: translateX(5px);
+    }
+
+    50% {
+        transform: translateX(-5px);
+    }
+
+    60% {
+        transform: translateX(5px);
+    }
+
+    70% {
+        transform: translateX(-5px);
+    }
+
+    80% {
+        transform: translateX(5px);
+    }
+
+    90% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.game-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    backdrop-filter: blur(2px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+
+
+    background-color: var(--content-bg);
+    animation: none;
+    opacity: 1;
+}
+
+@keyframes gameFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.game-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--color-accent);
+    border-radius: 50%;
+    animation: gameSpin 1s linear infinite;
+}
+
+@keyframes gameSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }
 
@@ -78,7 +253,104 @@ $level-font: "Space Mono", monospace;
     border: 5px solid $boss-color-temp;
     box-shadow: inset 0 0 20px 5px $boss-color-temp;
     color: $boss-color-temp;
-    filter: hue-rotate(40deg) contrast(0.9); // hardcoded for now
+    filter: contrast(0.9);
+}
+
+.game-boss-hp-bar-track {
+    width: 100%;
+    height: 50px;
+    background-color: black;
+    border-radius: 30px;
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+        0 0 18px white,
+        inset 0 0 10px $boss-color-temp;
+}
+
+.game-boss-hp-bar-fill {
+    height: 100%;
+    background-color: $boss-color-temp;
+    background: linear-gradient(180deg,
+            color-mix(in srgb, $boss-color-temp, white 20%) 0%,
+            $boss-color-temp 100%);
+    border-radius: 30px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+        inset 0 2px 2px rgba(255, 255, 255, 0.4),
+        inset 0 -2px 2px rgba(0, 0, 0, 0.1),
+        2px 0 5px rgba(0, 0, 0, 0.2);
+    color: white;
+    text-align: end;
+    padding-right: 0.5em;
+    font-size: 2em;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.game-boss-hp-bar-scale {
+    height: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-inline: 1rem;
+    color: white;
+}
+
+.game-boss-hp-bar-container {
+    width: 90%;
+    padding-inline: 1rem;
+}
+
+.game-dmg-number {
+    margin-top: 50px;
+    margin-bottom: -150px;
+    font-size: 60px;
+    opacity: 0;
+    color: $boss-color-temp;
+}
+
+.game-dmg-show {
+    animation: dmgAnimation 500ms linear;
+}
+
+@keyframes dmgAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 1;
+    transform: translateY(-10px);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}
+
+.squish {
+  animation: squish 160ms ease-out;
+  transform-origin: center bottom;
+}
+
+@keyframes squish {
+  0% {
+    transform: scaleY(1);
+  }
+  40% {
+    transform: scaleY(0.85);
+  }
+  100% {
+    transform: scaleY(1);
+  }
 }
 
 .game-level-bar {
@@ -100,7 +372,7 @@ $level-font: "Space Mono", monospace;
     border-radius: 30px;
     overflow: hidden;
     position: relative;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1)
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .game-level-bar-fill {
@@ -115,6 +387,13 @@ $level-font: "Space Mono", monospace;
         inset 0 2px 2px rgba(255, 255, 255, 0.4),
         inset 0 -2px 2px rgba(0, 0, 0, 0.1),
         2px 0 5px rgba(0, 0, 0, 0.2);
+    color: var(--color-on-accent);
+    text-align: end;
+    padding-right: 0.5em;
+    font-size: 2em;
+    display: flex;
+    justify-content: end;
+    align-items: center;
 }
 
 .game-level-bar-scale {
@@ -157,7 +436,8 @@ $level-font: "Space Mono", monospace;
 }
 
 .game-title {
-    font-size: 20px;
+    font-size: 24px;
+    color: var(--color-accent);
 }
 
 .boss-button-container {
@@ -264,7 +544,9 @@ $level-font: "Space Mono", monospace;
 }
 
 @media (max-width: 768px) {
-    .game-level-bar-container {
+
+    .game-level-bar-container,
+    .game-boss-hp-bar-container {
         padding-inline: 0;
     }
 
@@ -274,7 +556,8 @@ $level-font: "Space Mono", monospace;
         line-height: 3rem;
     }
 
-    .game-level-bar-track {
+    .game-level-bar-track,
+    .game-boss-hp-bar-track {
         height: 30px;
     }
 
@@ -284,5 +567,16 @@ $level-font: "Space Mono", monospace;
 
     .game-pet-name {
         font-size: 2rem;
+    }
+
+    .game-level-bar-fill,
+    .game-boss-hp-bar-fill {
+        padding-right: 1em;
+        font-size: 1em;
+        align-items: center;
+    }
+
+    .game-title {
+        font-size: 18px;
     }
 }
