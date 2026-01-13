@@ -3,12 +3,13 @@ import LevelBar from "../components/Game/LevelBar";
 import PetView from "../components/Game/PetView";
 import "../styles/game.scss";
 import { useProfileData } from "../hooks/UseProfileData";
+import ErrorCard from "../components/ErrorCard";
 
 export default function Game() {
     //const [isDmgDealt, setIsDmgDealt] = useState(false);
 
     const {
-        profileData, dmgDealt, isDmgDealt, isLevelUp, isBossDefeated, userData, isLoading, updateProfileData, updateBossData
+        profileData, dmgDealt, isDmgDealt, isLevelUp, isBossDefeated, userData, isLoading, error, updateProfileData, updateBossData
     } = useProfileData();
 
     const feed = (amount) => {
@@ -18,6 +19,10 @@ export default function Game() {
     const fight = () => {
         updateBossData();
     }
+
+    if (error) return (
+        <ErrorCard />
+    );
 
     return (
         <div className="game-layout">
@@ -31,7 +36,7 @@ export default function Game() {
                 <LevelBar profile={profileData} />
             </div>
             <div className={`game-card game-name-title ${isBossDefeated ? 'game-highlight-jump' : ''}`}>
-                <h1>{userData?.name + ' ' + userData?.lastName}</h1>
+                <h1>{userData?.name || ''} {userData?.lastName || ''}</h1>
                 <h3 className="game-title">{profileData?.currentTitle ? profileData.currentTitle : "Jeszcze bez specjalnych zasług"}</h3>
             </div>
             <div className="game-card">

@@ -5,6 +5,7 @@ import CalendarSidePanel from "../components/Calendar/CalendarSidePanel.js";
 import { capitalizeFirstLetter } from "../functions/TextFunctions.js";
 import { ReactComponent as Arrow } from "../assets/arrow-right.svg";
 import { fetchTaskDataForTimePeriod } from "../api/TaskApi.js";
+import ErrorCard from "../components/ErrorCard.js";
 
 export default function Calendar() {
     const days = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Ndz"];
@@ -21,6 +22,8 @@ export default function Calendar() {
     const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
     const lastDay = new Date(year, month + 1, 0).getDate();
 
+    const [error, setError] = useState(null);
+
     const cells = [];
     for (let i = 0; i < 42; i++) {
         const dayNumber = i - firstDay + 1;
@@ -33,8 +36,13 @@ export default function Calendar() {
 
     useEffect(() => {
         const loadTaskData = async () => {
-            const data = await fetchTaskDataForTimePeriod(new Date(year, month, 1), new Date(year, month + 1, 0));
-            setTasks(data);
+            try {
+                const data = await fetchTaskDataForTimePeriod(new Date(year, month, 1), new Date(year, month + 1, 0));
+                setTasks(data);
+            } catch (e) {
+                setError(e);
+            }
+
         };
 
         loadTaskData();
@@ -53,13 +61,13 @@ export default function Calendar() {
     }
 
     const setTaskDataForDay = (day) => {
-        setTasksForDay(tasks.filter(t => 
+        setTasksForDay(tasks.filter(t =>
             t.day === new Intl.DateTimeFormat('en-CA').format(new Date(year, month, day))
         ));
     }
 
     const getTaskNumberByPriority = (day) => {
-        const tasksForDay = tasks.filter(t => 
+        const tasksForDay = tasks.filter(t =>
             t.day === new Intl.DateTimeFormat('en-CA').format(new Date(year, month, day))
         );
         const tasksLowCount = tasksForDay.filter(t => t.priority === "LOW").length;
@@ -71,6 +79,10 @@ export default function Calendar() {
             tasksHighCount
         ];
     }
+
+    if (error) return (
+        <ErrorCard />
+    );
 
     return (
         <div className="calendar-page">

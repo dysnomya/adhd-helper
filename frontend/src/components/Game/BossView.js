@@ -35,7 +35,10 @@ export default function BossView(props) {
                 <button
                     className="boss-button"
                     onClick={() => {
-                        if (props.profile.bossfightAttempts > 0) {
+                        if (props.profile == null) {
+                            return;
+                        }
+                        else if (props.profile.bossfightAttempts > 0) {
                             props.fightFunction()
                         }
                         else {
