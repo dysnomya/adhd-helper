@@ -89,7 +89,8 @@ public class ProfileService {
         if (profile.getCurrentBossHp() <= 0) {
             profile.setCurrentTitle(profile.getCurrentBoss().getRewardTitle());
             Boss boss = setNextBoss(profile);
-            profile.setCurrentBossHp(boss.getMaxHp());
+            Long bossCurrentHp = boss != null ? boss.getMaxHp() : null;
+            profile.setCurrentBossHp(bossCurrentHp);
         }
 
         return damage;
