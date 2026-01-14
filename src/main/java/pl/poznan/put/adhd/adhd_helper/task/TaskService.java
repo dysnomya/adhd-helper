@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.poznan.put.adhd.adhd_helper.common.SecurityContextUtils;
 import pl.poznan.put.adhd.adhd_helper.exceptions.InvalidResourceStateException;
 import pl.poznan.put.adhd.adhd_helper.exceptions.ResourceNotFoundException;
+import pl.poznan.put.adhd.adhd_helper.task.model.SubtaskRequest;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskRequest;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskResponse;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskStatsResponse;
@@ -54,6 +55,15 @@ public class TaskService {
         Task toSave = taskMapper.toEntity(taskRequest);
         Task task = taskRepository.save(toSave);
         return taskMapper.toResponse(task);
+    }
+
+    @Transactional
+    public TaskResponse addSubtask(Long parentId, SubtaskRequest subtaskRequest) {
+        Task toAddSubtask = getTaskById(parentId);
+        Task subtask = taskMapper.toEntity(subtaskRequest);
+        toAddSubtask.addSubtask(subtask);
+        taskRepository.save(toAddSubtask);
+        return taskMapper.toResponse(subtask);
     }
 
     @Transactional

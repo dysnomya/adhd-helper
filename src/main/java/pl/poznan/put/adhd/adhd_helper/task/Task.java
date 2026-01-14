@@ -12,6 +12,7 @@ import pl.poznan.put.adhd.adhd_helper.priority.Priority;
 import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -44,7 +45,7 @@ public class Task {
     private Task parent;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Task> subtasks;
+    private List<Task> subtasks = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDate day;
@@ -63,4 +64,9 @@ public class Task {
 
     @Column(name = "completed_at")
     private LocalDate completedAt;
+
+    public void addSubtask(Task subtask) {
+        subtasks.add(subtask);
+        subtask.setParent(this);
+    }
 }

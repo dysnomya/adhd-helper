@@ -3,6 +3,7 @@ package pl.poznan.put.adhd.adhd_helper.task;
 import org.mapstruct.*;
 
 import pl.poznan.put.adhd.adhd_helper.category.CategoryMapper;
+import pl.poznan.put.adhd.adhd_helper.task.model.SubtaskRequest;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskRequest;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskResponse;
 
@@ -18,6 +19,9 @@ interface TaskMapper {
 
     @Mapping(target = "category", source = "categoryId")
     Task toEntity(TaskRequest taskRequest);
+
+    @Mapping(target = "category", source = "categoryId")
+    Task toEntity(SubtaskRequest taskRequest);
 
     TaskResponse toResponse(Task task);
 
