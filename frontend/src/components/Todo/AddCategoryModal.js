@@ -39,6 +39,7 @@ const AddCategoryModal = ({ isOpen, onClose, onConfirm }) => {
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Praca, Studia"
                         autoFocus
+                        maxLength={50}
                     />
                 </div>
 
@@ -65,7 +66,7 @@ const AddCategoryModal = ({ isOpen, onClose, onConfirm }) => {
                         className="add-category-preview-badge"
                         style={{ backgroundColor: color }}
                     >
-                        {name.charAt(0).toUpperCase() + name.slice(1).toLowerCase() || "Nazwa"}
+                        <p>{name.charAt(0).toUpperCase() + name.slice(1).toLowerCase() || "Nazwa"}</p>
                     </div>
                 </div>
 
