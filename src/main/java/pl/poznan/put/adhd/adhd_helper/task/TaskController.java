@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import pl.poznan.put.adhd.adhd_helper.task.model.SubtaskRequest;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskRequest;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskResponse;
 import pl.poznan.put.adhd.adhd_helper.task.model.TaskStatsResponse;
@@ -59,6 +60,19 @@ public class TaskController {
             description = "Creates a new task with optional subtasks.")
     public TaskResponse createTask(@RequestBody @Valid TaskRequest taskRequest) {
         return taskService.insertTask(taskRequest);
+    }
+
+    @PostMapping("/{id}/subtasks")
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(
+            summary = "Add a subtask to an existing task",
+            description =
+                    "Adds a new subtask under the task specified by its id. "
+                            + "The request body must contain the subtask details (title, description, etc.). "
+                            + "Returns the created subtask.")
+    public TaskResponse addSubtask(
+            @PathVariable Long id, @RequestBody @Valid SubtaskRequest taskRequest) {
+        return taskService.addSubtask(id, taskRequest);
     }
 
     @PutMapping(path = "/{id}")
