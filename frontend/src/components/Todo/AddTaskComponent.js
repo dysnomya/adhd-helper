@@ -7,6 +7,8 @@ import { ReactComponent as XIcon } from "../../assets/x-icon.svg";
 
 import { DropdownPortal } from "./DropdownPortal";
 
+import { NumberInput } from "../../functions/TasksHelpers";
+
 const getPriorityColor = (priority) => {
     switch (priority) {
         case 'HIGH': return '#D22727';
@@ -317,15 +319,13 @@ const AddTaskComponent = ({
                                 placeholder="Nazwa zadania..."
                                 autoFocus
                                 tabIndex={1}
+                                maxLength={256}
                             />
                         </div>
 
                         <div className="edit-time-group">
-                            <input 
-                                type="number" 
-                                className="edit-input-time"
-                                value={time}    
-                                onChange={(e) => setTime(e.target.value)}
+                            <NumberInput
+                                setTime = {setTime}
                                 tabIndex={2}
                             />
                             <div 
