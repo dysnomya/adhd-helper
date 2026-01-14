@@ -56,9 +56,10 @@ const SplitTaskListContainer = ({ splittedTasks, setGeminiAsked, isCalendarTasks
         
     };
 
-    const removeSubtasks = async (parentId) => {
-        await sleep(200);
-        setGeminiResult(prevTasks => prevTasks.filter((task, _) => ((task.parentId == null) || (task.parentId !== (parentId)))));
+    const removeSubtask = async (taskToDelete) => {
+        setGeminiResult(prevTasks => prevTasks.filter((task, _) => task.id !== taskToDelete.id));
+        //usuwanie taska z obiektów
+        setTasks(prevTasks => prevTasks.filter((task, _) => task.id !== taskToDelete.id));
     };
 
 
@@ -110,7 +111,8 @@ const SplitTaskListContainer = ({ splittedTasks, setGeminiAsked, isCalendarTasks
                     setSubtasks={setSubtasks}
                     setGeminiResult={setGeminiResult}
                     geminiResult={splittedTasks}
-                    onSubtaskDelete={removeSubtasks}
+                    // onSubtaskDelete={removeSubtasks}
+                    removeSubtask={removeSubtask}
                     />
                     :
                     <SplitTaskCalendar

@@ -12,7 +12,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // import { fetchSubtasks } from "../../api/TaskApi"
 
-const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks, setSubtasks, setGeminiResult, geminiResult, onSubtaskDelete }) => {
+const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks, setSubtasks, setGeminiResult, geminiResult, onSubtaskDelete, removeSubtask}) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [isEdited, setIsEdited] = useState(false);
@@ -91,6 +91,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
         }
         catch (error) {
             console.error("Błąd podczas generowania zadań:", error);
+            setGeminiAsked(false);
             // Tutaj możesz np. wyświetlić powiadomienie dla użytkownika
         }
     }
@@ -285,6 +286,17 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
                                         key={subtask.id} 
                                         task={{ ...subtask, parentId: task.id }} 
                                         isSubtask={true}
+                                        onDelete={() => removeSubtask(subtask)}
+                                        
+                                        
+                                        
+                                        // setGeminiAsked={setGeminiAsked}
+                                        // subtasks={(splittedTasks.filter(Intask => Intask.parentId == task.id) === undefined) ? [] : splittedTasks.filter(Intask => Intask.parentId == task.id)}
+                                        // setSubtasks={setSubtasks}
+                                        // setGeminiResult={setGeminiResult}
+                                        // geminiResult={splittedTasks}
+                                        // // onSubtaskDelete={removeSubtasks}
+                                        // removeSubtask={removeSubtask}
                                     />
                                 ))}
                             </div>

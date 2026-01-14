@@ -46,6 +46,7 @@ const Split = () => {
     const [selectedPriority, setSelectedPriority] = useState(null);
     const [isAddingTask, setIsAddingTask] = useState(false);
     const [subtasks, setSubtasks] = useState([]);
+    const [addAllTasks, setAddAllTasks] = useState(false);
 
 
 
@@ -66,20 +67,57 @@ const Split = () => {
 
     const handleAddNewTask = async (newTaskData) => {
 
+        var geminiResultCopy = [...geminiResult];
+
+        const relevantSubtasks = geminiResultCopy.filter(task => task.parentId == newTaskData.id && newTaskData.parentId == null);
+
+        console.log(newTaskData.id);
+
         const apiPayload = {
             ...newTaskData,
             categoryId: newTaskData.category ? newTaskData.category.id : null,
             priority: newTaskData.priority ? newTaskData.priority : null,
             category: undefined,
-            subtasks: newTaskData.parentId ? newTaskData.parentId : null
+            subtasks: relevantSubtasks.map(subTask => {
+            return {
+                ...subTask, // Kopiujemy nazwę, czas, etc.
+                
+                // 2. ID: Jeśli subtask ma tymczasowe ID (np. z Gemini), backend je nadpisze.
+                // Jeśli backend wymaga usunięcia ID przy tworzeniu, możesz dodać: id: undefined
+                
+                // 3. Kategoria: Subtask dziedziczy ID kategorii od rodzica (newTaskData)
+                categoryId: newTaskData.category ? newTaskData.category.id : null,
+                
+                // 4. Priorytet: Bierzemy z subtaska, albo domyślny
+                priority: subTask.priority ? subTask.priority : 'MEDIUM',
+                
+                // 5. Sprzątanie: Usuwamy obiekt category (tak jak w rodzicu)
+                category: undefined,
+                
+                // 6. Data: Upewnij się, że data jest w formacie, którego chce backend
+                // (np. jeśli subTask.date to obiekt Date, zamień na string)
+                date: subTask.date || newTaskData.date, 
+
+                // 7. Zabezpieczenie przed rekurencją (subtask nie ma swoich subtasków w tym momencie)
+            };
+        })
         };
 
+
+
+
         try {
+            console.log('sdjfkhsjkdfhkfsdh');
+            console.log(apiPayload)
             // API CALL
             // const createdTaskFromBackend = await createTask(apiPayload);
+            if(apiPayload.parentId == null){
+
             await createTask(apiPayload);
+            
             // addTaskLocal(createdTaskFromBackend);
             addTaskLocal(newTaskData);
+            }
             setIsAddingTask(false);
         } catch (e) {
             console.error("Błąd dodawania zadania", e);
@@ -87,7 +125,10 @@ const Split = () => {
         }
     };
 
+
+
     const handleSaveEdit = (e) => {
+
         if (e) e.stopPropagation();
 
         // if (!name.trim()) {
@@ -99,20 +140,26 @@ const Split = () => {
 
         geminiResult.forEach(tmpTask => {
             const newTask = {
-            name: tmpTask.name,
-            timeNeeded: tmpTask.timeNeeded,
-            category: selectedCategory,
-            priority: tmpTask.priority,
-            day: tmpTask.date.toISOString().split('T')[0],
-            completed: false,
-            parentId: tmpTask.parentId
-        };
+                id: tmpTask.id,
+                name: tmpTask.name,
+                timeNeeded: tmpTask.timeNeeded,
+                category: selectedCategory,
+                priority: tmpTask.priority,
+                day: tmpTask.date.toISOString().split('T')[0],
+                completed: false,
+                parentId: tmpTask.parentId
+            };
 
-            handleAddNewTask(newTask);
+                handleAddNewTask(newTask);
+
             
+
         })
         
-
+        setAddAllTasks(false);
+        setCalendarVisible(false);
+        setGeminiResult([]);
+        setTaskSplitted(false);
         
     };
 
@@ -597,8 +644,28 @@ const Split = () => {
                 
                 <SplitCalendar setOutSelectedDate={setOutSelectedDate} tasks={geminiResult} selectedCategory={selectedCategory}></SplitCalendar>
                 <div className="split-body-submit-div">
-                    <button className="split-body-submit-btn" onClick={handleSaveEdit}>Dodaj Zadania</button>
+                    <button className="split-body-submit-btn" onClick={() => setAddAllTasks(true)}>Dodaj Zadania</button>
                 </div>
+
+                {addAllTasks ?
+                
+                <div className="popup-bg">
+                    <div className="split-categories-popup-div">
+                        <p>Czy na pewno chcesz dodać Zadania?</p>
+
+                        <div className="add-category-modal-actions split-actions">
+                            <button className="add-category-btn-cancel" onClick={() => setAddAllTasks(false)}>Anuluj</button>
+                            <button className="add-category-btn-confirm" 
+                                onClick={handleSaveEdit}> 
+                                Potwierdź
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                :
+                <></>
+
+                }
             </div>
     );
 };
