@@ -217,10 +217,12 @@ const Todo = () => {
 
         try {
             // API CALL
-            // const createdTaskFromBackend = await createTask(apiPayload);
-            await createTask(apiPayload);
-            // addTaskLocal(createdTaskFromBackend);
-            addTaskLocal(newTaskData);
+            const createdTaskFromBackend = await createTask(apiPayload);
+            let createdTaskFromBackendUpdated = {
+                ...createdTaskFromBackend,
+                category: newTaskData.category
+            }
+            addTaskLocal(createdTaskFromBackendUpdated);
             setIsAddingTask(false);
         } catch (e) {
             console.error("Błąd dodawania zadania", e);
