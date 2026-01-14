@@ -35,7 +35,7 @@ const EditCategoryModal = ({ isOpen, onClose, categories, onUpdate, onDelete }) 
 
     const handleUpdate = () => {
         if (!name.trim()) return alert("Nazwa nie może być pusta!");
-        onUpdate(selectedCategoryId, { name, color });
+        onUpdate(selectedCategoryId, { id: selectedCategoryId, name, color });
         onClose();
     };
 

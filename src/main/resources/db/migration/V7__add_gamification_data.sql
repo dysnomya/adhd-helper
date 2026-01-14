@@ -1,0 +1,33 @@
+INSERT INTO title (name)
+VALUES ('Nowicjusz'),
+       ('Chętny do pracy'),
+       ('Amator list ToDo'),
+       ('Miłośnik kalendarzy'),
+       ('Bez pracy nie ma kołaczy'),
+       ('Nr 1 fan list ToDo'),
+       ('Nieustraszony'),
+       ('Wielbiciel dzielenia zadań'),
+       ('Człowiek kultury'),
+       ('Nowa formuła produktywności'),
+       ('Strażnik sprawiedliwości'),
+       ('Banany górą'),
+       ('Agent do zadań specjalnych'),
+       ('Lasagna nad morzem'),
+       ('Pumpkin Spice Latte');
+
+INSERT INTO boss (name, required_level, color_hue_rotate, reward_title_id)
+VALUES ('Anonimowy wróg', 1, 210, 1),
+       ('Nieszkodliwy(?) nieznajomy', 5, 180, 2),
+       ('Hejter list ToDo', 10, 40, 3),
+       ('Zapominalski Zenek', 20, 300, 4),
+       ('Leniwy leniuch', 30, 270, 5),
+       ('Niszczyciel dobrej zabawy', 40, 90, 6),
+       ('Groźny wróg (według niego)', 50, 50, 7),
+       ('Zwyczajny hejter', 60, 200, 8),
+       ('Wilk w owczej skórze', 70, 20, 9),
+       ('Liniowa kombinacja niepowodzeń', 80, 160, 10),
+       ('Rasistowski hipokryta', 90, 290, 11),
+       ('Nienawistny fan jabłek', 100, 130, 12),
+       ('Błąd. James Błąd.', 110, 230, 13),
+       ('Zjadający zadania zamiast je robić', 120, 30, 14),
+       ('Irytujący dyniowy kawosz', 130, 320, 15);

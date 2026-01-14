@@ -5,40 +5,62 @@ import TodoSidebar from "../components/Todo/TodoSidebar";
 import TaskListContainer from "../components/Todo/TaskListContainer";
 import { getTaskDateName, parseEuropeanDate } from "../functions/TasksHelpers"
 import AddCategoryModal from "../components/Todo/AddCategoryModal";
-import { createCategory } from "../api/TaskApi";
 import { ReactComponent as Dynks} from "../assets/dynks.svg";
 import { ReactComponent as Filter} from "../assets/Filter_icon.svg";
 import { useLocation } from "react-router-dom";
 import { ReactComponent as SadPimpus } from "../assets/pimpus_sad.svg";
+import DailyProgress from "../components/Todo/DailyProgress";
+
+import pimpus from "../assets/pimpus_happy_anim.webp";
+
+import AddTaskComponent from "../components/Todo/AddTaskComponent";
 
 import EditCategoryModal from "../components/Todo/EditCategoryModal";
 
-// import { updateCategory, deleteCategory } from "../api/TaskApi";
+import { createCategory, updateCategory, deleteCategory } from "../api/TaskApi";
+import { createTask, updateTask, deleteTask } from "../api/TaskApi";
 
 //  todo?date=2025-12-06
 const Todo = () => {
     const location = useLocation();     // hook do pobrania adresu URL
 
+    const initialFilters = useMemo(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const dateParam = searchParams.get('date');
+
+        return {
+            date: dateParam || '',
+            showAll: !dateParam
+        };
+    }, [location.search]);
+
     const [activeFilter, setActiveFilter] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    const [selectedDateFilter, setSelectedDateFilter] = useState('');
-    const [showAllTasks, setShowAllTasks] = useState(true);
+    const [selectedDateFilter, setSelectedDateFilter] = useState(initialFilters.date);
+    const [showAllTasks, setShowAllTasks] = useState(initialFilters.showAll);
 
     const [areCategoriesInitialized, setAreCategoriesInitialized] = useState(false);
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+    const [selectedPriority, setSelectedPriority] = useState(null);
+
+    const getTodayDateString = () => new Date().toISOString().split('T')[0];
+    const statsDate = selectedDateFilter || getTodayDateString();
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const dateParam = searchParams.get('date');
 
         if (dateParam) {
-            setSelectedDateFilter(dateParam);
+            setSelectedDateFilter(prev => (prev !== dateParam ? dateParam : prev));
             setShowAllTasks(false);
+        } else if (initialFilters.showAll) {
+            setShowAllTasks(prev => (!prev ? true : prev));
         }
-    }, [location]);
+    }, [location.search, initialFilters]);
 
     // Loading tasks data from database
     const {
@@ -47,13 +69,16 @@ const Todo = () => {
         isLoading,
         error,
         addCategoryLocal,
-        toggleTaskLocal,
+        deleteTaskLocal,
         updateCategoryLocal,
-        deleteCategoryLocal
+        deleteCategoryLocal,
+        updateTaskLocal,
+        addTaskLocal,
+        changeTaskStatus
     } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
 
 
-    useEffect(() => {
+    useEffect(() => {     
         if (categories.length > 0 && !areCategoriesInitialized) {
 
             const allCategoryIds = categories.map(cat => cat.id);
@@ -62,7 +87,7 @@ const Todo = () => {
             setActiveFilter(allCategoryIds);
             setAreCategoriesInitialized(true);
         }
-
+        
     }, [categories, areCategoriesInitialized]);
 
     const handleConfirmAddCategory = async (name, color) => {
@@ -73,14 +98,23 @@ const Todo = () => {
             addCategoryLocal(newCategoryFromBackend);
 
             //TEMP
-            alert("Dodano grupę");
+            // alert("Dodano grupę");
 
         } catch (e) {
             console.error(e);
+            alert(`Błąd tworzenia kategorii: ${e.message}`);
         }
 
         setIsModalOpen(false);
     }
+
+    const tasksFilteredByPriority = useMemo(() => {
+        if (!selectedPriority) return tasks;
+
+        return tasks.filter(task => {
+            return task.priority === selectedPriority;
+        })
+    }, [tasks, selectedPriority]);
 
     const prepareDatedTasks = (tasksToGroup) => {
 
@@ -98,7 +132,7 @@ const Todo = () => {
 
         const getTimestamp = (dateName) => {
             if (dateName === "Bez daty") return Infinity;
-
+            
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 
@@ -130,39 +164,101 @@ const Todo = () => {
     }
 
     const datedTasks = useMemo(() => {
-        return prepareDatedTasks(tasks);
-    }, [tasks]);
+        return prepareDatedTasks(tasksFilteredByPriority);
+    }, [tasksFilteredByPriority]);
 
 
     const isFirstLoad = isLoading && tasks.length === 0 && categories.length === 0;
 
 
-    const handleUpdateCategory = async (id, data) => {
+    const handleDeleteTask = async (taskId) => {
         try {
-            // await updateCategory(id, data);
-            updateCategoryLocal(id, data);
+            // API CALL
+            await deleteTask(taskId);
+
+            deleteTaskLocal(taskId);
+        } catch (e) {
+            console.error("Błąd usuwania zadania", e);
+            alert("Nie udało się usunąć zadania.");
+        }
+    };
+
+    const handleUpdateTask = async (taskId, updatedData) => {
+
+        const apiPayload = {
+            ...updatedData,
+            categoryId: updatedData.category ? updatedData.category.id : (updatedData.categoryId || null),
+            category: undefined,
+            subtasks: updatedData.subtasks || []
+        };
+
+        try {
+            // const updatedTaskFromBackend = await updateTask(taskId, apiPayload);
+            await updateTask(taskId, apiPayload);
+            updateTaskLocal(taskId, updatedData);
+        } catch (e) {
+            console.error("Błąd edycji zadania", e);
+            alert(`Nie udało się zedytować zadania. ${e.message}`);
+        }
+    };
+
+
+    const [isAddingTask, setIsAddingTask] = useState(false);
+
+    const handleAddNewTask = async (newTaskData) => {
+
+        const apiPayload = {
+            ...newTaskData,
+            categoryId: newTaskData.category ? newTaskData.category.id : null,
+            priority: newTaskData.priority ? newTaskData.priority : null,
+            category: undefined,
+            subtasks: newTaskData.subtasks || []
+        };
+
+        try {
+            // API CALL
+            // const createdTaskFromBackend = await createTask(apiPayload);
+            await createTask(apiPayload);
+            // addTaskLocal(createdTaskFromBackend);
+            addTaskLocal(newTaskData);
+            setIsAddingTask(false);
+        } catch (e) {
+            console.error("Błąd dodawania zadania", e);
+            alert(`Nie udało się dodać zadania.\n${e.message}`);
+        }
+    };
+
+    const handleAddTaskClick = () => {
+        setIsAddingTask(true);
+    };
+
+    const handleUpdateCategory = async (id, updatedData) => {
+        try {
+            const updatedCategoryFromBackend = await updateCategory(id, updatedData);
+            updateCategoryLocal(id, updatedCategoryFromBackend);
         } catch (e) {
             console.error("Błąd edycji kategorii", e);
-            alert("Nie udało się edytować kategorii");
+            alert(`Nie udało się edytować kategorii ${e.message}`);
         }
     };
 
     const handleDeleteCategory = async (id) => {
         try {
-            // await deleteCategory(id);
+            await deleteCategory(id);
             deleteCategoryLocal(id);
         } catch (e) {
             console.error("Błąd usuwania kategorii", e);
-            alert("Nie udało się usunąć kategorii");
+            alert(`Nie udało się usunąć kategorii.  ${e.message}`);
         }
     };
 
+    
 
     // Debugging - Do usunięcia później
     useEffect(() => {
         if (tasks.length > 0) {
             console.log("Zadania:", tasks);
-
+            
             console.log("Kategorie:", categories)
         }
     }, [tasks, categories]);
@@ -180,7 +276,9 @@ const Todo = () => {
     );
 
     return (
-        <div className="todo-main">
+        <div
+            className="todo-main"
+        >
 
             {isLoading && (
                 <div className={`loading-overlay ${isFirstLoad ? 'initial-load' : ''}`}>
@@ -190,17 +288,17 @@ const Todo = () => {
 
             <div className="mobile-header">
                 <Dynks></Dynks>
-                <button
-                    className="menu-toggle-btn"
+                <button 
+                    className="menu-toggle-btn" 
                     onClick={() => setIsSidebarOpen(true)}>
                     <Filter></Filter>
                 </button>
             </div>
 
             <div className={`todo-sidebar-wrapper ${isSidebarOpen ? 'open' : ''}`}>
-
+                
                 <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>
-
+                
                 <div className="todo-sidebar-main">
                     <TodoSidebar
                         categories={categories}
@@ -217,14 +315,39 @@ const Todo = () => {
                         onToggleShowAll={setShowAllTasks}
 
                         onEditCategoryClick={() => setIsEditModalOpen(true)}
+
+                        selectedPriority={selectedPriority}
+                        onPriorityChange={setSelectedPriority}
                     />
 
                 </div>
             </div>
 
-
+            
 
             <div className="todo-main-content-area">
+
+                <div className="todo-daily-wrapper">
+                    <DailyProgress
+                        date={statsDate}
+                        refreshTrigger={tasks}
+                    />
+                    <div className="add-task-btn-container">
+                        <button
+                            className="add-task-btn"
+                            onClick={handleAddTaskClick}
+                        >
+                        + Nowe zadanie
+                    </button>
+                    </div>
+                    <div className="todo-progress-pimpus-wrapper">
+                        <img
+                            src={pimpus}
+                            alt="Happy Pimpus"
+                            className="todo-progress-pimpus"
+                        />
+                    </div>
+                </div>
 
                 <div className="todo-tasks-list">
 
@@ -234,13 +357,29 @@ const Todo = () => {
                         </div>
                     )}
 
+                    {isAddingTask && (
 
-                    <TaskListContainer
+                        <AddTaskComponent
+                            categories={categories}
+                            onConfirm={handleAddNewTask}
+                            onCancel={() => setIsAddingTask(false)}
+                            initialDate={statsDate}
+                            whereComponent={"todo"}
+                        />
+
+                    )}
+
+
+                    <TaskListContainer 
+
                         datedTasks={datedTasks}
-                        onTaskStatusChange={toggleTaskLocal}
+                        onTaskStatusChange={changeTaskStatus}
+                        onDeleteTask={handleDeleteTask}
+                        onUpdateTask={handleUpdateTask}
+                        categories={categories}
                     ></TaskListContainer>
                 </div>
-
+                
 
             </div>
 

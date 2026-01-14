@@ -1,3 +1,5 @@
+@import "_variables.scss";
+
 $mobile-topbar-height: 60px;
 
 $sidebar-collapsed-width: 130px;
@@ -113,14 +115,16 @@ $sidebar-icon-size: 40px;
   color: var(--color-text);
   width: $sidebar-collapsed-width;
   transition: width 0.25s ease;
-  z-index: 100;
+  z-index: 2100;
 }
 
-.desktop-sidebar:hover {
+.desktop-sidebar:hover,
+.desktop-sidebar.expanded {
   width: $sidebar-open-width;
 }
 
 .nav-bar {
+  font-family: $app-font;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -129,6 +133,8 @@ $sidebar-icon-size: 40px;
   white-space: nowrap;
   transition: all 0.25s ease;
   padding: calc(($sidebar-collapsed-width - $sidebar-element-size) / 2);
+
+  box-sizing: border-box;
 
   ul {
     display: flex;

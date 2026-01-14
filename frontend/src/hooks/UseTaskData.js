@@ -1,5 +1,5 @@
 import {useEffect, useState, useCallback} from "react";
-import {fetchAllCategories, fetchAllTasks} from "../api/TaskApi";
+import {fetchAllCategories, fetchAllTasks, completeTask, uncompleteTask} from "../api/TaskApi";
 
 export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
 
@@ -69,57 +69,148 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
     };
 
     const toggleTaskLocal = (taskId, isCompleted) => {
+
         setTasks(prevTasks => prevTasks.map(task => {
             if (task.id === taskId) {
-                const updatedSubtasks = task.subtasks ? task.subtasks.map(sub => ({
-                    ...sub,
+                return { 
+                    ...task, 
                     completed: isCompleted
-                })) : [];
-
-                return { ...task, completed: isCompleted, subtasks: updatedSubtasks };
+                };
             }
+
+            if (task.subtasks && task.subtasks.length > 0) {
+
+                const subtaskIndex = task.subtasks.findIndex(sub => sub.id === taskId);
+
+                if (subtaskIndex !== -1) {
+
+                    const newSubtasks = [...task.subtasks];
+
+                    newSubtasks[subtaskIndex] = {
+                        ...newSubtasks[subtaskIndex],
+                        completed: isCompleted
+                    };
+
+                    return {
+                        ...task,
+                        subtasks: newSubtasks
+                    };
+                }
+            }
+
             return task;
         }));
     };
 
+    const handleTaskStatusChangeAPI = async (taskId, taskStatus) => {
+        toggleTaskLocal(taskId, taskStatus);
 
-    const updateCategoryLocal = (categoryId, updatedData) => {
-        setCategories(prevCategories => prevCategories.map(cat => 
-            cat.id === categoryId 
-                ? { ...cat, ...updatedData }
-                : cat
-        ));
+        try {
+            if (!taskStatus) {
+                console.log(`ODZNACZ ${taskId}`)
+                await uncompleteTask(taskId);
+            } else {
+                console.log(`ZAZNACZ ${taskId}`)
+                await completeTask(taskId);
+            }
+        } catch (e) {
+            console.error("Błąd zmiany statusu taska ", e);
+            toggleTaskLocal(taskId, !taskStatus);
 
-        setTasks(prevTasks => prevTasks.map(task => {
-            if (task.category && task.category.id === categoryId) {
-                return {
-                    ...task,
-                    category: {
-                        ...task.category,
-                        ...updatedData
+            alert(`Nie udało się zmienić statusu taska ${e.message}`);
+        }
+    };
+
+    const changeTaskStatus = async (taskId, status, parentId) => {
+
+        const task = tasks.find(t => t.id === taskId);
+
+        if (!task) {
+
+            // subtask
+            const parent = tasks.find(t => t.id === parentId);
+
+            if (parent && parent.subtasks) {
+
+                if (!status) {
+                    handleTaskStatusChangeAPI(parent.id, false);
+                }
+
+                if (status) {
+                    const areOtherSubtasksCompleted = parent.subtasks
+                        .filter(sub => sub.id !== taskId)
+                        .every(sub => sub.completed === true);
+
+                    if (areOtherSubtasksCompleted) {
+                        handleTaskStatusChangeAPI(parent.id, true);
                     }
-                };
+                }
+
             }
-            return task;
-        }));
-    }
 
-    const deleteCategoryLocal = (categoryId) => {
-        setCategories(prevCategories => prevCategories.filter(cat => cat.id !== categoryId));
+        }
 
+
+        if (task && task.subtasks && task.subtasks.length > 0) {
+            task.subtasks.forEach(subtask => {
+                if (subtask.completed !== status) {
+                    handleTaskStatusChangeAPI(subtask.id, status);
+                }
+            });
+        }
+        
+        handleTaskStatusChangeAPI(taskId, status);
+
+    };
+
+    const deleteTaskLocal = (taskId) => {
+        setTasks(prevTasks => {
+            const filteredTasks = prevTasks.filter(task => task.id !== taskId);
+
+            if(filteredTasks.length !== prevTasks.length) {
+                return filteredTasks;
+            }
+
+            return prevTasks.map(task => {
+                if (task.subtasks && task.subtasks.length > 0) {
+                    return {
+                        ...task,
+                        subtasks: task.subtasks.filter(subtask => subtask.id !== taskId)
+                    };
+                }
+                return task;
+            });
+        });
+    };
+
+
+    const updateTaskLocal = (taskId, updatedData) => {
         setTasks(prevTasks => prevTasks.map(task => {
-            if (task.category && task.category.id === categoryId) {
+
+            // task
+            if (task.id === taskId) {
                 return {
                     ...task,
-                    category: null
+                    ...updatedData
                 };
             }
+
+            // subtask
+            if (task.subtasks) {
+                const subtaskIndex = task.subtasks.findIndex(subtask => subtask.id === taskId);
+
+                if (subtaskIndex !== -1) {
+                    const newSubtasks = [...task.subtasks];
+                    newSubtasks[subtaskIndex] = { ...newSubtasks[subtaskIndex], ...updatedData };
+                    return { ...task, subtasks: newSubtasks };
+                }
+            }
+
             return task;
         }));
-    }
+    };
 
-
-     const addTaskLocal = (newTask) => {
+    const addTaskLocal = (newTask) => {
         setTasks(prevTasks => {
             if (newTask.parentId) {
                 return prevTasks.map(task => {
@@ -139,6 +230,80 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
     };
 
 
+    const updateCategoryLocal = (categoryId, updatedData) => {
+
+        // console.log(`category id: ${categoryId}`)
+        // console.log(`updatedData: ${updatedData}`)
+
+        setCategories(prevCategories => prevCategories.map(cat =>
+            cat.id === categoryId
+                ? { ...cat, ...updatedData }
+                : cat
+        ));
+
+        setTasks(prevTasks => prevTasks.map(task => {
+            let hasChanged = false;
+            let newTask = { ...task };
+
+            // console.log("set tasks update category")
+
+            // console.log("task")
+            // console.log(newTask)
+
+            // console.log(`task category: ${newTask.category}`)
+            // if (newTask.category) {
+            //     console.log(`task category id: ${newTask.category.id}`)
+            // }
+            
+
+            if (newTask.category && newTask.category.id === categoryId) {
+                // console.log("if się robi")
+                newTask.category = {
+                    ...newTask.category,
+                    ...updatedData
+                };
+                hasChanged = true;
+            }
+
+            if (newTask.subtasks && newTask.subtasks.length > 0) {
+                const updatedSubtasks = newTask.subtasks.map(subtask => {
+                    if (subtask.category && subtask.category.id === categoryId) {
+                        hasChanged = true;
+                        return {
+                            ...subtask,
+                            category: {
+                                ...subtask.category,
+                                ...updatedData
+                            }
+                        };
+                    }
+                    return subtask;
+                });
+
+                if (hasChanged) {
+                    newTask.subtasks = updatedSubtasks;
+                }
+            }
+
+            return hasChanged ? newTask : task;
+        }));
+    }
+
+    const deleteCategoryLocal = (categoryId) => {
+        setCategories(prevCategories => prevCategories.filter(cat => cat.id !== categoryId));
+
+        setTasks(prevTasks => prevTasks.map(task => {
+            if (task.category && task.category.id === categoryId) {
+                return {
+                    ...task,
+                    category: null
+                };
+            }
+            return task;
+        }));
+    }
+
+
     return {
         tasks,
         categories,
@@ -146,9 +311,12 @@ export const useTaskData = (activeFilter, selectedDate, showAllTasks) => {
         error,
         addCategoryLocal,
         toggleTaskLocal,
+        deleteTaskLocal,
         updateCategoryLocal,
         deleteCategoryLocal,
-        addTaskLocal
+        updateTaskLocal,
+        addTaskLocal,
+        changeTaskStatus
     };
 
 };
