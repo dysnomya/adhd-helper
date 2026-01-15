@@ -1,12 +1,12 @@
 import "../styles/dashboard.scss";
 import DailyProgress from "../components/Todo/DailyProgress";
 import { useTaskData } from "../hooks/UseTaskData";
-import { ReactComponent as SadPimpus } from "../assets/pimpus_sad.svg";
 import { useEffect, useMemo, useState } from "react";
 import TaskProgressGaugeChart from "../components/Dashboard/TaskProgressGaugeChart";
 import TaskSplineAreaChart from "../components/Dashboard/TaskSplineAreaChart";
 import DateComponent from "../components/Dashboard/DateComponent";
 import UpcomingTasks from "../components/Dashboard/UpcomingTasks";
+import ErrorCard from "../components/ErrorCard";
 
 import { ReactComponent as Glut } from "../assets/dashboard-glut.svg";
 import pimpus from "../assets/pimpus_happy_anim.webp";
@@ -39,7 +39,7 @@ export default function Dashboard() {
         const total = tasks.length;
         const completed = tasks.filter(t => t.completed).length;
         const notCompleted = total - completed;
-        
+
         const highPriority = tasks.filter(t => t.priority === 'HIGH').length;
 
         const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
@@ -77,13 +77,7 @@ export default function Dashboard() {
     }, [tasks]);
 
     if (error) return (
-        <div className="server-data-error-main">
-            <div className="server-data-error">
-                <SadPimpus className="sad-pimpus"></SadPimpus>
-                <p className="blad-serwera">Błąd połączenia z serwerem</p>
-                <p>Coś poszło nie tak. Sprawdź połączenie z internetem.</p>
-            </div>
-        </div>
+        <ErrorCard />
     );
 
     const isFirstLoad = isLoading && tasks.length === 0 && categories.length === 0;
@@ -102,7 +96,7 @@ export default function Dashboard() {
                 </div>
             )}
 
-            <Glut className="dashboard-glut"/>
+            <Glut className="dashboard-glut" />
 
             <div className="dashboard-left">
                 <div className="dashboard-left-top">
@@ -115,7 +109,7 @@ export default function Dashboard() {
 
                     <TaskProgressGaugeChart percentage={percentage} />
 
-                    <TaskSplineAreaChart data={chartData}/>
+                    <TaskSplineAreaChart data={chartData} />
 
                 </div>
 
@@ -137,18 +131,18 @@ export default function Dashboard() {
                         <div className="dashboard-pimpek-floor">
 
                         </div>
-                        
-                        <img 
-                            src={pimpus} 
-                            alt="Happy Pimpus" 
+
+                        <img
+                            src={pimpus}
+                            alt="Happy Pimpus"
                             className="dashboard-pimpus"
                         />
 
-                        
+
                     </div>
                 </div>
                 <div className="dashboard-right-bottom">
-                    <UpcomingTasks tasks={tasks}/>
+                    <UpcomingTasks tasks={tasks} />
                 </div>
             </div>
         </div>
