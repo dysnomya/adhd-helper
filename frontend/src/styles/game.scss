@@ -225,12 +225,10 @@ $level-font: "Space Mono", monospace;
 }
 
 .game-pimpus {
-    //transform: scale(0.7);
     min-width: 300px;
     max-width: 50%;
     height: auto;
     align-self: center;
-    // margin: -220px -300px -200px -300px;
     margin: -5% -30% -10% -30%;
 }
 
@@ -248,11 +246,9 @@ $level-font: "Space Mono", monospace;
 }
 
 .game-boss {
-    // transform: scale(0.5);
     min-width: 200px;
     max-width: 80%;
     align-self: center;
-    // margin: -200px -400px -250px -400px;
     margin: 0 -30% -20% -30%;
     filter: contrast(1.4) brightness(1.1);
 }
@@ -559,14 +555,7 @@ $level-font: "Space Mono", monospace;
         padding: 20px;
     }
 
-    // .game-pimpus {
-    //     transform: scale(0.3);
-    //     margin: -400px -450px;
-    // }
-
     .game-boss {
-        // transform: scale(0.3);
-        // margin: -400px -450px -380px -450px;
         max-width: 40%;
         margin: 0 -30% 0 -30%;
     }
