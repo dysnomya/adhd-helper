@@ -230,6 +230,19 @@ $level-font: "Space Mono", monospace;
     margin: -220px -300px -200px -300px;
 }
 
+.game-boss-null {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 3em;
+}
+
+.pimpek-rotate {
+    animation: gameSpin 10s linear infinite;
+    transform-origin: 50% 55%;
+    opacity: 0.5;
+}
+
 .game-boss {
     transform: scale(0.5);
     align-self: center;
@@ -316,41 +329,43 @@ $level-font: "Space Mono", monospace;
 }
 
 @keyframes dmgAnimation {
-  0% {
-    opacity: 0;
-  }
+    0% {
+        opacity: 0;
+    }
 
-  30% {
-    opacity: 1;
-    transform: translateY(-10px);
-  }
+    30% {
+        opacity: 1;
+        transform: translateY(-10px);
+    }
 
-  70% {
-    opacity: 1;
-    transform: translateY(-20px);
-  }
+    70% {
+        opacity: 1;
+        transform: translateY(-20px);
+    }
 
-  100% {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
+    100% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
 }
 
 .squish {
-  animation: squish 160ms ease-out;
-  transform-origin: center bottom;
+    animation: squish 160ms ease-out;
+    transform-origin: center bottom;
 }
 
 @keyframes squish {
-  0% {
-    transform: scaleY(1);
-  }
-  40% {
-    transform: scaleY(0.85);
-  }
-  100% {
-    transform: scaleY(1);
-  }
+    0% {
+        transform: scaleY(1);
+    }
+
+    40% {
+        transform: scaleY(0.85);
+    }
+
+    100% {
+        transform: scaleY(1);
+    }
 }
 
 .game-level-bar {
