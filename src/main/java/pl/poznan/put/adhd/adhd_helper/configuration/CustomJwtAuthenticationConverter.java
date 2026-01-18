@@ -32,7 +32,7 @@ public class CustomJwtAuthenticationConverter
                         jwt.getClaimAsString("given_name"),
                         jwt.getClaimAsString("family_name"));
 
-        AdhdUser adhdUser = adhdUserService.saveOrUpdateUser(tokenUser);
+        AdhdUser adhdUser = adhdUserService.createOrGetUser(tokenUser);
 
         return new JwtAuthenticationToken(
                 jwt, List.of(new SimpleGrantedAuthority("ROLE_USER")), adhdUser.getName()) {

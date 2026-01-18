@@ -12,6 +12,12 @@ import pl.poznan.put.adhd.adhd_helper.pimpus.boss.Boss;
 import pl.poznan.put.adhd.adhd_helper.pimpus.boss.BossRepository;
 import pl.poznan.put.adhd.adhd_helper.pimpus.model.BossfightDto;
 import pl.poznan.put.adhd.adhd_helper.pimpus.model.ProfileDto;
+import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -45,6 +51,12 @@ public class ProfileService {
 
         int damageDealt = dealDamage(profile);
         return new BossfightDto(profileMapper.toDto(profile), damageDealt);
+    }
+
+    public Map<AdhdUser, PimpusProfile> getUserProfileMap(Set<AdhdUser> adhdUsers) {
+        return profileRepository
+                .findByUserIn(adhdUsers)
+                .collect(Collectors.toMap(PimpusProfile::getUser, Function.identity()));
     }
 
     private void addExp(PimpusProfile profile, int baseExp) {
@@ -131,6 +143,22 @@ public class ProfileService {
     }
 
     private PimpusProfile getUserProfile() {
-        return profileRepository.findByUser(SecurityContextUtils.getAdhdUser());
+        return profileRepository.findByUser(SecurityContextUtils.getAdhdUser()).orElse(null);
+    }
+
+    @Transactional
+    public void ensureProfileExists(AdhdUser user) {
+        PimpusProfile profile =
+                PimpusProfile.builder()
+                        .user(user)
+                        .level(0)
+                        .currentExp(0)
+                        .expToNextLevel(10)
+                        .inventoryPoints(0)
+                        .currentBoss(Boss.builder().id(1L).build())
+                        .currentBossHp(2L)
+                        .bossfightAttempts(0L)
+                        .build();
+        profileRepository.save(profile);
     }
 }

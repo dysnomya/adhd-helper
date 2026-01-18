@@ -56,14 +56,14 @@ public class Task {
     @Column(name = "time_needed")
     private Integer timeNeeded; // in minutes
 
-    @Column(name = "exp_amount")
-    private Integer expAmount;
-
     @Column(nullable = false)
     private boolean completed;
 
     @Column(name = "completed_at")
     private LocalDate completedAt;
+
+    @Column(nullable = false)
+    private boolean blocked;
 
     public void addSubtask(Task subtask) {
         subtasks.add(subtask);

@@ -99,7 +99,7 @@ public class TaskService {
     @Transactional
     public TaskResponse uncompleteTask(Long id) {
         Task toUncomplete = getTaskById(id);
-        validateTaskIsCompletedToday(toUncomplete);
+        validateTaskIsNotBlocked(toUncomplete);
 
         toUncomplete.setCompleted(false);
         toUncomplete.setCompletedAt(null);
@@ -119,16 +119,10 @@ public class TaskService {
         }
     }
 
-    private void validateTaskIsCompletedToday(Task task) {
-        if (!task.isCompleted()) {
-            return; // uncompleting uncompleted task won't hurt
-        }
-
-        if (task.getCompletedAt().isBefore(LocalDate.now())) {
+    private void validateTaskIsNotBlocked(Task task) {
+        if (task.isBlocked()) {
             throw InvalidResourceStateException.of(
-                    "Task",
-                    "COMPLETED_TODAY",
-                    "Task with id " + task.getId() + " is not completed today.");
+                    "Task", "BLOCKED", "Task with id " + task.getId() + " is already blocked.");
         }
     }
 }

@@ -7,5 +7,5 @@ import org.mapstruct.*;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AdhdUserMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateUserFromToken(AdhdUserToken token, @MappingTarget AdhdUser entity);
+    AdhdUser updateUserFromToken(AdhdUserToken token, @MappingTarget AdhdUser entity);
 }

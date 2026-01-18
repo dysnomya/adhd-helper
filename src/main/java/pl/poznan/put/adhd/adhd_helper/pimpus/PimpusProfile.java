@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import pl.poznan.put.adhd.adhd_helper.pimpus.boss.Boss;
 import pl.poznan.put.adhd.adhd_helper.pimpus.title.Title;
 import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
@@ -18,7 +15,6 @@ import pl.poznan.put.adhd.adhd_helper.user.AdhdUser;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EntityListeners(AuditingEntityListener.class)
 public class PimpusProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +22,6 @@ public class PimpusProfile {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @CreatedBy
     private AdhdUser user;
 
     private Integer level;

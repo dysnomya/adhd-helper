@@ -30,6 +30,7 @@ import java.util.Collection;
 public class TaskController {
 
     private final TaskService taskService;
+    private final TaskSchedulerService taskSchedulerService;
 
     @GetMapping
     @Operation(
@@ -117,5 +118,11 @@ public class TaskController {
                     Long id) {
 
         return taskService.uncompleteTask(id);
+    }
+
+    @Operation()
+    @PostMapping("/complete")
+    public void completeTasks() {
+        taskSchedulerService.markUserTasksCompleted();
     }
 }
