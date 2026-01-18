@@ -120,7 +120,11 @@ public class TaskController {
         return taskService.uncompleteTask(id);
     }
 
-    @Operation()
+    @Operation(
+            summary = "Complete all user tasks",
+            description =
+                    "Marks all tasks of the currently authenticated user as completed, "
+                            + "updates inventory points, and increments boss fight attempts if applicable.")
     @PostMapping("/complete")
     public void completeTasks() {
         taskSchedulerService.markUserTasksCompleted();
