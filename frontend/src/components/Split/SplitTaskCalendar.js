@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React from "react";
 
 const getPriorityColor = (priority) => {
     switch (priority) {

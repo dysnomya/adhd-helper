@@ -3,7 +3,7 @@ import img from "../assets/pimpus_happy_anim.webp";
 import { ReactComponent as Ellipse} from "../assets/Ellipse.svg";
 import Bubbles from "../assets/split-bubbles.svg";
 import { useTaskData } from "../hooks/UseTaskData";
-import { useState, useEffect, useMemo  } from "react";
+import { useState } from "react";
 import SplitTaskListContainer from "../components/Split/SplitTaskListContainer";
 import AddCategoryModal from "../components/Todo/AddCategoryModal";
 import { createCategory } from "../api/TaskApi";
@@ -12,7 +12,7 @@ import SplitLoadingPopUp from "../components/Split/SplitLoadingPopUp";
 import SplitCategoriesPopUp from "../components/Split/SplitCategoriesPopUp";
 import SplitCalendar from "../components/Split/SplitCalendar";
 import { ReactComponent as Chevron} from "../assets/Chevron right.svg";
-import { getTaskDateName, parseEuropeanDate } from "../functions/TasksHelpers"
+import { getTaskDateName} from "../functions/TasksHelpers"
 
 import { createTask } from "../api/TaskApi";
 import { createSubTask } from "../api/SplitApi";
@@ -55,7 +55,7 @@ const Split = () => {
 
         const apiPayload = {
             ...newTaskData,
-            categoryId: newTaskData.category.id != "NULL_CATEGORY" ? newTaskData.category.id : null,
+            categoryId: newTaskData.category.id !== "NULL_CATEGORY" ? newTaskData.category.id : null,
             priority: newTaskData.priority ? newTaskData.priority : null,
             category: undefined,
             parentId: newTaskData.parentId ? newTaskData.parentId : null
@@ -75,7 +75,7 @@ const Split = () => {
                 }));
                 
                 // Pobieramy subtaski z naszej lokalnej zmiennej (nie ze stanu!)
-                const subtasksToSend = geminiResult.filter(t => t.parentId == tempParentId);
+                const subtasksToSend = geminiResult.filter(t => t.parentId === tempParentId);
 
                 for (const subtask of subtasksToSend) {
                     const subtaskPayload = {
@@ -293,7 +293,7 @@ const Split = () => {
                             <div className="split-body-bubbles" style={{'--bg-img': `url(${Bubbles})`}}></div>
                             <div className="split-body-pimpus-div">
                                 <div className="split-body-pimpus-shadow-div">
-                                    <img src={img} className="split-body-pimpus"></img>
+                                    <img src={img} alt="obrazek-pimpusia" className="split-body-pimpus"></img>
                                     <Ellipse className="split-body-pimpus-ellipse"></Ellipse>
                                 </div>
                             </div>

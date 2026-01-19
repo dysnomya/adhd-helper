@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import "../../styles/split.scss";
 
 const SplitLoadingPopUp = ({geminiAsked, goodQuestion, onClose}) => {

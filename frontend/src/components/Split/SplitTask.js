@@ -34,7 +34,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
     const [localSubtasks, setLocalSubtasks] = useState(subtasks);
 
     useEffect( () => {
-        setLocalSubtasks(subtasks);
+        setLocalSubtasks(subtasks,[subtasks]);
     });
 
     const categoryColor = task.category ? task.category.color : "#828282ff";
@@ -42,7 +42,6 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
     const handleToggleSubtask = async () => {
         if(localSubtasks === undefined) return;
         // if((localSubtasks.length <= 0)) return;
-        const newState = !isExpanded;
         setIsExpanded(!isExpanded);
         console.log(isExpanded)
     };
@@ -102,18 +101,6 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
         }
     }
 
-    const TaskInfo = () =>{
-        if (isEdited) return(
-            <input value={taskName} className={`split-task-name `} onChange={e => setTaskName(e.target.value)}>
-            </input>
-        )
-        else return(
-            <p className={`split-task-name `}>
-                {task.name}
-            </p>
-        )
-    }
-
     return (
 
         <div 
@@ -164,8 +151,8 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
                                     <span className="split-task-time">
                                         {isEdited ? (
                                                 <span>
-                                                <input type="number" value={oldTaskTimeMetric == "h" ? taskTime/60 : taskTime} className={`split-task-time-input `} onChange={e => setTaskTime(e.target.value)}></input>
-                                                <select name="time-select" value={taskTimeMetric}  className={`split-task-time-select `} onClick={e => {if(e.target.value == 'min') { e.target.value='h';setTaskTimeMetric(e.target.value);} else{ e.target.value='min'}setTaskTimeMetric(e.target.value)}} onChange={e => {setTaskTimeMetric(e.target.value); console.log(taskTimeMetric);}}>
+                                                <input type="number" value={oldTaskTimeMetric === "h" ? taskTime/60 : taskTime} className={`split-task-time-input `} onChange={e => setTaskTime(e.target.value)}></input>
+                                                <select name="time-select" value={taskTimeMetric}  className={`split-task-time-select `} onClick={e => {if(e.target.value === 'min') { e.target.value='h';setTaskTimeMetric(e.target.value);} else{ e.target.value='min'}setTaskTimeMetric(e.target.value)}} onChange={e => {setTaskTimeMetric(e.target.value); console.log(taskTimeMetric);}}>
                                                         {/* <option value="min">min</option>
                                                         <option value="h">godz</option> */}
                                                     </select>
@@ -191,11 +178,11 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
                             console.log(oldTaskTimeMetric);
                             console.log(taskTimeMetric);
                             if (taskTimeMetric != oldTaskTimeMetric){
-                                if(oldTaskTimeMetric == 'h') {
+                                if(oldTaskTimeMetric === 'h') {
                                     task.timeNeeded = taskTime/60;
                                     setTaskTime(taskTime/60);
                                 }
-                                if(oldTaskTimeMetric == 'min'){
+                                if(oldTaskTimeMetric === 'min'){
                                     task.timeNeeded = taskTime*60;
                                     setTaskTime(taskTime*60);
                                 } 
@@ -271,8 +258,8 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
                                         <span className="split-task-time">
                                             {isEdited ? (
                                                     <span>
-                                                    <input type="number" value={oldTaskTimeMetric == "h" ? taskTime/60 : taskTime} className={`split-task-time-input `} onChange={e => setTaskTime(e.target.value)}></input>
-                                                    <select name="time-select" value={taskTimeMetric}  className={`split-task-time-select `} onClick={e => {if(e.target.value == 'min') { e.target.value='h';setTaskTimeMetric(e.target.value);} else{ e.target.value='min'}setTaskTimeMetric(e.target.value)}} onChange={e => {setTaskTimeMetric(e.target.value); console.log(taskTimeMetric);}}>
+                                                    <input type="number" value={oldTaskTimeMetric === "h" ? taskTime/60 : taskTime} className={`split-task-time-input `} onChange={e => setTaskTime(e.target.value)}></input>
+                                                    <select name="time-select" value={taskTimeMetric}  className={`split-task-time-select `} onClick={e => {if(e.target.value === 'min') { e.target.value='h';setTaskTimeMetric(e.target.value);} else{ e.target.value='min'}setTaskTimeMetric(e.target.value)}} onChange={e => {setTaskTimeMetric(e.target.value); console.log(taskTimeMetric);}}>
                                                         <option value="min">min</option>
                                                         <option value="h">godz</option>
                                                     </select>

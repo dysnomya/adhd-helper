@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export default function SplitCalendarCell(props) {
     const isTabbable = props.day && !props.openPanel;
 

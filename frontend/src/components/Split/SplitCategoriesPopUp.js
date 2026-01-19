@@ -15,10 +15,6 @@ const SplitCategoriesPopUp = ({splitAccepted, setSplitAccepted, categories, onAd
         color: "#828282ff"
     }
 
-    const noPriorityOption = {
-        color: "transparent"
-    }
-
     const handleCategoryClick = (categoryId) => {
         setActiveCategory(categoryId);
     };
@@ -39,13 +35,13 @@ const SplitCategoriesPopUp = ({splitAccepted, setSplitAccepted, categories, onAd
                             key={category.id}
                             category={category}
                             onClick={() => handleCategoryClick(category.id)}
-                            isActive={(category.id == activeCategory)}
+                            isActive={(category.id === activeCategory)}
                         />
                     ))}
                     <Category
                         category={noCategoryOption}
                         onClick={() => handleCategoryClick(noCategoryId)}
-                        isActive={(noCategoryId == activeCategory)}
+                        isActive={(noCategoryId === activeCategory)}
                     />
                 </div>
 
@@ -83,10 +79,10 @@ const SplitCategoriesPopUp = ({splitAccepted, setSplitAccepted, categories, onAd
                     <button className="add-category-btn-cancel" onClick={() => setSplitAccepted(false)}>Anuluj</button>
                     <button className="add-category-btn-confirm" 
                         onClick={() => {setSplitAccepted(false); setCalendarVisible(true); handleSplitAdded(); 
-                        (activeCategory == noCategoryId) ? 
+                        (activeCategory === noCategoryId) ? 
                         setSelectedCategory(noCategoryOption) 
                         : 
-                        setSelectedCategory(categories.find(categorie => categorie.id == activeCategory))}}>
+                        setSelectedCategory(categories.find(categorie => categorie.id === activeCategory))}}>
                         Potwierdź
                     </button>
                 </div>
