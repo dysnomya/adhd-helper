@@ -34,8 +34,8 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
     const [localSubtasks, setLocalSubtasks] = useState(subtasks);
 
     useEffect( () => {
-        setLocalSubtasks(subtasks,[subtasks]);
-    });
+        setLocalSubtasks(subtasks);
+    }, [subtasks]);
 
     const categoryColor = task.category ? task.category.color : "#828282ff";
 
@@ -177,7 +177,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
                             task.name = taskName;
                             console.log(oldTaskTimeMetric);
                             console.log(taskTimeMetric);
-                            if (taskTimeMetric != oldTaskTimeMetric){
+                            if (taskTimeMetric !== oldTaskTimeMetric){
                                 if(oldTaskTimeMetric === 'h') {
                                     task.timeNeeded = taskTime/60;
                                     setTaskTime(taskTime/60);

@@ -1,5 +1,4 @@
 const TASKS_URL = "/api/tasks"
-const CATEGORIES_URL = "/api/categories"
 
 const getHeaders = () => {
     const token = localStorage.getItem("token");
