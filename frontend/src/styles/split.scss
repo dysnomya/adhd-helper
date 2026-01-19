@@ -570,18 +570,15 @@ input, .split-task-time-select{
 
 .split-task-time-input{
     text-align: center;
-    // padding: 5px 5px;
     width:60px;
     appearance: none;
     margin: 0px 10px;
-    // padding-right: -45px;
     -webkit-appearance: textfield;
      -moz-appearance: textfield;
           appearance: textfield;
 }
 .split-task-time-input:hover{
     text-align: center;
-    // padding: 5px 5px;
     width:60px;
     appearance: none;
     margin: 0px 10px;
@@ -602,9 +599,8 @@ input, .split-task-time-select{
     appearance: none;
 }
 
-select,
-::picker(select) {
-  appearance: base-select;
+select, ::picker(select) {
+    appearance: base-select;
 }
 
 ::picker(select){
@@ -647,7 +643,6 @@ select,
     &::-webkit-scrollbar-thumb {
         background-color: var(--content-bg);
         border-radius: 4px;
-        // border: 2px solid #f4f4f4;
     }
     &::-webkit-scrollbar-thumb:hover {
         cursor: grab;
@@ -835,10 +830,8 @@ select,
     display: flex;
     flex-direction: row;
     flex: 1;
-    // width:100%;
     border-radius: 20px;
     justify-content: stretch;
-    // border:solid yellow; 
 }
 
 
@@ -851,7 +844,6 @@ select,
     display: flex;
     flex-direction: row;
     justify-content: stretch;
-    // border: solid purple;
     transition: all 0.5s ease-in-out;
 
 }
@@ -868,7 +860,6 @@ select,
     min-height: 50px;
     position: relative;
     z-index: 2; 
-    // border: solid green;
 }
 
 .split-task-left {
@@ -897,8 +888,6 @@ select,
     overflow-wrap: break-word; 
     word-wrap: break-word;
     word-break: break-word; 
-
-    /* Upewnij się, że nie masz ustawionego white-space: nowrap */
     white-space: normal;
 
     &.completed-text {

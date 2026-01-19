@@ -3,11 +3,11 @@ import "../../styles/split.scss";
 import "../../styles/todo.scss";
 import Category from '../Split/SplitCategory';
 
-const SplitCategoriesPopUp = ({splitAccepted, setSplitAccepted, categories, onAddCategoryClick, setCalendarVisible, setSelectedCategory, selectedPriority, setSelectedPriority}) => {
+const SplitCategoriesPopUp = ({splitAccepted, setSplitAccepted, categories, onAddCategoryClick, setCalendarVisible, setSelectedCategory, selectedPriority, setSelectedPriority, handleSplitAdded}) => {
 
     const noCategoryId = "NULL_CATEGORY";
 
-    const [activeCategory, setActiveCategory] = useState(0);
+    const [activeCategory, setActiveCategory] = useState(noCategoryId);
 
     const noCategoryOption = {
         id: noCategoryId,
@@ -82,7 +82,7 @@ const SplitCategoriesPopUp = ({splitAccepted, setSplitAccepted, categories, onAd
                 <div className="add-category-modal-actions split-actions">
                     <button className="add-category-btn-cancel" onClick={() => setSplitAccepted(false)}>Anuluj</button>
                     <button className="add-category-btn-confirm" 
-                        onClick={() => {setSplitAccepted(false); setCalendarVisible(true); 
+                        onClick={() => {setSplitAccepted(false); setCalendarVisible(true); handleSplitAdded(); 
                         (activeCategory == noCategoryId) ? 
                         setSelectedCategory(noCategoryOption) 
                         : 

@@ -15,26 +15,21 @@ import { ReactComponent as Chevron} from "../assets/Chevron right.svg";
 import { getTaskDateName, parseEuropeanDate } from "../functions/TasksHelpers"
 
 import { createTask } from "../api/TaskApi";
+import { createSubTask } from "../api/SplitApi";
+
 
 
 
 const Split = () => {
-
-    // Loading tasks data from database
     const {
         categories,
         addCategoryLocal,
-        addTaskLocal
     } = useTaskData();
 
-    // 1. Stan dla wartości inputu
     const [taskDescription, setTaskDescription] = useState('');
-    // 2. Stan dla wyniku (opcjonalnie, by wyświetlić go w SplitBodyContent)
     const [geminiAsked, setGeminiAsked] = useState(false);
     const [goodQuestion, setGoodQuestion] = useState(true);
-    const [geminiResult, setGeminiResult] = useState([
-    
-]);
+    const [geminiResult, setGeminiResult] = useState([]);
     const [taskSplitted, setTaskSplitted] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [splitAccepted, setSplitAccepted] = useState(false);
@@ -43,100 +38,66 @@ const Split = () => {
     const [selectedTasks, setSelectedTasks] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectAllTasks, setSelectAllTasks] = useState(false);
-    const [selectedPriority, setSelectedPriority] = useState(null);
-    const [isAddingTask, setIsAddingTask] = useState(false);
+    const [selectedPriority, setSelectedPriority] = useState('LOW');
     const [subtasks, setSubtasks] = useState([]);
     const [addAllTasks, setAddAllTasks] = useState(false);
-
-
-
-    console.log(geminiResult);
-    console.log(selectedCategory);
-
-    // const newTask = {
-    //         name: name,
-    //         timeNeeded: isNaN(timeNeededConvert) ? 0 : timeNeededConvert,
-    //         category: category,
-    //         priority: priority,
-    //         day: date,
-    //         completed: false,
-    //         subtasks: []
-    //     };
     
+
+    const handleSplitAccepted = () => {
+        setGeminiResult(prev => prev.map(t => {
+            return {...t, priority: selectedPriority};
+        }));
+    };
 
 
     const handleAddNewTask = async (newTaskData) => {
-
-        var geminiResultCopy = [...geminiResult];
-
-        const relevantSubtasks = geminiResultCopy.filter(task => task.parentId == newTaskData.id && newTaskData.parentId == null);
-
-        console.log(newTaskData.id);
+        const tempParentId = newTaskData.id;
 
         const apiPayload = {
             ...newTaskData,
-            categoryId: newTaskData.category ? newTaskData.category.id : null,
+            categoryId: newTaskData.category.id != "NULL_CATEGORY" ? newTaskData.category.id : null,
             priority: newTaskData.priority ? newTaskData.priority : null,
             category: undefined,
-            subtasks: relevantSubtasks.map(subTask => {
-            return {
-                ...subTask, // Kopiujemy nazwę, czas, etc.
-                
-                // 2. ID: Jeśli subtask ma tymczasowe ID (np. z Gemini), backend je nadpisze.
-                // Jeśli backend wymaga usunięcia ID przy tworzeniu, możesz dodać: id: undefined
-                
-                // 3. Kategoria: Subtask dziedziczy ID kategorii od rodzica (newTaskData)
-                categoryId: newTaskData.category ? newTaskData.category.id : null,
-                
-                // 4. Priorytet: Bierzemy z subtaska, albo domyślny
-                priority: subTask.priority ? subTask.priority : 'MEDIUM',
-                
-                // 5. Sprzątanie: Usuwamy obiekt category (tak jak w rodzicu)
-                category: undefined,
-                
-                // 6. Data: Upewnij się, że data jest w formacie, którego chce backend
-                // (np. jeśli subTask.date to obiekt Date, zamień na string)
-                date: subTask.date || newTaskData.date, 
-
-                // 7. Zabezpieczenie przed rekurencją (subtask nie ma swoich subtasków w tym momencie)
-            };
-        })
+            parentId: newTaskData.parentId ? newTaskData.parentId : null
         };
-
-
-
-
+  
         try {
-            console.log('sdjfkhsjkdfhkfsdh');
-            console.log(apiPayload)
-            // API CALL
-            // const createdTaskFromBackend = await createTask(apiPayload);
-            if(apiPayload.parentId == null){
-
-            await createTask(apiPayload);
+            // A. Wysyłamy rodzica i CZEKAMY na odpowiedź
+            if (!apiPayload.parentId){
+                const createdParent = await createTask(apiPayload);
             
-            // addTaskLocal(createdTaskFromBackend);
-            addTaskLocal(newTaskData);
+                const realParentId = createdParent.id; 
+
+                setGeminiResult(prev => prev.map(t => {
+                    if (t.id === tempParentId) return { ...t, id: realParentId };
+                    if (t.parentId === tempParentId) return { ...t, parentId: realParentId };
+                    return t;
+                }));
+                
+                // Pobieramy subtaski z naszej lokalnej zmiennej (nie ze stanu!)
+                const subtasksToSend = geminiResult.filter(t => t.parentId == tempParentId);
+
+                for (const subtask of subtasksToSend) {
+                    const subtaskPayload = {
+                        ...subtask,
+                        categoryId: apiPayload.categoryId,
+                        parentId: realParentId 
+                    };
+                    
+                    await createSubTask(subtaskPayload);
+                }
             }
-            setIsAddingTask(false);
         } catch (e) {
             console.error("Błąd dodawania zadania", e);
             alert(`Nie udało się dodać zadania.\n${e.message}`);
         }
     };
 
-
+    console.log(selectedCategory);
+    console.log(outSelectedDate.toISOString());
 
     const handleSaveEdit = (e) => {
-
         if (e) e.stopPropagation();
-
-        // if (!name.trim()) {
-        //     alert("Podaj nazwę zadania!");
-        //     return;
-        // }
-
-        // const timeNeededConvert = timeUnit === "godz" ? parseInt(time) * 60 : parseInt(time);
 
         geminiResult.forEach(tmpTask => {
             const newTask = {
@@ -150,32 +111,22 @@ const Split = () => {
                 parentId: tmpTask.parentId
             };
 
-                handleAddNewTask(newTask);
-
-            
-
+            handleAddNewTask(newTask);
         })
         
         setAddAllTasks(false);
         setCalendarVisible(false);
         setGeminiResult([]);
         setTaskSplitted(false);
-        
-    };
-
-    const handleAddTaskClick = () => {
-        setIsAddingTask(true);
     };
 
 
     const handleConfirmAddCategory = async (name, color) => {
-
         try {
             // API
             const newCategoryFromBackend = await createCategory({ name, color });
             addCategoryLocal(newCategoryFromBackend);
 
-            //TEMP
             alert("DOdano grupę");
 
         } catch (e) {
@@ -193,34 +144,6 @@ const Split = () => {
             setSelectAllTasks(true);
             setSelectedTasks(geminiResult);
         }
-         // Odwracamy wartość (true -> false, false -> true)  
-    };
-
-    const matchSubtasks = (task) => {
-        // 1. Pobieramy grupę podzadań pasującą do ID zadania (task.id)
-        // Używamy optional chaining (?.) i zabezpieczenia (|| []), żeby uniknąć błędu "is not a function"
-        const foundGroup = Array.isArray(subtasks) 
-            ? subtasks.find(group => group.id === task.id) 
-            : null;
-
-        // 2. Jeśli nie znaleziono podzadań, przerywamy funkcję (nie ma co aktualizować)
-        if (!foundGroup) {
-            console.log("Nie znaleziono podzadań dla zadania:", task.id);
-            return; 
-        }
-
-        // 3. Tworzymy nowy obiekt zadania z doczepionymi podzadaniami
-        const updatedTask = { ...task, subtasks: foundGroup.subtaskList };
-
-        // 4. Aktualizujemy stan
-        setGeminiResult(prevTasks => {
-            return prevTasks.map(t => {
-                // Jeśli ID się zgadza, podmieniamy na zaktualizowane zadanie
-                if (t.id === updatedTask.id) return updatedTask;
-                // W przeciwnym razie zwracamy stary element bez zmian
-                return t;
-            });
-        });
     };
 
     const onClickPrzypisz = () => {
@@ -242,8 +165,13 @@ const Split = () => {
     }
 
     // Inicjalizacja Gemini (Klucz API najlepiej trzymać w .env)
-    // const genAI = new GoogleGenerativeAI("");
-    const genAI = new GoogleGenerativeAI("AIzaSyASUp9UVlusUXn-_wL_K9Fk_NkST9UZbSg");
+    const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
+
+    if (!apiKey) {
+        console.error("Błąd: Brak klucza API Gemini w pliku .env!");
+    }
+
+    const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const SplitTaskButtonClicked = async () => {
@@ -297,217 +225,6 @@ const Split = () => {
 
             setTaskSplitted(true);
             setGeminiResult(newSubTasks);
-
-    //         setGeminiResult([
-    //             {
-    //     "id": 1,
-    //     "name": "Wybór i przygotowanie choinki (lub wyjęcie sztucznej)",
-    //     "day": "2026-01-10",
-    //     "priority": "HIGH",
-    //     "timeNeeded": 75,
-    //     "date": null,
-    //     "parentId": null
-    // },
-    // {
-    //     "id": 2,
-    //     "name": "Przygotowanie miejsca na choinkę",
-    //     "day": "2026-01-10",
-    //     "priority": "MEDIUM",
-    //     "timeNeeded": 15,
-    //     "date": null,
-    //     "parentId": null
-    // },
-    // {
-    //     "id": 3,
-    //     "name": "Montaż stojaka i osadzenie choinki",
-    //     "day": "2026-01-10",
-    //     "priority": "HIGH",
-    //     "timeNeeded": 20,
-    //     "date": null,
-    //     "parentId": null
-    // },
-    // {
-    //     "id": 4,
-    //     "name": "Rozplątanie i sprawdzenie lampek choinkowych",
-    //     "day": "2026-01-10",
-    //     "priority": "MEDIUM",
-    //     "timeNeeded": 20,
-    //     "date": null,
-    //     "parentId": null
-    // },
-    // {
-    //     "id": 5,
-    //     "name": "Oświetlenie choinki (zawieszenie lampek)",
-    //     "day": "2026-01-10",
-    //     "priority": "HIGH",
-    //     "timeNeeded": 30,
-    //     "date": null,
-    //     "parentId": null
-    // },
-    // {
-    //     "id": 6,
-    //     "name": "Wyjęcie i posegregowanie bombek i ozdób",
-    //     "day": "2026-01-10",
-    //     "priority": "LOW",
-    //     "timeNeeded": 15,
-    //     "date": null,
-    //     "parentId": null
-    // },
-    // {
-    //     "id": 7,
-    //     "name": "Zawieszanie bombek i innych ozdób",
-    //     "day": "2026-01-10",
-    //     "priority": "HIGH",
-    //     "timeNeeded": 45,
-    //     "date": null,
-    //     "parentId": null
-    // },
-    // {
-    //     "id": 8,
-    //     "name": "Udekorowanie choinki łańcuchami i girlandami",
-    //     "day": "2026-01-10",
-    //     "priority": "MEDIUM",
-    //     "timeNeeded": 25,
-    //     "date": null,
-    //     "parentId": null
-    // },
-    // {
-    //     "id": 9,
-    //     "name": "Umieszczenie gwiazdy/szpica na czubku choinki",
-    //     "day": "2026-01-10",
-    //     "priority": "HIGH",
-    //     "timeNeeded": 10,
-    //     "date": null,
-    //     "parentId": null
-    // },
-    // {
-    //     "id": 10,
-    //     "name": "Rozłożenie dywanika/osłonki pod choinką",
-    //     "day": "2026-01-10",
-    //     "priority": "LOW",
-    //     "timeNeeded": 5,
-    //     "date": null,
-    //     "parentId": null
-    // },
-    // {
-    //     "id": 11,
-    //     "name": "Podłączenie lampek i podziwianie efektu",
-    //     "day": "2026-01-10",
-    //     "priority": "VERY_HIGH",
-    //     "timeNeeded": 5,
-    //     "date": null,
-    //     "parentId": null
-    // },
-    // {
-    //     "id": 12,
-    //     "name": "Posprzątanie po dekorowaniu",
-    //     "day": "2026-01-10",
-    //     "priority": "MEDIUM",
-    //     "timeNeeded": 20,
-    //     "date": null,
-    //     "parentId": null
-    // },
-
-    // {
-    //                 "id": 1,
-    //                 "name": "Decyzja o typie choinki (naturalna/sztuczna)",
-    //                 "day": "2026-01-10",
-    //                 "priority": "HIGH",
-    //                 "timeNeeded": 15,
-    //                 "date": null,
-    //                 "parentId": 1
-    //             },
-    //             {
-    //                 "id": 2,
-    //                 "name": "Wyszukanie i wybór naturalnej choinki (jeśli żywa)",
-    //                 "day": "2026-01-10",
-    //                 "priority": "HIGH",
-    //                 "timeNeeded": 60,
-    //                 "date": null,
-    //                 "parentId": 1
-    //             },
-    //             {
-    //                 "id": 3,
-    //                 "name": "Zakup i transport naturalnej choinki do domu",
-    //                 "day": "2026-01-10",
-    //                 "priority": "HIGH",
-    //                 "timeNeeded": 90,
-    //                 "date": null,
-    //                 "parentId": 1
-    //             },
-    //             {
-    //                 "id": 4,
-    //                 "name": "Wyjęcie i rozpakowanie sztucznej choinki (jeśli sztuczna)",
-    //                 "day": "2026-01-10",
-    //                 "priority": "MEDIUM",
-    //                 "timeNeeded": 30,
-    //                 "date": null,
-    //                 "parentId": 1
-    //             },
-    //             {
-    //                 "id": 5,
-    //                 "name": "Montaż i wstępne formowanie sztucznej choinki",
-    //                 "day": "2026-01-10",
-    //                 "priority": "MEDIUM",
-    //                 "timeNeeded": 45,
-    //                 "date": null,
-    //                 "parentId": 1
-    //             },
-    //             {
-    //                 "id": 6,
-    //                 "name": "Przygotowanie stojaka lub podstawy choinki",
-    //                 "day": "2026-01-10",
-    //                 "priority": "MEDIUM",
-    //                 "timeNeeded": 20,
-    //                 "date": null,
-    //                 "parentId": 1
-    //             },
-    //             {
-    //                 "id": 7,
-    //                 "name": "Ustawienie i stabilizacja choinki w docelowym miejscu",
-    //                 "day": "2026-01-10",
-    //                 "priority": "HIGH",
-    //                 "timeNeeded": 25,
-    //                 "date": null,
-    //                 "parentId": 1
-    //             },
-    //             {
-    //                 "id": 8,
-    //                 "name": "Wstępne oczyszczenie i rozłożenie gałęzi choinki",
-    //                 "day": "2026-01-10",
-    //                 "priority": "LOW",
-    //                 "timeNeeded": 15,
-    //                 "date": null,
-    //                 "parentId": 1
-    //             },
-    //             {
-    //                 "id": 1,
-    //                 "name": "Decyzja o typie choinki (naturalna/sztuczna)",
-    //                 "day": "2026-01-10",
-    //                 "priority": "HIGH",
-    //                 "timeNeeded": 15,
-    //                 "date": null,
-    //                 "parentId": 3
-    //             },
-    //             {
-    //                 "id": 2,
-    //                 "name": "Wyszukanie i wybór naturalnej choinki (jeśli żywa)",
-    //                 "day": "2026-01-10",
-    //                 "priority": "HIGH",
-    //                 "timeNeeded": 60,
-    //                 "date": null,
-    //                 "parentId": 3
-    //             },
-    //             {
-    //                 "id": 3,
-    //                 "name": "Zakup i transport naturalnej choinki do domu",
-    //                 "day": "2026-01-10",
-    //                 "priority": "HIGH",
-    //                 "timeNeeded": 90,
-    //                 "date": null,
-    //                 "parentId": 3
-    //             }
-    //         ])
             setGeminiAsked(false);
         }
 
@@ -588,11 +305,12 @@ const Split = () => {
                 <SplitLoadingPopUp geminiAsked={geminiAsked} goodQuestion={goodQuestion} onClose={() => setGoodQuestion(true)}></SplitLoadingPopUp>
                 <SplitCategoriesPopUp categories={categories} 
                     splitAccepted={splitAccepted} 
-                    setSplitAccepted={setSplitAccepted} 
+                    handleSplitAdded={handleSplitAccepted} 
                     onAddCategoryClick={() => setIsModalOpen(true)} 
                     handleConfirmAddCategory={handleConfirmAddCategory}
                     setCalendarVisible={setCalendarVisible}
                     setSelectedCategory={setSelectedCategory}
+                    setSplitAccepted={setSplitAccepted}
                     selectedPriority={selectedPriority}
                     setSelectedPriority={setSelectedPriority}></SplitCategoriesPopUp>
                 <AddCategoryModal 
@@ -635,7 +353,6 @@ const Split = () => {
                         selectedPriority={selectedPriority}
                         selectAllTasks={selectAllTasks}
                         subtasks={subtasks}
-                        matchSubtasks={matchSubtasks}
                     />
                     <div className="split-add-category-modal-actions">
                         <button className="add-category-btn-confirm" onClick={onClickPrzypisz}>Przypisz {getTaskDateName(outSelectedDate).replaceAll('.','-')}</button>

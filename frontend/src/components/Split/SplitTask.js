@@ -22,8 +22,14 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
     const [taskTimeMetric, setTaskTimeMetric] = useState('min');
     const [oldTaskTimeMetric, setOldTaskTimeMetric] = useState('min');
     
-    const genAI = new GoogleGenerativeAI("AIzaSyASUp9UVlusUXn-_wL_K9Fk_NkST9UZbSg");
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    // Inicjalizacja Gemini (Klucz API najlepiej trzymać w .env)
+    const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
+
+    if (!apiKey) {
+        console.error("Błąd: Brak klucza API Gemini w pliku .env!");
+    }
+
+    const genAI = new GoogleGenerativeAI(apiKey);    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const [localSubtasks, setLocalSubtasks] = useState(subtasks);
 
@@ -287,16 +293,6 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
                                         task={{ ...subtask, parentId: task.id }} 
                                         isSubtask={true}
                                         onDelete={() => removeSubtask(subtask)}
-                                        
-                                        
-                                        
-                                        // setGeminiAsked={setGeminiAsked}
-                                        // subtasks={(splittedTasks.filter(Intask => Intask.parentId == task.id) === undefined) ? [] : splittedTasks.filter(Intask => Intask.parentId == task.id)}
-                                        // setSubtasks={setSubtasks}
-                                        // setGeminiResult={setGeminiResult}
-                                        // geminiResult={splittedTasks}
-                                        // // onSubtaskDelete={removeSubtasks}
-                                        // removeSubtask={removeSubtask}
                                     />
                                 ))}
                             </div>

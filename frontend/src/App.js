@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Todo from "./pages/Todo";
 import Calendar from "./pages/Calendar";
 import Split from "./pages/Split";
+// import Game from ".pages/Game";
 import "./styles/_themes.scss";
 
 function App() {
@@ -48,7 +49,7 @@ function App() {
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/adhdUser" element={<User />} />
               <Route path="/split" element={<Split />} />
-              <Route path="/game" element={<Game />} />
+              {/* <Route path="/game" element={<Game />} /> */}
             </Route>
           </Route>
         </Routes>

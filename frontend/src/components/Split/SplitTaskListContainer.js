@@ -7,15 +7,11 @@ import { useState } from "react";
 const SplitTaskListContainer = ({ splittedTasks, setGeminiAsked, isCalendarTasks, selectedTasks, setSelectedTasks, selectedCategory, selectAllTasks, selectedPriority, subtasks, setSubtasks, setGeminiResult}) => {
 
     const [tasks, setTasks] = useState(splittedTasks || []);
-    
-    
 
     console.log(selectedPriority);
     console.log("subtsaks");
     console.log(subtasks);
     
-    const sleep = ms => new Promise(r => setTimeout(r, ms));
-
     const removeTask = async (taskToDelete) => {
         //usuwanie taska z json
         setGeminiResult(prevTasks => prevTasks.filter((task, _) => task.id !== taskToDelete.id));
@@ -42,44 +38,13 @@ const SplitTaskListContainer = ({ splittedTasks, setGeminiAsked, isCalendarTasks
             if(task.parentId >= taskToDelete.id) return {...task, parentId: task.parentId-1 }
             return task;
         })));
-
-
-
-
-
-        // await sleep(200);
-        // tasks.forEach(task => {
-        //     if(task.id > indexToRemove) task.id = task.id-1 
-        // });
-        // setTasks(prevTasks => prevTasks.filter((task, _) => task.id !== indexToRemove));
-        // setGeminiResult(prevTasks => prevTasks.filter((task, _) => ((task.parentId == null) || (task.parentId !== (inTask.id)))));
-        
     };
 
     const removeSubtask = async (taskToDelete) => {
         setGeminiResult(prevTasks => prevTasks.filter((task, _) => task.id !== taskToDelete.id));
         //usuwanie taska z obiektów
         setTasks(prevTasks => prevTasks.filter((task, _) => task.id !== taskToDelete.id));
-    };
-
-
-    // const matchSubtasks = (task) => {
-    //     var newTask = {};
-
-    //     var subT = subtasks.find(subtasksList => task.id === subtasksList.id);
-    //     if (subT != null) {
-    //         newTask = {...task, subtasks: subT.subtaskList};
-    //     }
-
-    //     setSplittedTasks(splittedTasks => {
-    //         return splittedTasks.map( tmpTask => {
-    //             if(tmpTask.id == newTask.id) return newTask;
-    //             return tmpTask;
-    //         });
-    //     });
-    // }
-
-    
+    };    
 
     const handleClick = ( clickedTask ) => {
         if (selectedTasks.find(task => task.id === clickedTask.id)){
@@ -126,7 +91,6 @@ const SplitTaskListContainer = ({ splittedTasks, setGeminiAsked, isCalendarTasks
                     selectedCategory={selectedCategory}
                     selectAllTasks={selectAllTasks}
                     selectedPriority={selectedPriority}
-                    
                     />   
             ))}
         </div>

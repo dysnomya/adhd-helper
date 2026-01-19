@@ -11,9 +11,7 @@ const getPriorityColor = (priority) => {
 };
 
 const SplitTaskCalendar = ({ task, isSubtask = false, onClick, isSelected, selectedCategory, selectAllTasks, selectedPriority}) => {
-    const [taskName, setTaskName] = useState(task.name);
     const categoryColor = selectedCategory ? selectedCategory.color : "#828282ff";
-    const categoryName = task.category ? task.category.name : 'Ogólne';
     const priorityColor = getPriorityColor(selectedPriority);
 
     return (

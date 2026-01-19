@@ -14,12 +14,12 @@ export default function SplitCalendar({setOutSelectedDate, tasks, onClickDay, se
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
-    console.log(new Date(year, month, 1));      
+    // console.log(new Date(year, month, 1));      
 
     const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
     const lastDay = new Date(year, month + 1, 0).getDate();
 
-    console.log(selectedCategory.color);
+    // console.log(selectedCategory.color);
 
     const isSameDay = (date1, date2) => {
     // Zabezpieczenie przed null/undefined
@@ -53,8 +53,9 @@ export default function SplitCalendar({setOutSelectedDate, tasks, onClickDay, se
     };
 
     const selectDate = (day) => {
-        setSelectedDate(new Date(year, month, day));
-        setOutSelectedDate(new Date(year, month, day));
+
+        setSelectedDate(new Date(year, month, day, 1));
+        setOutSelectedDate(new Date(year, month, day, 1));
         
     }
 
