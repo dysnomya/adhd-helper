@@ -30,11 +30,11 @@ export const useProfileData = () => {
             setProfileData(data[0]);
             setUserData(data[1]);
         } catch (e) {
+            setError(e);
             if (e.message === '401 Unauthorized') {
                 localStorage.removeItem("token");
             } else {
                 console.error("Błąd pobierania danych:", e);
-                setError(e);
             }
 
         } finally {
@@ -56,11 +56,11 @@ export const useProfileData = () => {
 
             setProfileData(data[0]);
         } catch (e) {
+            setError(e);
             if (e.message === '401 Unauthorized') {
                 localStorage.removeItem("token");
             } else {
                 console.error("Błąd pobierania danych:", e);
-                setError(e);
             }
         }
     };
@@ -83,11 +83,11 @@ export const useProfileData = () => {
             setProfileData(data[0].profile);
             setDmgDealt(data[0].damageDealt);
         } catch (e) {
+            setError(e);
             if (e.message === '401 Unauthorized') {
                 localStorage.removeItem("token");
             } else {
                 console.error("Błąd pobierania danych:", e);
-                setError(e);
             }
         }
     };

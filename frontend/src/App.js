@@ -34,6 +34,12 @@ function App() {
       >
         Toggle Theme
       </button>
+      <button
+        onClick={() => localStorage.removeItem("token")}
+        style={{ position: "fixed", bottom: 10, right: 150, zIndex: 200 }}
+      >
+        Delete token
+      </button>
 
       <Router>
         <Routes>
