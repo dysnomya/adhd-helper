@@ -1,4 +1,4 @@
-
+import { useState } from "react";
 
 export const getTaskDateName = (dueDate) => {
 
@@ -58,4 +58,54 @@ export const timeDisplay = (timeInMinutes) => {
     const timeString = hours + " godz " + minutes + " min";
     return timeString;
 
-}
+};
+
+export const NumberInput = ({setTime, ...props}) => {
+    const [amount, setAmount] = useState(5); 
+
+    const handleAmountChange = (e) => {
+        const val = e.target.value;
+
+        if (val === "") {
+            setAmount("");
+            return;
+        }
+
+        const numVal = parseInt(val, 10);
+        if (numVal < 1 || isNaN(numVal)) {
+            setAmount(1);
+            setTime(1);
+        } else {
+            setAmount(numVal);
+            setTime(numVal);
+        }
+    };
+
+    const blockInvalidChar = (e) => {
+        if (['e', 'E', '+', '-', '.', ','].includes(e.key)) {
+            e.preventDefault();
+        }
+    };
+
+    const handleBlur = () => {
+        if (amount === "") {
+            setAmount(1);
+            setTime(1);
+        }
+    }
+
+    return (
+        <input
+            type="number"
+            min="1"
+            max="1440"
+            value={amount}
+            onChange={handleAmountChange}
+            onKeyDown={blockInvalidChar}
+            onBlur={handleBlur}
+            className="edit-input-time"
+            {...props}
+        />
+    );
+
+};
