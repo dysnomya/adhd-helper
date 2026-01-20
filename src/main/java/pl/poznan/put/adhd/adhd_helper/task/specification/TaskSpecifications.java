@@ -30,6 +30,7 @@ public class TaskSpecifications {
                 .and(priorityIn(taskFilter.priority()))
                 .before(Task_.day, taskFilter.dayTo())
                 .after(Task_.day, taskFilter.dayFrom())
+                .eq(Task_.blocked, taskFilter.blocked())
                 .build();
     }
 
