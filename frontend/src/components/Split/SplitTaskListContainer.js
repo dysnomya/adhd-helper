@@ -64,7 +64,7 @@ const SplitTaskListContainer = ({ splittedTasks, setGeminiAsked, isCalendarTasks
     return (
         <div className={` ${isCalendarTasks ? "split-task-list-container-calendar" : "split-task-list-container"}  ${selectAllTasks ? 'select-all-tasks' : ''}`}>
             {/* Dodajemy sprawdzenie && oraz opcjonalne chainowanie ?. */}
-            {tasks && tasks.filter(task => task.parentId === null).map((task, index) => (
+            {tasks && tasks.filter(task => !task.parentId).map((task, index) => (
                 !isCalendarTasks ? 
                     <SplitTask
                     // Gemini nie zwraca ID, więc używamy indexu lub Date.now()
