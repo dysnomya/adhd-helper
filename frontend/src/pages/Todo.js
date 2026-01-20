@@ -5,10 +5,9 @@ import TodoSidebar from "../components/Todo/TodoSidebar";
 import TaskListContainer from "../components/Todo/TaskListContainer";
 import { getTaskDateName, parseEuropeanDate } from "../functions/TasksHelpers"
 import AddCategoryModal from "../components/Todo/AddCategoryModal";
-import { ReactComponent as Dynks} from "../assets/dynks.svg";
-import { ReactComponent as Filter} from "../assets/Filter_icon.svg";
+import { ReactComponent as Dynks } from "../assets/dynks.svg";
+import { ReactComponent as Filter } from "../assets/Filter_icon.svg";
 import { useLocation } from "react-router-dom";
-import { ReactComponent as SadPimpus } from "../assets/pimpus_sad.svg";
 import DailyProgress from "../components/Todo/DailyProgress";
 
 import pimpus from "../assets/pimpus_happy_anim.webp";
@@ -19,6 +18,7 @@ import EditCategoryModal from "../components/Todo/EditCategoryModal";
 
 import { createCategory, updateCategory, deleteCategory } from "../api/TaskApi";
 import { createTask, updateTask, deleteTask } from "../api/TaskApi";
+import ErrorCard from "../components/ErrorCard";
 
 //  todo?date=2025-12-06
 const Todo = () => {
@@ -78,7 +78,7 @@ const Todo = () => {
     } = useTaskData(activeFilter, selectedDateFilter, showAllTasks);
 
 
-    useEffect(() => {     
+    useEffect(() => {
         if (categories.length > 0 && !areCategoriesInitialized) {
 
             const allCategoryIds = categories.map(cat => cat.id);
@@ -87,7 +87,7 @@ const Todo = () => {
             setActiveFilter(allCategoryIds);
             setAreCategoriesInitialized(true);
         }
-        
+
     }, [categories, areCategoriesInitialized]);
 
     const handleConfirmAddCategory = async (name, color) => {
@@ -132,7 +132,7 @@ const Todo = () => {
 
         const getTimestamp = (dateName) => {
             if (dateName === "Bez daty") return Infinity;
-            
+
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 
@@ -258,13 +258,13 @@ const Todo = () => {
         }
     };
 
-    
+
 
     // Debugging - Do usunięcia później
     useEffect(() => {
         if (tasks.length > 0) {
             console.log("Zadania:", tasks);
-            
+
             console.log("Kategorie:", categories)
         }
     }, [tasks, categories]);
@@ -272,13 +272,7 @@ const Todo = () => {
 
 
     if (error) return (
-        <div className="server-data-error-main">
-            <div className="server-data-error">
-                <SadPimpus className="sad-pimpus"></SadPimpus>
-                <p className="blad-serwera">Błąd połączenia z serwerem</p>
-                <p>Coś poszło nie tak. Sprawdź połączenie z internetem.</p>
-            </div>
-        </div>
+        <ErrorCard />
     );
 
     return (
@@ -294,17 +288,17 @@ const Todo = () => {
 
             <div className="mobile-header">
                 <Dynks></Dynks>
-                <button 
-                    className="menu-toggle-btn" 
+                <button
+                    className="menu-toggle-btn"
                     onClick={() => setIsSidebarOpen(true)}>
                     <Filter></Filter>
                 </button>
             </div>
 
             <div className={`todo-sidebar-wrapper ${isSidebarOpen ? 'open' : ''}`}>
-                
+
                 <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>
-                
+
                 <div className="todo-sidebar-main">
                     <TodoSidebar
                         categories={categories}
@@ -329,7 +323,7 @@ const Todo = () => {
                 </div>
             </div>
 
-            
+
 
             <div className="todo-main-content-area">
 
@@ -343,8 +337,8 @@ const Todo = () => {
                             className="add-task-btn"
                             onClick={handleAddTaskClick}
                         >
-                        + Nowe zadanie
-                    </button>
+                            + Nowe zadanie
+                        </button>
                     </div>
                     <div className="todo-progress-pimpus-wrapper">
                         <img
@@ -376,7 +370,7 @@ const Todo = () => {
                     )}
 
 
-                    <TaskListContainer 
+                    <TaskListContainer
 
                         datedTasks={datedTasks}
                         onTaskStatusChange={changeTaskStatus}
@@ -385,11 +379,11 @@ const Todo = () => {
                         categories={categories}
                     ></TaskListContainer>
                 </div>
-                
+
 
             </div>
 
-            <AddCategoryModal 
+            <AddCategoryModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onConfirm={handleConfirmAddCategory}
