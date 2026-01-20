@@ -5,7 +5,7 @@ export default function PetView(props) {
     return (
         <div className="game-pet-container">
             <h1 className="game-pet-name">Pimpuś</h1>
-            <div className={`${props.animation ? 'pimpus-jump' : ''}`}>
+            <div className={` ${props.animation ? 'pimpus-jump' : ''}`}>
                 <img src={pimpus} alt="Pimpuś" className="pimpus game-pimpus" />
             </div>
             <div className="game-food-container">
