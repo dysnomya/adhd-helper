@@ -1,7 +1,7 @@
 import "../styles/dashboard.scss";
 import DailyProgress from "../components/Todo/DailyProgress";
 import { useTaskData } from "../hooks/UseTaskData";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import TaskProgressGaugeChart from "../components/Dashboard/TaskProgressGaugeChart";
 import TaskSplineAreaChart from "../components/Dashboard/TaskSplineAreaChart";
 import DateComponent from "../components/Dashboard/DateComponent";
@@ -11,7 +11,24 @@ import ErrorCard from "../components/ErrorCard";
 import { ReactComponent as Glut } from "../assets/dashboard-glut.svg";
 import pimpus from "../assets/pimpus_happy_anim.webp";
 
+import { fetchUserInfo } from "../api/UserApi";
+
 export default function Dashboard() {
+    const [userName, setUserName] = useState("");
+
+    useEffect(() => {
+        const getUserData = async () => {
+            try {
+                const data = await fetchUserInfo();
+                if (data && data.name) {
+                    setUserName(data.name);
+                }
+            } catch (error) {
+                console.error("Błąd pobierania użytkownika: ", error);
+            }
+        };
+        getUserData();
+    });
 
     const emptyFilters = useMemo(() => [], []);
     const { tasks, categories, isLoading, error } = useTaskData(emptyFilters, "", true);
@@ -67,6 +84,9 @@ export default function Dashboard() {
 
     const percentage = stats ? stats.percentage : 0;
 
+    const getTodayDateString = () => new Date().toISOString().split('T')[0];
+    const statsDate = getTodayDateString();
+
     return (
         <div className='dashboard-main-container'>
 
@@ -80,7 +100,8 @@ export default function Dashboard() {
 
             <div className="dashboard-left">
                 <div className="dashboard-left-top">
-                    <DailyProgress
+                    <DailyProgress 
+                        date={statsDate}
                     />
                 </div>
 
@@ -103,7 +124,7 @@ export default function Dashboard() {
             <div className="dashboard-right">
                 <div className="dashboard-right-top">
                     <div className="dashboard-pimpek-text">
-                        <p>Cześć PimpekMaster3000!</p>
+                        <p>Cześć {userName}!</p>
                     </div>
                     <div className="dashboard-pimpek">
 

@@ -40,6 +40,14 @@ $bg-overlay-darker: rgba(0, 0, 0, 0.6);
     padding-top: 5px;
     min-height: 0;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .todo-tasks-list > div { 
+        width: 100%;       /* Zajmij całą dostępną przestrzeń... */
+        max-width: 600px;  /* ...ale nie więcej niż 600px (żeby nie było zbyt szerokie na desktopie) */
+    }
 
     &::-webkit-scrollbar {
         width: 8px;
@@ -363,9 +371,9 @@ $bg-overlay-darker: rgba(0, 0, 0, 0.6);
 .todo-task-list-container {
     margin: 10px;
     margin-right:0px;
-
-
     font-family: $app-font;
+    max-width: 1200px;
+    width: 100%;
 }
 
 .todo-tasks-date-section {
@@ -497,6 +505,11 @@ $bg-overlay-darker: rgba(0, 0, 0, 0.6);
     &.checked {
         background-color: var(--cat-color);
         border-color: var(--cat-color);
+    }
+
+    &.in-calendar {
+        cursor: default;
+        pointer-events: none;
     }
 
     .dot {
@@ -1122,19 +1135,22 @@ $bg-overlay-darker: rgba(0, 0, 0, 0.6);
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 
 
     min-height: 80px;
     min-width: 200px;
 }
 
-.todo-no-tasks-message {
+.todo-progress-no-tasks-message {
     text-align: center;
     color: var(--color-text-placeholder);
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
 
-    p { margin: 0; }
+    p { 
+        margin: 0;
+    }
 }
 
 .todo-progress-title {
@@ -1232,6 +1248,10 @@ $bg-overlay-darker: rgba(0, 0, 0, 0.6);
     &.options-expanded {
         transform: scaleX(1);
     }
+
+    &.in-calendar {
+        display: none;
+    }
 }
 
 .task-row-wrapper {
@@ -1271,6 +1291,10 @@ $bg-overlay-darker: rgba(0, 0, 0, 0.6);
 
         &.delete { color: #ff5555; }
         &:hover { transform: scale(1.2); }
+    }
+
+    &.in-calendar {
+        display: none;
     }
 }
 
@@ -1360,9 +1384,7 @@ $bg-overlay-darker: rgba(0, 0, 0, 0.6);
     margin: 0;
 }
 
-.in-calendar {
-    display: none;
-}
+
 
 
 // delete
