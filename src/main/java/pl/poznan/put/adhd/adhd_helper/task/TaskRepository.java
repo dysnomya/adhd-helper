@@ -27,4 +27,8 @@ interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExec
     List<Task> findByDayAndParentNullAndCreatedBy(LocalDate day, AdhdUser createdBy);
 
     Long deleteByIdAndCreatedBy(Long id, AdhdUser createdBy);
+
+    List<Task> findByCompletedTrueAndBlockedFalse();
+
+    List<Task> findByCreatedByAndCompletedTrueAndBlockedFalse(AdhdUser createdBy);
 }

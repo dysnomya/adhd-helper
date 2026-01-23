@@ -10,4 +10,5 @@ public record TaskFilter(
         LocalDate dayTo,
         LocalDate day,
         List<Long> category,
-        List<Priority> priority) {}
+        List<Priority> priority,
+        Boolean blocked) {}

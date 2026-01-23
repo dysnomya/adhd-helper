@@ -15,6 +15,7 @@ import { ReactComponent as CalendarIcon } from "../../assets/calendar-icon.svg";
 import { ReactComponent as XIcon } from "../../assets/x-icon.svg";
 
 import { DropdownPortal } from "../Todo/DropdownPortal"
+import { NumberInput } from "../../functions/TasksHelpers";
 
 const getPriorityColor = (priority) => {
     switch (priority) {
@@ -287,14 +288,12 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
                             value={editName}
                             onChange={(e) => setEditName(e.target.value)}
                             placeholder="Nazwa zadania..."
+                            maxLength={256}
                         />
 
                         <div className="edit-time-group">
-                            <input
-                                type="number"
-                                className="edit-input-time"
-                                value={editTime}
-                                onChange={(e) => setEditTime(e.target.value)}
+                            <NumberInput
+                                setTime = {setEditTime}
                             />
                             <div className="edit-unit-toggle" onClick={() => setEditTimeUnit(editTimeUnit === 'min' ? 'godz' : 'min')}>
                                 {editTimeUnit}
@@ -397,7 +396,7 @@ const Task = ({ task, isSubtask = false, onStatusChange, inCalendar = false, onD
 
                             <div className="task-left">
                                 <div
-                                    className={`custom-checkbox ${task.completed ? 'checked' : ''}`}
+                                    className={`custom-checkbox ${task.completed ? 'checked' : ''} ${inCalendar ? 'in-calendar' : ''}`}
                                     onClick={handleCheckedTask}
                                 >
                                     {isCompleted && <CheckIcon className="dot"></CheckIcon>}

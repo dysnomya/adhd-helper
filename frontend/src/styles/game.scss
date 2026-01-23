@@ -225,15 +225,31 @@ $level-font: "Space Mono", monospace;
 }
 
 .game-pimpus {
-    transform: scale(0.7);
+    min-width: 300px;
+    max-width: 50%;
+    height: auto;
     align-self: center;
-    margin: -220px -300px -200px -300px;
+    margin: -5% -30% -10% -30%;
+}
+
+.game-boss-null {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 3em;
+}
+
+.pimpek-rotate {
+    animation: gameSpin 10s linear infinite;
+    transform-origin: 50% 55%;
+    opacity: 0.5;
 }
 
 .game-boss {
-    transform: scale(0.5);
+    min-width: 200px;
+    max-width: 80%;
     align-self: center;
-    margin: -200px -400px -250px -400px;
+    margin: 0 -30% -20% -30%;
     filter: contrast(1.4) brightness(1.1);
 }
 
@@ -244,8 +260,7 @@ $level-font: "Space Mono", monospace;
     flex-direction: column;
     align-items: center;
     border-radius: $game-border-radius;
-    background:
-        linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, $boss-color-temp 100%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, $boss-color-temp 100%);
 
     background-origin: border-box;
     background-clip: padding-box, border-box;
@@ -299,6 +314,8 @@ $level-font: "Space Mono", monospace;
 }
 
 .game-boss-hp-bar-container {
+    margin-top: auto;
+    padding-top: 10px;
     width: 90%;
     padding-inline: 1rem;
 }
@@ -306,7 +323,7 @@ $level-font: "Space Mono", monospace;
 .game-dmg-number {
     margin-top: 50px;
     margin-bottom: -150px;
-    font-size: 60px;
+    font-size: 50px;
     opacity: 0;
     color: $boss-color-temp;
 }
@@ -316,41 +333,43 @@ $level-font: "Space Mono", monospace;
 }
 
 @keyframes dmgAnimation {
-  0% {
-    opacity: 0;
-  }
+    0% {
+        opacity: 0;
+    }
 
-  30% {
-    opacity: 1;
-    transform: translateY(-10px);
-  }
+    30% {
+        opacity: 1;
+        transform: translateY(-10px);
+    }
 
-  70% {
-    opacity: 1;
-    transform: translateY(-20px);
-  }
+    70% {
+        opacity: 1;
+        transform: translateY(-20px);
+    }
 
-  100% {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
+    100% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
 }
 
 .squish {
-  animation: squish 160ms ease-out;
-  transform-origin: center bottom;
+    animation: squish 160ms ease-out;
+    transform-origin: center bottom;
 }
 
 @keyframes squish {
-  0% {
-    transform: scaleY(1);
-  }
-  40% {
-    transform: scaleY(0.85);
-  }
-  100% {
-    transform: scaleY(1);
-  }
+    0% {
+        transform: scaleY(1);
+    }
+
+    40% {
+        transform: scaleY(0.85);
+    }
+
+    100% {
+        transform: scaleY(1);
+    }
 }
 
 .game-level-bar {
@@ -441,7 +460,9 @@ $level-font: "Space Mono", monospace;
 }
 
 .boss-button-container {
-    flex-grow: 1;
+    padding-top: 10px;
+    // flex-grow: 1;
+    height: 20%;
     display: flex;
     justify-content: center;
     width: 100%;
@@ -481,7 +502,9 @@ $level-font: "Space Mono", monospace;
 }
 
 .game-food-container {
-    flex-grow: 1;
+    margin-top: auto;
+    margin-bottom: 5%;
+    padding-top: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -532,14 +555,13 @@ $level-font: "Space Mono", monospace;
         padding: 20px;
     }
 
-    .game-pimpus {
-        transform: scale(0.3);
-        margin: -400px -450px;
+    .game-boss {
+        max-width: 40%;
+        margin: 0 -30% 0 -30%;
     }
 
-    .game-boss {
-        transform: scale(0.3);
-        margin: -400px -450px -380px -450px;
+    .game-level-number {
+        font-size: 5rem;
     }
 }
 

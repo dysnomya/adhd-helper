@@ -193,9 +193,13 @@ const Todo = () => {
         };
 
         try {
-            // const updatedTaskFromBackend = await updateTask(taskId, apiPayload);
-            await updateTask(taskId, apiPayload);
-            updateTaskLocal(taskId, updatedData);
+            const updatedTaskFromBackend = await updateTask(taskId, apiPayload);
+            let updatedTaskFromBackendUpdated = {
+                ...updatedTaskFromBackend,
+                category: updatedData.category
+            }
+            // await updateTask(taskId, apiPayload);
+            updateTaskLocal(taskId, updatedTaskFromBackendUpdated);
         } catch (e) {
             console.error("Błąd edycji zadania", e);
             alert(`Nie udało się zedytować zadania. ${e.message}`);
@@ -217,10 +221,12 @@ const Todo = () => {
 
         try {
             // API CALL
-            // const createdTaskFromBackend = await createTask(apiPayload);
-            await createTask(apiPayload);
-            // addTaskLocal(createdTaskFromBackend);
-            addTaskLocal(newTaskData);
+            const createdTaskFromBackend = await createTask(apiPayload);
+            let createdTaskFromBackendUpdated = {
+                ...createdTaskFromBackend,
+                category: newTaskData.category
+            }
+            addTaskLocal(createdTaskFromBackendUpdated);
             setIsAddingTask(false);
         } catch (e) {
             console.error("Błąd dodawania zadania", e);

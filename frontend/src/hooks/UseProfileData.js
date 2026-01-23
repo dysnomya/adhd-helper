@@ -71,7 +71,7 @@ export const useProfileData = () => {
                 fightBoss()
             ]);
 
-            if (profileData != null && data[0].profile.currentBoss.bossLevel > profileData.currentBoss.bossLevel) {
+            if (profileData != null && (data[0].profile.currentBoss?.bossLevel > profileData.currentBoss?.bossLevel || data[0].profile.currentBoss == null)) {
                 setIsBossDefeated(true);
                 setTimeout(() => setIsBossDefeated(false), 1000);
             }
