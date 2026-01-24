@@ -63,17 +63,20 @@ export default function Dashboard() {
         });
 
         const dataMap = {};
+        last30Days.reverse();
         last30Days.forEach(date => dataMap[date] = 0);
 
         tasks.forEach(task => {
-            if (task.completed && task.day) {
-                if (dataMap[task.day] !== undefined) {
-                    dataMap[task.day]++;
+            if (task.completed && task.completedAt) {
+                if (dataMap[task.completedAt] !== undefined) {
+                    dataMap[task.completedAt]++;
                 }
             }
         });
-
-        return last30Days.map(date => dataMap[date]);
+        return last30Days.map(date => ({
+            date: date,
+            count: dataMap[date]
+        }));
     }, [tasks]);
 
     if (error) return (
