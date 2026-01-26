@@ -39,7 +39,10 @@ const TaskSplineAreaChart = ({ data = [] }) => {
 
     const gradientId = useMemo(() => `chart-grad-${Math.random().toString(36).substr(2, 9)}`, []);
 
-    const chartData = data.length > 0 ? data : [0, 0];
+    console.log("CHART DATA")
+    console.log(data)
+
+    const chartData = data.length > 0 ? data : [{ date: '', count: 0 }, { date: '', count: 0 }];
 
     const width = 300;
     const height = 150;
@@ -47,15 +50,21 @@ const TaskSplineAreaChart = ({ data = [] }) => {
     const chartHeight = height - padding * 2;
     const chartWidth = width;
 
-    const maxY = Math.max(...chartData, 1);
+    const maxY = Math.max(...chartData.map(d => d.count), 1);
     const points = chartData.map((val, index) => {
         const x = (index / (chartData.length - 1)) * chartWidth;
-        const y = chartHeight - (val / maxY) * chartHeight + padding;
+        const y = chartHeight - (val.count / maxY) * chartHeight + padding;
         return [x, y];
     });
 
     const linePath = svgPath(points, bezierCommand);
     const fillPath = `${linePath} L ${width},${height} L 0,${height} Z`;
+
+    const formatDate = (dateStr) => {
+        if (!dateStr) return '';
+        const d = new Date(dateStr);
+        return `${d.getDate()}.${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+    };
 
     return (
         <div className="chart-card">
@@ -85,29 +94,30 @@ const TaskSplineAreaChart = ({ data = [] }) => {
                     />
 
                     <g className="chart-axis-labels">
-                        <text 
-                            x={0} 
-                            y={height} 
-                            textAnchor="start"
-                        >| 1</text>
+                        {[0, 10, 20, 29].map((index) => {
+                            const x = (index / (chartData.length - 1)) * width;
+                            const dateObj = chartData[index];
+                            
+                            if (!dateObj) return null;
 
-                        <text 
-                            x={(9 / (chartData.length - 1)) * width} 
-                            y={height} 
-                            textAnchor="middle"
-                        >| 10</text>
-
-                        <text 
-                            x={(19 / (chartData.length - 1)) * width} 
-                            y={height} 
-                            textAnchor="middle"
-                        >| 20</text>
-
-                        <text 
-                            x={width} 
-                            y={height} 
-                            textAnchor="end"
-                        >| 30</text>
+                            return (
+                                <g key={index}>
+                                    <line 
+                                        x1={x} y1={height - 15} 
+                                        x2={x} y2={height - 10} 
+                                        stroke="var(--color-text)"
+                                        strokeWidth="1" 
+                                    />
+                                    <text 
+                                        x={x} 
+                                        y={height} 
+                                        textAnchor={index === 0 ? "start" : index === 29 ? "end" : "middle"}
+                                    >
+                                        {formatDate(dateObj.date)}
+                                    </text>
+                                </g>
+                            );
+                        })}
                     </g>
 
                     <g className="chart-axis-labels">
