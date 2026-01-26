@@ -26,7 +26,7 @@ const AddCategoryModal = ({ isOpen, onClose, onConfirm }) => {
     return (
 
         <div className='add-category-overlay'>
-            
+
             <div className='add-category-card'>
 
                 <h3>Dodaj kategorię</h3>
@@ -47,8 +47,8 @@ const AddCategoryModal = ({ isOpen, onClose, onConfirm }) => {
                     <label>Kolor</label>
                     <div className='add-category-color-group'>
                         <div className='add-category-color-input' style={{backgroundColor:color}}>
-                            <input 
-                                type="color" 
+                            <input
+                                type="color"
                                 value={color}
                                 onChange={(e) => setColor(e.target.value)}
                             />
@@ -57,12 +57,12 @@ const AddCategoryModal = ({ isOpen, onClose, onConfirm }) => {
                         <div className='add-category-color-name' >
                             <span>{color}</span>
                         </div>
-                    </div>   
+                    </div>
                 </div>
 
                 <div className="add-category-input-group">
                     <label>Preview</label>
-                    <div 
+                    <div
                         className="add-category-preview-badge"
                         style={{ backgroundColor: color }}
                     >
@@ -79,10 +79,13 @@ const AddCategoryModal = ({ isOpen, onClose, onConfirm }) => {
                     </button>
                 </div>
 
+                
             </div>
+
 
         </div>
     )
+
 };
 
 export default AddCategoryModal;

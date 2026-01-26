@@ -111,16 +111,21 @@ $sidebar-icon-size: 40px;
 }
 
 .desktop-sidebar {
-  background-color: var(--color-sidebar-bg);
-  color: var(--color-text);
-  width: $sidebar-collapsed-width;
-  transition: width 0.25s ease;
-  z-index: 2100;
+  @media (min-width: 768px){
+    background-color: var(--color-sidebar-bg);
+    color: var(--color-text);
+    width: $sidebar-collapsed-width;
+    transition: width 0.25s ease;
+    z-index: 2100;
+    overflow-y: auto;
+  } 
 }
 
 .desktop-sidebar:hover,
 .desktop-sidebar.expanded {
-  width: $sidebar-open-width;
+    @media (min-width: 768px){
+      width: $sidebar-open-width;
+    }
 }
 
 .nav-bar {
@@ -129,7 +134,9 @@ $sidebar-icon-size: 40px;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  overflow-y: auto;
   white-space: nowrap;
   transition: all 0.25s ease;
   padding: calc(($sidebar-collapsed-width - $sidebar-element-size) / 2);

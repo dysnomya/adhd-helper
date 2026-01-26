@@ -8,8 +8,9 @@
   --color-text-placeholder: #909090;
   --color-text-white: #141414;
 
-  --color-accent: #c5ff75;
-  --color-accent-hover: #a9da65;
+  --color-accent: #aeff3d;
+  --color-accent-hover: #93d734;
+  --color-accent-transparent: #aeff3d00;
   --color-on-accent: #141414;
   --color-accent-gradient: #69883d;
 
@@ -21,10 +22,19 @@
   --secondary-container-bg: #4c4c4c;
   --secondary-container-highlight: #616161;
 
+  --split-container-bg:#373737;
+
   --color-category-unfocus:#616161;
   --color-category-hover:#6a6a6a;
 
   --color-calendar-detail: #a8a8a8;
+  --color-calendar-detail-transparent: #a8a8a800;
+
+
+  --split-hue: 130deg;
+  --split-contrast: 1.4;
+  --split-brightness: 1.1;
+
 
   --color-priority-low: #83d453;
   --color-priority-medium: #f0b537;
@@ -52,6 +62,7 @@
 
   --color-accent: #fe73ba;
   --color-accent-hover: #d7619e;
+  --color-accent-transparent: #fe73ba00;
   --color-on-accent: #ffffff;
   --color-accent-gradient: #ffc7e3;
 
@@ -63,10 +74,18 @@
   --secondary-container-bg: #ffffff;
   --secondary-container-highlight: #f3f3f3;
 
+  --split-container-bg:#ffffff;
+
   --color-category-unfocus:#D9D9D9;
   --color-category-hover:#d1d1d1;
 
   --color-calendar-detail: #565656;
+  --color-calendar-detail-transparent: #56565600;
+
+  --split-hue: 0deg;
+  --split-contrast: 1.0;
+  --split-brightness: 1.0;
+
 
   --color-priority-low: #83d453;
   --color-priority-medium: #f0b537;
