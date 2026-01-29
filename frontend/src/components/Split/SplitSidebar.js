@@ -30,21 +30,6 @@ const SplitSidebar = ({ categories, setActiveFilter, activeFilter, onAddCategory
                 <div className=''>
                     <p className='split-calendar-sidebar-text-zadania'>Kategorie</p>
                 </div>
-{/* 
-                {categories.map(category => (
-                    <Category
-                        key={category.id}
-                        category={category}
-                        onClick={() => handleCategoryClick(category.id)}
-                        isActive={activeFilter.includes(category.id)}
-                    />
-                ))} */}
-
-                {/* <Category
-                    category={noCategoryOption}
-                    onClick={() => handleCategoryClick(noCategoryId)}
-                    isActive={activeFilter.includes(noCategoryId)}
-                /> */}
 
                 <div 
                     className='todo-sidebar-add-button'

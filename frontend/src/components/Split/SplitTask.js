@@ -10,8 +10,6 @@ import { ReactComponent as Cancel} from "../../assets/X.svg";
 import { ReactComponent as Chevron} from "../../assets/Chevron right.svg";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// import { fetchSubtasks } from "../../api/TaskApi"
-
 const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks, setSubtasks, setGeminiResult, geminiResult, onSubtaskDelete, removeSubtask}) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
@@ -41,7 +39,6 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
 
     const handleToggleSubtask = async () => {
         if(localSubtasks === undefined) return;
-        // if((localSubtasks.length <= 0)) return;
         setIsExpanded(!isExpanded);
         console.log(isExpanded)
     };
@@ -85,7 +82,6 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
             
             setGeminiAsked(false);
             setGeminiResult([...geminiResult,...newSubTasks]);
-            // setSubtasks([...subtasks,newSubTasks]);
             console.log("Wygenerowane podzadania:", newSubTasks, "has", newSubTasks.subtaskList.length);
 
             onSubtaskDelete(task.id);
@@ -97,7 +93,6 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
         catch (error) {
             console.error("Błąd podczas generowania zadań:", error);
             setGeminiAsked(false);
-            // Tutaj możesz np. wyświetlić powiadomienie dla użytkownika
         }
     }
 
@@ -136,7 +131,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
                                             value={taskName} 
                                             className="split-task-name" 
                                             onChange={e => setTaskName(e.target.value)}
-                                            autoFocus // Opcjonalnie: pomaga ustawić fokus przy wejściu w tryb edycji
+                                            autoFocus
                                         />
                                     ) : (
                                         <p className="split-task-name">
@@ -153,8 +148,6 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
                                                 <span>
                                                 <input type="number" value={oldTaskTimeMetric === "h" ? taskTime/60 : taskTime} className={`split-task-time-input `} onChange={e => setTaskTime(e.target.value)}></input>
                                                 <select name="time-select" value={taskTimeMetric}  className={`split-task-time-select `} onClick={e => {if(e.target.value === 'min') { e.target.value='h';setTaskTimeMetric(e.target.value);} else{ e.target.value='min'}setTaskTimeMetric(e.target.value)}} onChange={e => {setTaskTimeMetric(e.target.value); console.log(taskTimeMetric);}}>
-                                                        {/* <option value="min">min</option>
-                                                        <option value="h">godz</option> */}
                                                     </select>
                                                 </span>
                                             ) : (
@@ -243,7 +236,7 @@ const SplitTask = ({ task, isSubtask = false, onDelete, setGeminiAsked, subtasks
                                                 value={taskName} 
                                                 className="split-task-name" 
                                                 onChange={e => setTaskName(e.target.value)}
-                                                autoFocus // Opcjonalnie: pomaga ustawić fokus przy wejściu w tryb edycji
+                                                autoFocus
                                             />
                                         ) : (
                                             <p className="split-task-name">
