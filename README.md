@@ -56,19 +56,14 @@
 
 ### Uruchomienie przy użyciu Maven
 
-1. Przejdź do katalogu backendu (np. `backend`):
 
-   ```bash
-   cd backend
-   ```
-
-2. Zbuduj projekt:
+1. Zbuduj projekt:
 
    ```bash
    mvn clean install
    ```
 
-3. Uruchom aplikację:
+2. Uruchom aplikację:
 
    ```bash
    mvn spring-boot:run
