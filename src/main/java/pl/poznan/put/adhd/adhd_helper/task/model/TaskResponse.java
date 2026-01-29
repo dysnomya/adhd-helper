@@ -20,4 +20,5 @@ public record TaskResponse(
         Integer timeNeeded,
         Boolean completed,
         Boolean blocked,
+        LocalDate completedAt,
         @JsonInclude(JsonInclude.Include.NON_EMPTY) List<TaskResponse> subtasks) {}
