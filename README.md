@@ -3,6 +3,16 @@
 
 ---
 
+## Opis
+
+Celem projektu jest zaprojektowanie i zaimplementowanie prototypu aplikacji internetowej ADHDHelper, mającej na celu wspomaganie codziennego funkcjonowania osób z Zespołem Nadpobudliwości Psychoruchowej z Deficytem Uwagi (ADHD). 
+
+Stworzono responsywną aplikację typu Single Page Application (SPA), która łączy funkcjonalności klasycznego planera zadań z elementami grywalizacji, mechanizmu body-double oraz automatyzacją z wykorzystaniem modelu językowego. System integruje moduł zarządzania zadaniami z modułem grywalizacji, który poprzez system nagród i mechanizm walk z przeciwnikami motywuje użytkownika do wykonywania zadeklarowanych przez siebie zadań. Aplikacja pozwala również na podzielenie złożonych zadań na podzadania z wykorzystaniem API Google Gemini, aby ułatwić użytkownikowi proces decyzyjny i przedstawić zadanie w bardziej przyswajalny sposób. 
+
+Warstwa kliencka (frontend) została zrealizowana z wykorzystaniem biblioteki React w architekturze komponentowej.  Aby zapobiec przebodźcowaniu zastosowano mechanizmy grupowania, sortowania oraz filtrowania zadań, a sam interfejs został zaprojektowany w minimalistyczny sposób z wykorzystaniem Sassy Cascading Style Sheets (SCSS). Warstwa serwerowa (backend) została zaimplementowana w języku Java z wykorzystaniem frameworka Spring Boot. Odpowiada ona za komunikację z bazą danych przechowującą dane o użytkownikach, ich zadaniach i elementach grywalizacji.
+
+---
+
 ## Wymagania
 
 * Node.js (zalecana wersja 22 LTS)
@@ -56,19 +66,14 @@
 
 ### Uruchomienie przy użyciu Maven
 
-1. Przejdź do katalogu backendu (np. `backend`):
 
-   ```bash
-   cd backend
-   ```
-
-2. Zbuduj projekt:
+1. Zbuduj projekt:
 
    ```bash
    mvn clean install
    ```
 
-3. Uruchom aplikację:
+2. Uruchom aplikację:
 
    ```bash
    mvn spring-boot:run
@@ -77,10 +82,10 @@
 
 ## Status projektu
 
-Projekt w fazie rozwoju 🚧
+Projekt w fazie rozwoju 
 
 ---
 
 ## Licencja
 
-Do uzupełnienia.
+Licencja MIT.
