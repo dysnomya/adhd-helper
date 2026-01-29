@@ -97,8 +97,6 @@ const Todo = () => {
             const newCategoryFromBackend = await createCategory({ name, color });
             addCategoryLocal(newCategoryFromBackend);
 
-            //TEMP
-            // alert("Dodano grupę");
 
         } catch (e) {
             console.error(e);
@@ -198,7 +196,6 @@ const Todo = () => {
                 ...updatedTaskFromBackend,
                 category: updatedData.category
             }
-            // await updateTask(taskId, apiPayload);
             updateTaskLocal(taskId, updatedTaskFromBackendUpdated);
         } catch (e) {
             console.error("Błąd edycji zadania", e);
@@ -260,7 +257,6 @@ const Todo = () => {
 
 
 
-    // Debugging - Do usunięcia później
     useEffect(() => {
         if (tasks.length > 0) {
             console.log("Zadania:", tasks);
@@ -268,7 +264,6 @@ const Todo = () => {
             console.log("Kategorie:", categories)
         }
     }, [tasks, categories]);
-    // --------
 
 
     if (error) return (

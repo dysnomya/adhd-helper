@@ -41,7 +41,7 @@ export default function LoginLayout() {
         <div className={`mobile-dropdown ${open ? "open" : ""}`}>
           <Sidebar
             collapsed={false}
-            onItemClick={() => setOpen(false)} // always closes sidebar after selection
+            onItemClick={() => setOpen(false)}
           />
         </div>
 

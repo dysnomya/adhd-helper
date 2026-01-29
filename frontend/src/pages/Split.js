@@ -62,7 +62,6 @@ const Split = () => {
         };
   
         try {
-            // A. Wysyłamy rodzica i CZEKAMY na odpowiedź
             if (!apiPayload.parentId){
                 const createdParent = await createTask(apiPayload);
             
@@ -74,7 +73,6 @@ const Split = () => {
                     return t;
                 }));
                 
-                // Pobieramy subtaski z naszej lokalnej zmiennej (nie ze stanu!)
                 const subtasksToSend = geminiResult.filter(t => t.parentId === tempParentId);
 
                 for (const subtask of subtasksToSend) {
@@ -123,7 +121,6 @@ const Split = () => {
 
     const handleConfirmAddCategory = async (name, color) => {
         try {
-            // API
             const newCategoryFromBackend = await createCategory({ name, color });
             addCategoryLocal(newCategoryFromBackend);
 
@@ -149,22 +146,18 @@ const Split = () => {
     const onClickPrzypisz = () => {
         const selectedIds = selectedTasks.map(t => t.id);
 
-        // 2. Aktualizujemy stan RAZ, przelatując przez wszystkie taski
         setGeminiResult(geminiResult => {
             return geminiResult.map(task => {
-                // Czy ten task jest na liście zaznaczonych?
                 if ((selectedIds.includes(task.id) && (task.parentId == null)) || (selectedIds.includes(task.parentId))) {
-                    return { ...task, date: outSelectedDate }; // Zmieniamy datę
+                    return { ...task, date: outSelectedDate };
                 }
-                // WAŻNE: Jeśli nie zmieniamy, zwracamy stary obiekt!
-                return task; 
+                return task;
             });
         });
 
         setSelectedTasks([]);
     }
 
-    // Inicjalizacja Gemini (Klucz API najlepiej trzymać w .env)
     const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
 
     if (!apiKey) {
@@ -194,7 +187,6 @@ const Split = () => {
         // }
 
         if(true/*responseText1 == "TAK"*/ ){
-            // Przygotowujemy instrukcję z Twoim formatem
             const prompt = `
                 Rozbij zadanie "${taskDescription}" na kilka (do 12) mniejszych kroków.
                 Zwróć odpowiedź WYŁĄCZNIE jako czysty tablicowy format JSON.
@@ -217,7 +209,6 @@ const Split = () => {
             const result = await model.generateContent(prompt);
             const responseText = result.response.text();
             
-            // Oczyszczanie tekstu (Gemini czasem dodaje ```json ... ```)
             const cleanedJson = responseText.replace(/```json|```/g, "").trim();
             const newSubTasks = JSON.parse(cleanedJson);
 
@@ -253,7 +244,7 @@ const Split = () => {
                                 <div className="split-header-input-background-div">
                                     <form
                                             onSubmit={(e) => {
-                                            e.preventDefault(); // <-- prevent the default form action
+                                            e.preventDefault();
                                             SplitTaskButtonClicked();
                                             }}
                                         >

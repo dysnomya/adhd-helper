@@ -13,12 +13,8 @@ const SplitTaskListContainer = ({ splittedTasks, setGeminiAsked, isCalendarTasks
     console.log(subtasks);
     
     const removeTask = async (taskToDelete) => {
-        //usuwanie taska z json
         setGeminiResult(prevTasks => prevTasks.filter((task, _) => task.id !== taskToDelete.id));
-        //usuwanie taska z obiektów
         setTasks(prevTasks => prevTasks.filter((task, _) => task.id !== taskToDelete.id));
-
-        //usuwanie subtasków z json (wystarczy)
         setGeminiResult(prevTasks => prevTasks.filter((task, _) => ((task.parentId === null) || (task.parentId !== (taskToDelete.id)))));
 
         //zmiana id taskow
@@ -51,10 +47,10 @@ const SplitTaskListContainer = ({ splittedTasks, setGeminiAsked, isCalendarTasks
             setSelectedTasks(selectedTasks.filter((task, _) => task.id !== clickedTask.id))
         }
         else{
-            setSelectedTasks( // Replace the state
-            [ // with a new array
-                ...selectedTasks, // that contains all the old items
-                clickedTask // and one new item at the end
+            setSelectedTasks(
+            [
+                ...selectedTasks,
+                clickedTask
             ]
             );
         }
@@ -63,12 +59,10 @@ const SplitTaskListContainer = ({ splittedTasks, setGeminiAsked, isCalendarTasks
 
     return (
         <div className={` ${isCalendarTasks ? "split-task-list-container-calendar" : "split-task-list-container"}  ${selectAllTasks ? 'select-all-tasks' : ''}`}>
-            {/* Dodajemy sprawdzenie && oraz opcjonalne chainowanie ?. */}
             {tasks && tasks.filter(task => !task.parentId).map((task, index) => (
                 !isCalendarTasks ? 
                     <SplitTask
-                    // Gemini nie zwraca ID, więc używamy indexu lub Date.now()
-                    key={task.id || index} 
+                    key={task.id || index}
                     task={task}
                     onDelete={() => removeTask(task)}
                     setGeminiAsked={setGeminiAsked}
@@ -76,13 +70,11 @@ const SplitTaskListContainer = ({ splittedTasks, setGeminiAsked, isCalendarTasks
                     setSubtasks={setSubtasks}
                     setGeminiResult={setGeminiResult}
                     geminiResult={splittedTasks}
-                    // onSubtaskDelete={removeSubtasks}
                     removeSubtask={removeSubtask}
                     />
                     :
                     <SplitTaskCalendar
-                    // Gemini nie zwraca ID, więc używamy indexu lub Date.now()
-                    key={task.id || index} 
+                    key={task.id || index}
                     task={task}
                     onDelete={() => removeTask(task)}
                     setGeminiAsked={setGeminiAsked}

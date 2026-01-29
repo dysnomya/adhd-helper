@@ -6,7 +6,6 @@ import { useProfileData } from "../hooks/UseProfileData";
 import ErrorCard from "../components/ErrorCard";
 
 export default function Game() {
-    //const [isDmgDealt, setIsDmgDealt] = useState(false);
 
     const {
         profileData, dmgDealt, isDmgDealt, isLevelUp, isBossDefeated, userData, isLoading, error, updateProfileData, updateBossData
