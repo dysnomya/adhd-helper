@@ -11,7 +11,6 @@ const getHeaders = () => {
 
 export const createSubTask = async (taskData) => {
 
-    // Konstruujemy dynamiczny URL: /api/tasks/123/subtasks
     const url = `${TASKS_URL}/${taskData.parentId}/subtasks`;
 
     const response = await fetch(url, {
@@ -20,7 +19,6 @@ export const createSubTask = async (taskData) => {
         body: JSON.stringify(taskData)
     });
 
-    // Reszta kodu obsługi błędów pozostaje bez zmian...
     if (response.ok) {
         return await response.json();
     }
