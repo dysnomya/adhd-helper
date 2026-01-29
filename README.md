@@ -83,4 +83,4 @@ Projekt w fazie rozwoju 🚧
 
 ## Licencja
 
-Do uzupełnienia.
+Licencja MIT.
